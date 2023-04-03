@@ -1,4 +1,7 @@
-import Head from 'next/head'
+import SimpleShader from "@/modules/components/SimpleShader";
+import { Canvas, useFrame } from "@react-three/fiber";
+import Head from "next/head";
+import { MeshBasicMaterial } from "three";
 
 export default function Home() {
   return (
@@ -10,8 +13,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        sup
+        <div style={{ width: 100 }}>
+          <Canvas>
+            <SimpleShader />
+          </Canvas>
+        </div>
       </main>
     </>
-  )
+  );
 }
