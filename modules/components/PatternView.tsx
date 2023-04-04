@@ -3,23 +3,14 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { ShaderMaterial, Vector2 } from "three";
 
-import gradientShader from "@/modules/shaders/gradient.frag";
 import vert from "@/modules/shaders/default.vert";
+import { Pattern } from "../common/types/Pattern";
 
-const SimpleShader = () => {
-  // useFrame((state) => {});
-  const uniforms = useMemo(
-    () => ({
-      u_time: { value: 0 },
-      u_resolution: { value: new Vector2(100, 100) },
-    }),
-    [],
-  );
-
+const PatternView = ({ pattern }: { pattern: Pattern }) => {
   const shaderMaterial = useRef<ShaderMaterial>(null);
 
   useFrame((_, delta) => {
-    uniforms.u_time.value += delta;
+    pattern.update(delta);
   });
 
   return (
@@ -27,12 +18,12 @@ const SimpleShader = () => {
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
         ref={shaderMaterial}
-        uniforms={uniforms}
-        fragmentShader={gradientShader}
+        uniforms={pattern.parameters}
+        fragmentShader={pattern.src}
         vertexShader={vert}
       />
     </mesh>
   );
 };
 
-export default SimpleShader;
+export default PatternView;

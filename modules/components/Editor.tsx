@@ -1,8 +1,22 @@
-import SimpleShader from "@/modules/components/SimpleShader";
+import PatternView from "@/modules/components/PatternView";
+import SimpleShader from "@/modules/components/PatternView";
 import { Box, Button, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useMemo } from "react";
+import { Pattern } from "../common/types/Pattern";
+
+import gradient from "../shaders/gradient.frag";
 
 export default function Editor() {
+  const pattern = useMemo(() => {
+    return new Pattern("hello", gradient, {
+      u_blah: {
+        name: "Blah",
+        value: 1,
+      },
+    });
+  }, []);
+
   return (
     <Box w="100vw" h="100vh">
       <Grid
@@ -30,7 +44,7 @@ export default function Editor() {
         </GridItem>
         <GridItem pl="2" area="display">
           <Canvas>
-            <SimpleShader />
+            <PatternView pattern={pattern} />
           </Canvas>
         </GridItem>
         <GridItem pl="2" area="footer"></GridItem>
