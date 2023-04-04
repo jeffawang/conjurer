@@ -26,7 +26,7 @@ export class Pattern<T = {}> {
   src: string;
   parameters: StandardParameters & T;
 
-  constructor(name: string, src: string, parameters: T = [] as T) {
+  constructor(name: string, src: string, parameters: T = {} as T) {
     this.name = name;
     this.src = src;
 
