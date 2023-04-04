@@ -1,10 +1,9 @@
 import { useFrame } from "@react-three/fiber";
+import { useRef } from "react";
+import { ShaderMaterial } from "three";
 
-import { useMemo, useRef } from "react";
-import { ShaderMaterial, Vector2 } from "three";
-
-import vert from "@/modules/shaders/default.vert";
-import { Pattern } from "../common/types/Pattern";
+import vert from "@/modules/patterns/shaders/default.vert";
+import { Pattern } from "@/modules/common/types/Pattern";
 
 const PatternView = ({ pattern }: { pattern: Pattern }) => {
   const shaderMaterial = useRef<ShaderMaterial>(null);
