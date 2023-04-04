@@ -1,7 +1,6 @@
-import SimpleShader from "@/modules/components/SimpleShader";
-import { Canvas, useFrame } from "@react-three/fiber";
+import Editor from "@/modules/components/Editor";
+import { ChakraProvider, theme } from "@chakra-ui/react";
 import Head from "next/head";
-import { MeshBasicMaterial } from "three";
 
 export default function Home() {
   return (
@@ -12,13 +11,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div style={{ width: 100 }}>
-          <Canvas>
-            <SimpleShader />
-          </Canvas>
-        </div>
-      </main>
+
+      <ChakraProvider theme={theme}>
+        <Editor />
+      </ChakraProvider>
     </>
   );
 }

@@ -13,7 +13,7 @@ const SimpleShader = () => {
       u_time: { value: 0 },
       u_resolution: { value: new Vector2(100, 100) },
     }),
-    []
+    [],
   );
 
   const shaderMaterial = useRef<ShaderMaterial>(null);

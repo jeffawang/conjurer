@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.5.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@react-three/drei": "^9.61.4",
     "@react-three/fiber": "^8.12.0",
     "@react-three/postprocessing": "^2.7.1",
+    "framer-motion": "^10.10.0",
     "glslify-loader": "^2.0.0",
     "next": "13.2.4",
     "raw-loader": "^4.0.2",
