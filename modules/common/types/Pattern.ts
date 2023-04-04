@@ -21,12 +21,12 @@ export type ShaderParameter<T = number | Vector2 | Texture> = {
 };
 export type ShaderParameters = Record<string, ShaderParameter>;
 
-export class Pattern<T> {
+export class Pattern<T = {}> {
   name: string;
   src: string;
   parameters: StandardParameters & T;
 
-  constructor(name: string, src: string, parameters: T) {
+  constructor(name: string, src: string, parameters: T = [] as T) {
     this.name = name;
     this.src = src;
 
