@@ -7,5 +7,9 @@ const GradientPattern = () =>
       name: "Hi",
       value: 1,
     },
+    u_blueness: {
+      name: "Blueness",
+      value: 0.0,
+    },
   });
 export default GradientPattern;

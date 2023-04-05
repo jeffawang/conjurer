@@ -1,17 +1,35 @@
 import BlockView from "@/modules/components/BlockView";
 import GradientPattern from "@/modules/patterns/GradientPattern";
 import { patterns } from "@/modules/patterns/Patterns";
-import { Box, Button, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
-import { Canvas } from "@react-three/fiber";
-import { useMemo, useRef, useState } from "react";
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  Heading,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Block } from "../common/types/Block";
 
 export default function Editor() {
-  const [pattern, setPattern] = useState(patterns[0]);
+  const [patternID, setPattern] = useState(0);
+
+  const [blueness, setBlueness] = useState(0);
+
+  const b = useRef({ val: 1 });
 
   const block = useMemo(() => {
-    return new Block(pattern);
-  }, [pattern]);
+    const pattern = patterns[patternID]();
+    return new Block(pattern, {
+      u_blueness: ({ sp }) => {
+        // console.log("updating!!!", sp);
+        sp.value = b.current.val;
+      },
+    });
+  }, [patternID]);
 
   return (
     <Box w="100vw" h="100vh">
@@ -30,21 +48,29 @@ export default function Editor() {
         </GridItem>
         <GridItem pl="2" area="nav">
           <VStack>
-            {patterns.map((p) => (
+            {patterns.map((p, i) => (
               <Button
                 key={p.name}
                 colorScheme="teal"
                 variant="outline"
-                onClick={() => setPattern(p)}
+                onClick={() => setPattern(i)}
               >
                 {p.name}
               </Button>
             ))}
+            <Input
+              value={blueness}
+              onChange={(e) => {
+                const v = parseFloat(e.target.value);
+                setBlueness(v);
+                b.current.val = v;
+              }}
+            />
           </VStack>
         </GridItem>
         <GridItem pl="2" area="display">
           <Canvas>
-            <BlockView key={pattern.name} block={block} />
+            <BlockView key={block.pattern.name} block={block} />
           </Canvas>
         </GridItem>
         <GridItem pl="2" area="footer"></GridItem>
