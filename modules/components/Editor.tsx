@@ -38,7 +38,7 @@ export default function Editor() {
         templateAreas={`"header header"
                         "nav    display"
                         "nav    timeline"`}
-        gridTemplateColumns="150px 1fr 150px"
+        gridTemplateColumns="150px 1fr"
         gap="1"
         fontWeight="bold"
       >

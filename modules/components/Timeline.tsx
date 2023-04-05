@@ -20,6 +20,7 @@ import GradientPattern from "@/modules/patterns/GradientPattern";
 import { Block } from "@/modules/common/types/Block";
 import TestPattern from "@/modules/patterns/TestPattern";
 import { timeToX } from "@/modules/common/utils/time";
+import Ruler from "@/modules/components/Ruler";
 
 const MAX_TIME = 90;
 const FRAMES_PER_SECOND = 60;
@@ -84,15 +85,15 @@ const Timeline = () => {
       <GridItem area="time">
         <Box
           position="relative"
-          height={8}
+          height={10}
           borderY="solid"
           borderColor="white"
           bgColor="gray.500"
         >
+          <Ruler />
           <Box position="absolute" top={0} left={timeToX(time)}>
-            {/* TODO: https://www.bandlab.com/studio copy how they do SVG timeline tics */}
             <FaLongArrowAltDown
-              style={{ position: "absolute", left: "-12px" }}
+              style={{ position: "absolute", top: "8px", left: "-12px" }}
               size={25}
               color="red"
             />
