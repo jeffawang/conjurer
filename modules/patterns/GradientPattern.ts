@@ -1,15 +1,17 @@
 import { Pattern } from "@/modules/common/types/Pattern";
 import gradient from "./shaders/gradient.frag";
+import { Vector2 } from "three";
 
-const GradientPattern = () =>
-  new Pattern("Gradient", gradient, {
-    u_blah: {
-      name: "Hi",
-      value: 1,
-    },
-    u_blueness: {
-      name: "Blueness",
-      value: 0.0,
-    },
-  });
+type params = {
+  u_blah: {
+    name: "Blah";
+    value: number;
+  };
+  u_a: {
+    name: "A";
+    value: Vector2;
+  };
+};
+
+const GradientPattern = (p: params) => new Pattern("Gradient", gradient, p);
 export default GradientPattern;
