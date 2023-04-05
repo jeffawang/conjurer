@@ -39,7 +39,7 @@ export class Block<T extends PatternParameters> {
 
   update = (time: number, globalTime: number) => {
     Object.entries(this.spc).map(([u, f]) => {
-      console.log("uniform", u, this.pattern.parameters[u].value);
+      // console.log("uniform", u, this.pattern.parameters[u].value);
       f({ sp: this.pattern.parameters[u], time: time, globalTime: globalTime });
     });
   };

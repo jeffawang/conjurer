@@ -19,7 +19,7 @@ import TimelineBlock from "@/modules/components/TimelineBlock";
 import GradientPattern from "@/modules/patterns/GradientPattern";
 import { Block } from "@/modules/common/types/Block";
 import TestPattern from "@/modules/patterns/TestPattern";
-import { timeToX } from "@/modules/common/utils/time";
+import { timeToX, xToTime } from "@/modules/common/utils/time";
 import Ruler from "@/modules/components/Ruler";
 
 const MAX_TIME = 90;
@@ -51,8 +51,8 @@ const Timeline = () => {
 
   return (
     <Grid
-      templateAreas={`"controls   time"
-                        "l1Left       l1Right"`}
+      templateAreas={`"controls   ruler"
+                      "l1Left       l1Right"`}
       gridTemplateColumns="150px 1fr"
       fontWeight="bold"
     >
@@ -82,13 +82,20 @@ const Timeline = () => {
           />
         </HStack>
       </GridItem>
-      <GridItem area="time">
+      <GridItem area="ruler">
         <Box
           position="relative"
           height={10}
           borderY="solid"
           borderColor="white"
           bgColor="gray.500"
+          onClick={(e) =>
+            setTime(
+              xToTime(
+                e.clientX - (e.target as HTMLElement).getBoundingClientRect().x,
+              ),
+            )
+          }
         >
           <Ruler />
           <Box position="absolute" top={0} left={timeToX(time)}>
@@ -113,6 +120,15 @@ const Timeline = () => {
           height={200}
           bgColor="gray.400"
         >
+          <Box
+            position="absolute"
+            top={0}
+            left={timeToX(time)}
+            bgColor="red"
+            width="1px"
+            height="100%"
+            zIndex={1}
+          ></Box>
           {blocks.map((block, index) => (
             <TimelineBlock key={index} block={block} />
           ))}
@@ -121,4 +137,5 @@ const Timeline = () => {
     </Grid>
   );
 };
+
 export default Timeline;

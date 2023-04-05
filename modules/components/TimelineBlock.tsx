@@ -40,4 +40,5 @@ const TimelineBlock = ({ block }: TimelineBlockProps) => {
     </Draggable>
   );
 };
+
 export default TimelineBlock;
