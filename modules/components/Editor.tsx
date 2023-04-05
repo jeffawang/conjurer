@@ -1,4 +1,5 @@
 import BlockView from "@/modules/components/BlockView";
+import Timeline from "@/modules/components/Timeline";
 import GradientPattern from "@/modules/patterns/GradientPattern";
 import { patterns } from "@/modules/patterns/Patterns";
 import {
@@ -36,7 +37,7 @@ export default function Editor() {
       <Grid
         templateAreas={`"header header"
                         "nav    display"
-                        "nav    footer"`}
+                        "nav    timeline"`}
         gridTemplateColumns="150px 1fr 150px"
         gap="1"
         fontWeight="bold"
@@ -73,7 +74,9 @@ export default function Editor() {
             <BlockView key={block.pattern.name} block={block} />
           </Canvas>
         </GridItem>
-        <GridItem pl="2" area="footer"></GridItem>
+        <GridItem pl="2" area="timeline">
+          <Timeline />
+        </GridItem>
       </Grid>
     </Box>
   );
