@@ -1,12 +1,17 @@
-import PatternView from "@/modules/components/PatternView";
+import BlockView from "@/modules/components/BlockView";
 import GradientPattern from "@/modules/patterns/GradientPattern";
 import { patterns } from "@/modules/patterns/Patterns";
 import { Box, Button, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
 import { Canvas } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { Block } from "../common/types/Block";
 
 export default function Editor() {
   const [pattern, setPattern] = useState(patterns[0]);
+
+  const block = useMemo(() => {
+    return new Block(pattern);
+  }, [pattern]);
 
   return (
     <Box w="100vw" h="100vh">
@@ -39,7 +44,7 @@ export default function Editor() {
         </GridItem>
         <GridItem pl="2" area="display">
           <Canvas>
-            <PatternView key={pattern.name} pattern={pattern} />
+            <BlockView key={pattern.name} block={block} />
           </Canvas>
         </GridItem>
         <GridItem pl="2" area="footer"></GridItem>

@@ -15,18 +15,18 @@ export type StandardParameters = {
   };
 };
 
-export type ShaderParameter<T = number | Vector2 | Texture> = {
+export type PatternParameter<T = number | Vector2 | Texture> = {
   name: string;
   value: T;
 };
-export type ShaderParameters = Record<string, ShaderParameter>;
+export type PatternParameters = Record<string, PatternParameter>;
 
-export class Pattern<T extends ShaderParameters> {
+export class Pattern<T extends PatternParameters> {
   name: string;
   src: string;
   parameters: StandardParameters & T;
 
-  constructor(name: string, src: string, parameters?: T) {
+  constructor(name: string, src: string, parameters: T = {} as T) {
     this.name = name;
     this.src = src;
 
@@ -41,12 +41,10 @@ export class Pattern<T extends ShaderParameters> {
       },
       u_resolution: {
         name: "Resolution",
+        // TODO: pipe this through from elsewhere
         value: new Vector2(96, 75),
       },
-      ...parameters!,
+      ...parameters,
     };
   }
-  update = (delta: number) => {
-    this.parameters.u_time.value += delta;
-  };
 }
