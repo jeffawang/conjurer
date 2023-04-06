@@ -21,7 +21,7 @@ export default function Display({ block }: DisplayProps) {
         <Canvas>
           <BlockView key={block.pattern.name} block={block} />
         </Canvas>
-      </Box>{" "}
+      </Box>
     </HStack>
   );
 }

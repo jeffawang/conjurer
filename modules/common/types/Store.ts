@@ -1,11 +1,8 @@
 import { Block } from "@/modules/common/types/Block";
-import {
-  PatternParams,
-  StandardParams,
-} from "@/modules/common/types/PatternParams";
+import { PatternParams } from "@/modules/common/types/PatternParams";
 import GradientPattern from "@/modules/patterns/GradientPattern";
 import SunCycle from "@/modules/patterns/SunCycle";
-import { makeAutoObservable, configure, action, runInAction } from "mobx";
+import { makeAutoObservable, configure, runInAction } from "mobx";
 import { Vector2 } from "three";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
@@ -29,6 +26,7 @@ export default class Store {
   }
 
   initialize = () => {
+    // Temporary hard-coded blocks
     this.blocks.push(
       new Block(SunCycle()),
       new Block(
@@ -44,10 +42,8 @@ export default class Store {
         }),
       ),
     );
-    this.blocks[0].startTime = 0;
-    this.blocks[0].duration = 8;
-    this.blocks[1].startTime = 9;
-    this.blocks[1].duration = 12;
+    this.blocks[0].setTiming(0, 3);
+    this.blocks[1].setTiming(3, 10);
     this.initialized = true;
   };
 }
