@@ -1,36 +1,22 @@
-import { Texture, Vector2 } from "three";
+import { Vector2 } from "three";
+import {
+  ParamValues,
+  ParamsProxy,
+  PatternParams,
+  StandardParams,
+} from "./PatternParams";
 
-export type StandardParameters = {
-  u_time: {
-    name: "Time";
-    value: number;
-  };
-  u_global_time: {
-    name: "Global Time";
-    value: number;
-  };
-  u_resolution: {
-    name: "Resolution";
-    value: Vector2;
-  };
-};
-
-export type PatternParameter<T = number | Vector2 | Texture> = {
-  name: string;
-  value: T;
-};
-export type PatternParameters = Record<string, PatternParameter>;
-
-export class Pattern<T extends PatternParameters> {
+export class Pattern {
   name: string;
   src: string;
-  parameters: StandardParameters & T;
+  params: StandardParams & PatternParams;
+  paramValues: ParamValues<StandardParams & PatternParams>;
 
-  constructor(name: string, src: string, parameters: T = {} as T) {
+  constructor(name: string, src: string, parameters?: PatternParams) {
     this.name = name;
     this.src = src;
 
-    this.parameters = {
+    this.params = {
       u_time: {
         name: "Time",
         value: 0,
@@ -46,5 +32,6 @@ export class Pattern<T extends PatternParameters> {
       },
       ...parameters,
     };
+    this.paramValues = ParamsProxy(this.params);
   }
 }
