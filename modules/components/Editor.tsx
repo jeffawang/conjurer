@@ -1,4 +1,5 @@
 import BlockView from "@/modules/components/BlockView";
+import Timeline from "@/modules/components/Timeline";
 import { patterns } from "@/modules/patterns/Patterns";
 import { Box, Button, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
 import { Canvas } from "@react-three/fiber";
@@ -21,8 +22,8 @@ export default function Editor() {
       <Grid
         templateAreas={`"header header"
                         "nav    display"
-                        "nav    footer"`}
-        gridTemplateColumns="150px 1fr 150px"
+                        "nav    timeline"`}
+        gridTemplateColumns="150px 1fr"
         gap="1"
         fontWeight="bold"
       >
@@ -50,7 +51,9 @@ export default function Editor() {
             <BlockView key={block.pattern.name} block={block} />
           </Canvas>
         </GridItem>
-        <GridItem pl="2" area="footer"></GridItem>
+        <GridItem pl="2" area="timeline">
+          <Timeline />
+        </GridItem>
       </Grid>
     </Box>
   );
