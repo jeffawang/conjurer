@@ -21,12 +21,27 @@ import { Block } from "@/modules/common/types/Block";
 import TestPattern from "@/modules/patterns/TestPattern";
 import { timeToX, xToTime } from "@/modules/common/utils/time";
 import Ruler from "@/modules/components/Ruler";
+import { Vector2 } from "three";
 
 const MAX_TIME = 90;
 const FRAMES_PER_SECOND = 60;
 
 // TEMPORARY
-const blocks = [new Block(GradientPattern()), new Block(TestPattern())];
+const blocks = [
+  new Block(
+    GradientPattern({
+      u_blah: {
+        name: "Blah",
+        value: 0,
+      },
+      u_a: {
+        name: "A",
+        value: new Vector2(),
+      },
+    }),
+  ),
+  new Block(TestPattern()),
+];
 
 blocks[0].startTime = 0;
 blocks[0].duration = 8;

@@ -14,7 +14,7 @@ export class Block<T extends PatternParams> {
 
   constructor(
     pattern: Pattern,
-    spc: PatternParamsController<T> = {} as PatternParamsController<T>
+    spc: PatternParamsController<T> = {} as PatternParamsController<T>,
   ) {
     this.pattern = pattern;
     this.spc = spc;
@@ -24,7 +24,7 @@ export class Block<T extends PatternParams> {
     this.pattern.paramValues.u_time = time;
     Object.entries(this.spc).map(([u, f]) => {
       // console.log("uniform", u, this.pattern.parameters[u].value);
-      f({ sp: this.pattern.parameters[u], time, globalTime });
+      f({ sp: this.pattern.params[u], time, globalTime });
     });
   };
 }
