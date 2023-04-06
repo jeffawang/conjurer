@@ -4,6 +4,8 @@ import { Box, Button, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { Block } from "../common/types/Block";
 import Display from "@/modules/components/Display";
+import BlockView from "@/modules/components/BlockView";
+import { Canvas } from "@react-three/fiber";
 
 export default function Editor() {
   const [pattern, setPattern] = useState(patterns[0]);
@@ -27,6 +29,9 @@ export default function Editor() {
         </GridItem>
         <GridItem pl="2" area="nav">
           <VStack>
+            <Canvas>
+              <BlockView key={block.pattern.name} autorun block={block} />
+            </Canvas>
             {patterns.map((p) => (
               <Button
                 key={p.name}
@@ -40,7 +45,7 @@ export default function Editor() {
           </VStack>
         </GridItem>
         <GridItem pl="2" area="display">
-          <Display block={block} />
+          <Display />
         </GridItem>
         <GridItem pl="2" area="timeline">
           <Timeline />

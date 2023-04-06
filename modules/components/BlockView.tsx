@@ -4,16 +4,25 @@ import { StandardParams } from "../common/types/PatternParams";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import vert from "@/modules/patterns/shaders/default.vert";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/modules/common/types/StoreContext";
 
 type BlockViewProps = {
+  autorun?: boolean;
   block: Block<StandardParams>;
 };
 
-export default function BlockView({ block }: BlockViewProps) {
+export default observer(function BlockView({ autorun, block }: BlockViewProps) {
+  const { globalTime } = useStore();
   const shaderMaterial = useRef<ShaderMaterial>(null);
 
+  const { startTime } = block;
   useFrame(({ clock }) => {
-    block.update(clock.elapsedTime, clock.elapsedTime);
+    if (autorun) {
+      block.update(clock.elapsedTime, clock.elapsedTime);
+    } else {
+      block.update(globalTime - startTime, globalTime);
+    }
   });
 
   return (
@@ -27,4 +36,4 @@ export default function BlockView({ block }: BlockViewProps) {
       />
     </mesh>
   );
-}
+});

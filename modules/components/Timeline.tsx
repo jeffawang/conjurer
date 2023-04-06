@@ -17,28 +17,36 @@ import {
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import TimelineBlock from "@/modules/components/TimelineBlock";
-import { timeToX, xToTime } from "@/modules/common/utils/time";
+import {
+  FRAMES_PER_SECOND,
+  MAX_TIME,
+  timeToX,
+  xToTime,
+} from "@/modules/common/utils/time";
 import Ruler from "@/modules/components/Ruler";
 import { useStore } from "@/modules/common/types/StoreContext";
-
-const MAX_TIME = 90;
-const FRAMES_PER_SECOND = 60;
+import { action } from "mobx";
 
 export default observer(function Timeline() {
+  const store = useStore();
+  const { globalTime, blocks } = store;
   const [playing, setPlaying] = useState(false);
-  const [time, setTime] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (playing) {
-        if (time >= MAX_TIME) setPlaying(false);
-        else setTime((t) => t + 1 / FRAMES_PER_SECOND);
-      }
-    }, 1000 / FRAMES_PER_SECOND);
+    const interval = setInterval(
+      action(() => {
+        if (playing) {
+          if (globalTime >= MAX_TIME) {
+            setPlaying(false);
+          } else {
+            store.tick();
+          }
+        }
+      }),
+      1000 / FRAMES_PER_SECOND,
+    );
     return () => clearInterval(interval);
-  });
-
-  const { blocks } = useStore();
+  }, [playing]);
 
   return (
     <Grid
@@ -53,7 +61,9 @@ export default observer(function Timeline() {
             aria-label="Backward"
             height={6}
             icon={<FaStepBackward size={10} />}
-            onClick={() => setTime(0)}
+            onClick={action(() => {
+              store.globalTime = 0;
+            })}
           />
           <IconButton
             aria-label="Play"
@@ -66,10 +76,10 @@ export default observer(function Timeline() {
             aria-label="Forward"
             height={6}
             icon={<FaStepForward size={10} />}
-            onClick={() => {
-              setTime(MAX_TIME);
+            onClick={action(() => {
+              store.globalTime = MAX_TIME;
               setPlaying(false);
-            }}
+            })}
           />
         </HStack>
       </GridItem>
@@ -80,16 +90,14 @@ export default observer(function Timeline() {
           borderY="solid"
           borderColor="white"
           bgColor="gray.500"
-          onClick={(e) =>
-            setTime(
-              xToTime(
-                e.clientX - (e.target as HTMLElement).getBoundingClientRect().x,
-              ),
-            )
-          }
+          onClick={action((e) => {
+            store.globalTime = xToTime(
+              e.clientX - (e.target as HTMLElement).getBoundingClientRect().x,
+            );
+          })}
         >
           <Ruler />
-          <Box position="absolute" top={0} left={timeToX(time)}>
+          <Box position="absolute" top={0} left={timeToX(globalTime)}>
             <FaLongArrowAltDown
               style={{ position: "absolute", top: "8px", left: "-12px" }}
               size={25}
@@ -114,7 +122,7 @@ export default observer(function Timeline() {
           <Box
             position="absolute"
             top={0}
-            left={timeToX(time)}
+            left={timeToX(globalTime)}
             bgColor="red"
             width="1px"
             height="100%"

@@ -1,17 +1,16 @@
 import BlockView from "@/modules/components/BlockView";
 import { Box, HStack } from "@chakra-ui/react";
 import { Canvas } from "@react-three/fiber";
-import { Block } from "../common/types/Block";
-import { StandardParams } from "@/modules/common/types/PatternParams";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/modules/common/types/StoreContext";
 
 const DISPLAY_FACTOR = 3;
 const LED_COUNTS = { width: 96, height: 75 };
 
-type DisplayProps = {
-  block: Block<StandardParams>;
-};
+type DisplayProps = {};
 
-export default function Display({ block }: DisplayProps) {
+export default observer(function Display({}: DisplayProps) {
+  const { currentBlock } = useStore();
   return (
     <HStack py={4} justify="center">
       <Box
@@ -19,9 +18,11 @@ export default function Display({ block }: DisplayProps) {
         height={`${LED_COUNTS.height * DISPLAY_FACTOR}px`}
       >
         <Canvas>
-          <BlockView key={block.pattern.name} block={block} />
+          {currentBlock && (
+            <BlockView key={currentBlock.pattern.name} block={currentBlock} />
+          )}
         </Canvas>
       </Box>
     </HStack>
   );
-}
+});
