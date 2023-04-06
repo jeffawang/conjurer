@@ -1,14 +1,17 @@
 import { Block } from "@/modules/common/types/Block";
-import { timeToX, xToTime } from "@/modules/common/utils/time";
+import { StandardParams } from "@/modules/common/types/PatternParams";
+import { timeToX } from "@/modules/common/utils/time";
 import { Card, Text, VStack } from "@chakra-ui/react";
+import { isObservable } from "mobx";
+import { observer } from "mobx-react-lite";
 import { useRef } from "react";
 import Draggable from "react-draggable";
 
 type TimelineBlockProps = {
-  block: Block<any>; // TODO: fix this type
+  block: Block<StandardParams>;
 };
 
-const TimelineBlock = ({ block }: TimelineBlockProps) => {
+export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   const dragNodeRef = useRef(null);
 
   const handleDrag = (e: any, data: any) => {
@@ -39,6 +42,4 @@ const TimelineBlock = ({ block }: TimelineBlockProps) => {
       </Card>
     </Draggable>
   );
-};
-
-export default TimelineBlock;
+});

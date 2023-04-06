@@ -1,19 +1,18 @@
+import { Block } from "../common/types/Block";
+import { ShaderMaterial } from "three";
+import { StandardParams } from "../common/types/PatternParams";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import { ShaderMaterial } from "three";
-
 import vert from "@/modules/patterns/shaders/default.vert";
-import { Block } from "../common/types/Block";
-import { PatternParams } from "../common/types/PatternParams";
 
-type BlockViewComponent<T extends PatternParams> = React.FC<{
-  block: Block<T>;
-}>;
+type BlockViewProps = {
+  block: Block<StandardParams>;
+};
 
-const BlockView: BlockViewComponent<PatternParams> = ({ block }) => {
+export default function BlockView({ block }: BlockViewProps) {
   const shaderMaterial = useRef<ShaderMaterial>(null);
 
-  useFrame(({ clock }, delta) => {
+  useFrame(({ clock }) => {
     block.update(clock.elapsedTime, clock.elapsedTime);
   });
 
@@ -28,6 +27,4 @@ const BlockView: BlockViewComponent<PatternParams> = ({ block }) => {
       />
     </mesh>
   );
-};
-
-export default BlockView;
+}

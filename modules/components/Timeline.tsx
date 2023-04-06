@@ -15,42 +15,14 @@ import {
   FaStepBackward,
   FaLongArrowAltDown,
 } from "react-icons/fa";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import TimelineBlock from "@/modules/components/TimelineBlock";
-import GradientPattern from "@/modules/patterns/GradientPattern";
-import { Block } from "@/modules/common/types/Block";
-import TestPattern from "@/modules/patterns/TestPattern";
 import { timeToX, xToTime } from "@/modules/common/utils/time";
 import Ruler from "@/modules/components/Ruler";
-import { Vector2 } from "three";
-import StoreContext from "@/modules/common/types/StoreContext";
+import { useStore } from "@/modules/common/types/StoreContext";
 
 const MAX_TIME = 90;
 const FRAMES_PER_SECOND = 60;
-
-// TEMPORARY
-const blocks = [
-  new Block(
-    GradientPattern({
-      u_blah: {
-        name: "Blah",
-        value: 0,
-      },
-      u_a: {
-        name: "A",
-        value: new Vector2(),
-      },
-    }),
-  ),
-  new Block(TestPattern()),
-];
-
-blocks[0].startTime = 0;
-blocks[0].duration = 8;
-
-blocks[1].startTime = 9;
-blocks[1].duration = 12;
-// TEMPORARY
 
 export default observer(function Timeline() {
   const [playing, setPlaying] = useState(false);
@@ -65,6 +37,8 @@ export default observer(function Timeline() {
     }, 1000 / FRAMES_PER_SECOND);
     return () => clearInterval(interval);
   });
+
+  const { blocks } = useStore();
 
   return (
     <Grid
@@ -145,7 +119,7 @@ export default observer(function Timeline() {
             width="1px"
             height="100%"
             zIndex={1}
-          ></Box>
+          />
           {blocks.map((block, index) => (
             <TimelineBlock key={index} block={block} />
           ))}

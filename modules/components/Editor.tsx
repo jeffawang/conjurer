@@ -47,9 +47,11 @@ export default function Editor() {
           </VStack>
         </GridItem>
         <GridItem pl="2" area="display">
-          <Canvas>
-            <BlockView key={block.pattern.name} block={block} />
-          </Canvas>
+          <Box width="192px" height="150px">
+            <Canvas>
+              <BlockView key={block.pattern.name} block={block} />
+            </Canvas>
+          </Box>
         </GridItem>
         <GridItem pl="2" area="timeline">
           <Timeline />
