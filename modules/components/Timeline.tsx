@@ -52,7 +52,7 @@ blocks[1].startTime = 9;
 blocks[1].duration = 12;
 // TEMPORARY
 
-const Timeline = observer(() => {
+export default observer(function Timeline() {
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
 
@@ -154,5 +154,3 @@ const Timeline = observer(() => {
     </Grid>
   );
 });
-
-export default Timeline;
