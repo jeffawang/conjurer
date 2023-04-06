@@ -1,7 +1,7 @@
 import { PIXELS_PER_SECOND } from "@/modules/common/utils/time";
 
 const Ruler = () => (
-  <svg width="2496000" height="36">
+  <svg width="1000" height="36">
     <defs>
       <pattern
         id="mix-editor-grid-pattern"
@@ -36,7 +36,7 @@ const Ruler = () => (
       fill="url(#mix-editor-grid-pattern)"
       x="0"
       y="0"
-      width="2496000"
+      width="1000"
       height="36"
     />
   </svg>
