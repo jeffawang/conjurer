@@ -4,7 +4,7 @@ import {
   StandardParams,
 } from "@/modules/common/types/PatternParams";
 import GradientPattern from "@/modules/patterns/GradientPattern";
-import TestPattern from "@/modules/patterns/TestPattern";
+import SunCycle from "@/modules/patterns/SunCycle";
 import { makeAutoObservable, configure, action, runInAction } from "mobx";
 import { Vector2 } from "three";
 
@@ -30,6 +30,7 @@ export default class Store {
 
   initialize = () => {
     this.blocks.push(
+      new Block(SunCycle()),
       new Block(
         GradientPattern({
           u_blah: {
@@ -42,7 +43,6 @@ export default class Store {
           },
         }),
       ),
-      new Block(TestPattern()),
     );
     this.blocks[0].startTime = 0;
     this.blocks[0].duration = 8;
