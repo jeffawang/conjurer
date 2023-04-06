@@ -1,3 +1,5 @@
+import Store from "@/modules/common/types/Store";
+import StoreContext from "@/modules/common/types/StoreContext";
 import Editor from "@/modules/components/Editor";
 import { ChakraProvider, theme } from "@chakra-ui/react";
 import Head from "next/head";
@@ -13,7 +15,9 @@ export default function Home() {
       </Head>
 
       <ChakraProvider theme={theme}>
-        <Editor />
+        <StoreContext.Provider value={new Store()}>
+          <Editor />
+        </StoreContext.Provider>
       </ChakraProvider>
     </>
   );

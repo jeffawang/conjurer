@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import {
   Box,
   Grid,
@@ -14,7 +15,7 @@ import {
   FaStepBackward,
   FaLongArrowAltDown,
 } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import TimelineBlock from "@/modules/components/TimelineBlock";
 import GradientPattern from "@/modules/patterns/GradientPattern";
 import { Block } from "@/modules/common/types/Block";
@@ -22,6 +23,7 @@ import TestPattern from "@/modules/patterns/TestPattern";
 import { timeToX, xToTime } from "@/modules/common/utils/time";
 import Ruler from "@/modules/components/Ruler";
 import { Vector2 } from "three";
+import StoreContext from "@/modules/common/types/StoreContext";
 
 const MAX_TIME = 90;
 const FRAMES_PER_SECOND = 60;
@@ -50,7 +52,7 @@ blocks[1].startTime = 9;
 blocks[1].duration = 12;
 // TEMPORARY
 
-const Timeline = () => {
+const Timeline = observer(() => {
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
 
@@ -66,8 +68,8 @@ const Timeline = () => {
 
   return (
     <Grid
-      templateAreas={`"controls   ruler"
-                      "l1Left       l1Right"`}
+      templateAreas={`"controls       ruler"
+                      "layersHeader   layers"`}
       gridTemplateColumns="150px 1fr"
       fontWeight="bold"
     >
@@ -122,12 +124,12 @@ const Timeline = () => {
           </Box>
         </Box>
       </GridItem>
-      <GridItem area="l1Left">
+      <GridItem area="layersHeader">
         <VStack height="100%" justify="center">
           <Heading size="md">Layer 1</Heading>
         </VStack>
       </GridItem>
-      <GridItem area="l1Right">
+      <GridItem area="layers">
         <Box
           position="relative"
           borderBottom="solid"
@@ -151,6 +153,6 @@ const Timeline = () => {
       </GridItem>
     </Grid>
   );
-};
+});
 
 export default Timeline;
