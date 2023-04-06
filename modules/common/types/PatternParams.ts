@@ -4,9 +4,8 @@ export type PatternParam<T = Vector2 | number | Texture> = {
   name: string;
   value: T;
 };
-export type PatternParams = {
-  [key: string]: PatternParam;
-};
+
+export type PatternParams = Record<string, PatternParam>;
 
 export type StandardParams = {
   u_time: {
@@ -30,7 +29,7 @@ export type ParamValues<T extends PatternParams> = {
 type ParamsProxyConstructor = {
   new <T extends PatternParams, H extends ParamValues<T>>(
     target: T,
-    handler: ProxyHandler<H>
+    handler: ProxyHandler<H>,
   ): H;
 };
 
