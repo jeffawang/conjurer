@@ -2,7 +2,6 @@ import { Block } from "@/modules/common/types/Block";
 import { StandardParams } from "@/modules/common/types/PatternParams";
 import { timeToX } from "@/modules/common/utils/time";
 import { Card, Text, VStack } from "@chakra-ui/react";
-import { isObservable } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useRef } from "react";
 import Draggable from "react-draggable";
