@@ -16,11 +16,14 @@ export class Block<T extends PatternParameters> {
   pattern: Pattern<T>;
   spc: PatternParameterController<StandardParameters & T>;
 
+  startTime: number = 0; // global time that block starts playing at in seconds
+  duration: number = 5; // duration that block plays for in seconds
+
   constructor(
     pattern: Pattern<T>,
     spc: PatternParameterController<
       StandardParameters & T
-    > = {} as PatternParameterController<StandardParameters & T>
+    > = {} as PatternParameterController<StandardParameters & T>,
   ) {
     this.pattern = pattern;
     this.spc = {
@@ -36,7 +39,7 @@ export class Block<T extends PatternParameters> {
 
   update = (time: number, globalTime: number) => {
     Object.entries(this.spc).map(([u, f]) => {
-      console.log("uniform", u, this.pattern.parameters[u].value);
+      // console.log("uniform", u, this.pattern.parameters[u].value);
       f({ sp: this.pattern.parameters[u], time: time, globalTime: globalTime });
     });
   };
