@@ -1,3 +1,15 @@
 {
-  "extends": "next/core-web-vitals"
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["mobx"],
+  "extends": ["next/core-web-vitals", "plugin:mobx/recommended"],
+  "rules": {
+    "react/display-name": "warn",
+    "mobx/exhaustive-make-observable": "warn",
+    "mobx/unconditional-make-observable": "error",
+    "mobx/missing-make-observable": "error",
+    "mobx/missing-observer": "off"
+  },
+  "settings": {
+    "componentWrapperFunctions": ["observer"]
+  }
 }

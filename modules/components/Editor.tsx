@@ -1,26 +1,21 @@
-import BlockView from "@/modules/components/BlockView";
 import Timeline from "@/modules/components/Timeline";
 import { patterns } from "@/modules/patterns/Patterns";
 import { Box, Button, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
-import { Canvas } from "@react-three/fiber";
 import { useMemo, useState } from "react";
 import { Block } from "../common/types/Block";
+import Display from "@/modules/components/Display";
+import BlockView from "@/modules/components/BlockView";
+import { Canvas } from "@react-three/fiber";
 
 export default function Editor() {
   const [pattern, setPattern] = useState(patterns[0]);
 
-  const block = useMemo(() => {
-    return new Block(pattern, {
-      u_time: ({ sp, time }) => {
-        sp.value = time;
-      },
-    });
-  }, [pattern]);
+  const block = useMemo(() => new Block(pattern), [pattern]);
 
   return (
     <Box w="100vw" h="100vh">
       <Grid
-        templateAreas={`"header header"
+        templateAreas={`".      header"
                         "nav    display"
                         "nav    timeline"`}
         gridTemplateColumns="150px 1fr"
@@ -34,6 +29,9 @@ export default function Editor() {
         </GridItem>
         <GridItem pl="2" area="nav">
           <VStack>
+            <Canvas>
+              <BlockView key={block.pattern.name} autorun block={block} />
+            </Canvas>
             {patterns.map((p) => (
               <Button
                 key={p.name}
@@ -47,9 +45,7 @@ export default function Editor() {
           </VStack>
         </GridItem>
         <GridItem pl="2" area="display">
-          <Canvas>
-            <BlockView key={block.pattern.name} block={block} />
-          </Canvas>
+          <Display />
         </GridItem>
         <GridItem pl="2" area="timeline">
           <Timeline />

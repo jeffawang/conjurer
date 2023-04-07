@@ -1,3 +1,4 @@
+import { makeAutoObservable } from "mobx";
 import { Pattern } from "./Pattern";
 import { PatternParams } from "./PatternParams";
 
@@ -18,12 +19,18 @@ export class Block<T extends PatternParams> {
   ) {
     this.pattern = pattern;
     this.spc = spc;
+
+    makeAutoObservable(this, { pattern: false, spc: false, update: false });
   }
+
+  setTiming = (startTime: number, duration: number) => {
+    this.startTime = startTime;
+    this.duration = duration;
+  };
 
   update = (time: number, globalTime: number) => {
     this.pattern.paramValues.u_time = time;
     Object.entries(this.spc).map(([u, f]) => {
-      // console.log("uniform", u, this.pattern.parameters[u].value);
       f({ sp: this.pattern.params[u], time, globalTime });
     });
   };

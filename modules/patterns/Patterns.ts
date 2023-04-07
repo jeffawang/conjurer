@@ -1,8 +1,9 @@
 import GradientPattern from "@/modules/patterns/GradientPattern";
-import TestPattern from "@/modules/patterns/TestPattern";
+import SunCycle from "@/modules/patterns/SunCycle";
 import { Vector2 } from "three";
 
 const patterns = [
+  SunCycle(),
   GradientPattern({
     u_blah: {
       name: "Blah",
@@ -13,6 +14,5 @@ const patterns = [
       value: new Vector2(),
     },
   }),
-  TestPattern(),
 ];
 export { patterns };

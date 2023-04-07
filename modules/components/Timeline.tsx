@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import {
   Box,
   Grid,
@@ -16,58 +17,41 @@ import {
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import TimelineBlock from "@/modules/components/TimelineBlock";
-import GradientPattern from "@/modules/patterns/GradientPattern";
-import { Block } from "@/modules/common/types/Block";
-import TestPattern from "@/modules/patterns/TestPattern";
-import { timeToX, xToTime } from "@/modules/common/utils/time";
+import {
+  FRAMES_PER_SECOND,
+  MAX_TIME,
+  timeToX,
+  xToTime,
+} from "@/modules/common/utils/time";
 import Ruler from "@/modules/components/Ruler";
-import { Vector2 } from "three";
+import { useStore } from "@/modules/common/types/StoreContext";
+import { action } from "mobx";
 
-const MAX_TIME = 90;
-const FRAMES_PER_SECOND = 60;
-
-// TEMPORARY
-const blocks = [
-  new Block(
-    GradientPattern({
-      u_blah: {
-        name: "Blah",
-        value: 0,
-      },
-      u_a: {
-        name: "A",
-        value: new Vector2(),
-      },
-    }),
-  ),
-  new Block(TestPattern()),
-];
-
-blocks[0].startTime = 0;
-blocks[0].duration = 8;
-
-blocks[1].startTime = 9;
-blocks[1].duration = 12;
-// TEMPORARY
-
-const Timeline = () => {
+export default observer(function Timeline() {
+  const store = useStore();
+  const { globalTime, blocks } = store;
   const [playing, setPlaying] = useState(false);
-  const [time, setTime] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (playing) {
-        if (time >= MAX_TIME) setPlaying(false);
-        else setTime((t) => t + 1 / FRAMES_PER_SECOND);
-      }
-    }, 1000 / FRAMES_PER_SECOND);
+    const interval = setInterval(
+      action(() => {
+        if (playing) {
+          if (globalTime >= MAX_TIME) {
+            setPlaying(false);
+          } else {
+            store.tick();
+          }
+        }
+      }),
+      1000 / FRAMES_PER_SECOND,
+    );
     return () => clearInterval(interval);
-  });
+  }, [playing]);
 
   return (
     <Grid
-      templateAreas={`"controls   ruler"
-                      "l1Left       l1Right"`}
+      templateAreas={`"controls       ruler"
+                      "layersHeader   layers"`}
       gridTemplateColumns="150px 1fr"
       fontWeight="bold"
     >
@@ -77,7 +61,9 @@ const Timeline = () => {
             aria-label="Backward"
             height={6}
             icon={<FaStepBackward size={10} />}
-            onClick={() => setTime(0)}
+            onClick={action(() => {
+              store.globalTime = 0;
+            })}
           />
           <IconButton
             aria-label="Play"
@@ -90,10 +76,10 @@ const Timeline = () => {
             aria-label="Forward"
             height={6}
             icon={<FaStepForward size={10} />}
-            onClick={() => {
-              setTime(MAX_TIME);
+            onClick={action(() => {
+              store.globalTime = MAX_TIME;
               setPlaying(false);
-            }}
+            })}
           />
         </HStack>
       </GridItem>
@@ -104,16 +90,14 @@ const Timeline = () => {
           borderY="solid"
           borderColor="white"
           bgColor="gray.500"
-          onClick={(e) =>
-            setTime(
-              xToTime(
-                e.clientX - (e.target as HTMLElement).getBoundingClientRect().x,
-              ),
-            )
-          }
+          onClick={action((e) => {
+            store.globalTime = xToTime(
+              e.clientX - (e.target as HTMLElement).getBoundingClientRect().x,
+            );
+          })}
         >
           <Ruler />
-          <Box position="absolute" top={0} left={timeToX(time)}>
+          <Box position="absolute" top={0} left={timeToX(globalTime)}>
             <FaLongArrowAltDown
               style={{ position: "absolute", top: "8px", left: "-12px" }}
               size={25}
@@ -122,12 +106,12 @@ const Timeline = () => {
           </Box>
         </Box>
       </GridItem>
-      <GridItem area="l1Left">
+      <GridItem area="layersHeader">
         <VStack height="100%" justify="center">
           <Heading size="md">Layer 1</Heading>
         </VStack>
       </GridItem>
-      <GridItem area="l1Right">
+      <GridItem area="layers">
         <Box
           position="relative"
           borderBottom="solid"
@@ -138,12 +122,12 @@ const Timeline = () => {
           <Box
             position="absolute"
             top={0}
-            left={timeToX(time)}
+            left={timeToX(globalTime)}
             bgColor="red"
             width="1px"
             height="100%"
             zIndex={1}
-          ></Box>
+          />
           {blocks.map((block, index) => (
             <TimelineBlock key={index} block={block} />
           ))}
@@ -151,6 +135,4 @@ const Timeline = () => {
       </GridItem>
     </Grid>
   );
-};
-
-export default Timeline;
+});

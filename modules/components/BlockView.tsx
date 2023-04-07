@@ -1,20 +1,28 @@
+import { Block } from "../common/types/Block";
+import { ShaderMaterial } from "three";
+import { StandardParams } from "../common/types/PatternParams";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import { ShaderMaterial } from "three";
-
 import vert from "@/modules/patterns/shaders/default.vert";
-import { Block } from "../common/types/Block";
-import { PatternParams } from "../common/types/PatternParams";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/modules/common/types/StoreContext";
 
-type BlockViewComponent<T extends PatternParams> = React.FC<{
-  block: Block<T>;
-}>;
+type BlockViewProps = {
+  autorun?: boolean;
+  block: Block<StandardParams>;
+};
 
-const BlockView: BlockViewComponent<PatternParams> = ({ block }) => {
+export default observer(function BlockView({ autorun, block }: BlockViewProps) {
+  const { globalTime } = useStore();
   const shaderMaterial = useRef<ShaderMaterial>(null);
 
-  useFrame(({ clock }, delta) => {
-    block.update(clock.elapsedTime, clock.elapsedTime);
+  const { startTime } = block;
+  useFrame(({ clock }) => {
+    if (autorun) {
+      block.update(clock.elapsedTime, clock.elapsedTime);
+    } else {
+      block.update(globalTime - startTime, globalTime);
+    }
   });
 
   return (
@@ -28,6 +36,4 @@ const BlockView: BlockViewComponent<PatternParams> = ({ block }) => {
       />
     </mesh>
   );
-};
-
-export default BlockView;
+});
