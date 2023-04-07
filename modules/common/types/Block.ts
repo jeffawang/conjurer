@@ -13,6 +13,10 @@ export class Block<T extends PatternParams> {
   startTime: number = 0; // global time that block starts playing at in seconds
   duration: number = 5; // duration that block plays for in seconds
 
+  get endTime() {
+    return this.startTime + this.duration;
+  }
+
   constructor(
     pattern: Pattern,
     spc: PatternParamsController<T> = {} as PatternParamsController<T>,

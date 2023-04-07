@@ -27,7 +27,7 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
   // dereference block.startTime here so that we are not accessing an observable inside the useFrame callback
   const { startTime } = block;
   const { timer } = useStore();
-  const { globalTime } = timer;
+  const { globalTime } = timer; // this accessing of global time means that every BlockView will re-render every frame. Maybe optimize this later
   useFrame(({ clock }) => {
     if (autorun) {
       block.update(clock.elapsedTime, clock.elapsedTime);

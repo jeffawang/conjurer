@@ -15,14 +15,14 @@ import {
   FaStepBackward,
   FaLongArrowAltDown,
 } from "react-icons/fa";
-import TimelineBlock from "@/modules/components/TimelineBlock";
 import { MAX_TIME, timeToX, xToTime } from "@/modules/common/utils/time";
 import Ruler from "@/modules/components/Ruler";
 import { useStore } from "@/modules/common/types/StoreContext";
 import { action } from "mobx";
+import Layer from "@/modules/components/Layer";
 
 export default observer(function Timeline() {
-  const { timer, blocks } = useStore();
+  const { timer } = useStore();
 
   return (
     <Grid
@@ -88,26 +88,7 @@ export default observer(function Timeline() {
         </VStack>
       </GridItem>
       <GridItem area="layers">
-        <Box
-          position="relative"
-          borderBottom="solid"
-          borderColor="white"
-          height={200}
-          bgColor="gray.400"
-        >
-          <Box
-            position="absolute"
-            top={0}
-            left={timeToX(timer.globalTime)}
-            bgColor="red"
-            width="1px"
-            height="100%"
-            zIndex={1}
-          />
-          {blocks.map((block, index) => (
-            <TimelineBlock key={index} block={block} />
-          ))}
-        </Box>
+        <Layer />
       </GridItem>
     </Grid>
   );
