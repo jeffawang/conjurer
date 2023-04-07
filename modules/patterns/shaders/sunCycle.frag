@@ -1,7 +1,6 @@
 #define PI 3.14159265359
 
 uniform vec2 u_resolution;
-uniform vec2 u_mouse;
 uniform float u_time;
 
 vec3 colorA = vec3(0.027, 0.638, 1.000);
