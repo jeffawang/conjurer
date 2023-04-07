@@ -2,6 +2,7 @@ import { Card, Text, VStack } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import Draggable from "react-draggable";
 import { Pattern } from "@/modules/common/types/Pattern";
+
 type SelectablePatternProps = {
   pattern: Pattern;
   selected: boolean;

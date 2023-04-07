@@ -1,9 +1,10 @@
 import { Block } from "@/modules/common/types/Block";
 import { StandardParams } from "@/modules/common/types/PatternParams";
-import { timeToX } from "@/modules/common/utils/time";
+import { timeToX, xToTime } from "@/modules/common/utils/time";
 import { Box, Card, Text, VStack } from "@chakra-ui/react";
+import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Draggable from "react-draggable";
 import { MdDragIndicator } from "react-icons/md";
 
@@ -14,10 +15,15 @@ type TimelineBlockProps = {
 export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   const dragNodeRef = useRef(null);
 
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const handleDrag = (e: any, data: any) => {
-    // TODO:
-    // block.startTime += xToTime(data.x);
+    setPosition({ x: data.x, y: 0 });
   };
+  const onDragStop = action(() => {
+    block.startTime += xToTime(position.x);
+    setPosition({ x: 0, y: 0 });
+    console.log(block.startTime);
+  });
 
   return (
     <Draggable
@@ -26,6 +32,8 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
       axis="x"
       bounds="parent"
       onDrag={handleDrag}
+      onStop={onDragStop}
+      position={position}
     >
       <Card
         ref={dragNodeRef}
