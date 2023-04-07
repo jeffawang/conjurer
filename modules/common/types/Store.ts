@@ -1,6 +1,6 @@
 import { Block } from "@/modules/common/types/Block";
 import { PatternParams } from "@/modules/common/types/PatternParams";
-import { FRAMES_PER_SECOND } from "@/modules/common/utils/time";
+import Timer from "@/modules/common/types/Timer";
 import GradientPattern from "@/modules/patterns/GradientPattern";
 import SunCycle from "@/modules/patterns/SunCycle";
 import { makeAutoObservable, configure, runInAction } from "mobx";
@@ -19,16 +19,14 @@ configure({
 export default class Store {
   initialized = false;
   blocks: Block<PatternParams>[] = [];
-
-  // TODO: set up a Timer class
-  globalTime = 0;
+  timer = new Timer();
 
   // TODO: make this more efficient
   get currentBlock() {
     return this.blocks.find(
       (b) =>
-        b.startTime <= this.globalTime &&
-        this.globalTime < b.startTime + b.duration,
+        b.startTime <= this.timer.globalTime &&
+        this.timer.globalTime < b.startTime + b.duration,
     );
   }
 
@@ -58,9 +56,5 @@ export default class Store {
     this.blocks[0].setTiming(0, 7);
     this.blocks[1].setTiming(7, 3);
     this.initialized = true;
-  };
-
-  tick = () => {
-    this.globalTime += 1 / FRAMES_PER_SECOND;
   };
 }

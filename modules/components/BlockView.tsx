@@ -26,7 +26,8 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
 
   // dereference block.startTime here so that we are not accessing an observable inside the useFrame callback
   const { startTime } = block;
-  const { globalTime } = useStore();
+  const { timer } = useStore();
+  const { globalTime } = timer;
   useFrame(({ clock }) => {
     if (autorun) {
       block.update(clock.elapsedTime, clock.elapsedTime);
