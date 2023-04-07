@@ -7,12 +7,14 @@ type SelectablePatternProps = {
   pattern: Pattern;
   selected: boolean;
   onSelect: () => void;
+  onPatternInsert: () => void;
 };
 
 export default function SelectablePattern({
   pattern,
   selected,
   onSelect,
+  onPatternInsert,
 }: SelectablePatternProps) {
   const dragNodeRef = useRef(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -22,6 +24,7 @@ export default function SelectablePattern({
   const handleStop = () => {
     setPosition({ x: 0, y: 0 });
   };
+
   return (
     <Draggable
       nodeRef={dragNodeRef}
@@ -37,6 +40,7 @@ export default function SelectablePattern({
         zIndex={2}
         alignItems="center"
         cursor="move"
+        onDoubleClick={onPatternInsert}
       >
         <VStack width="150px" height={10} justify="center">
           <Text color={selected ? "teal.200" : "ButtonText"}>

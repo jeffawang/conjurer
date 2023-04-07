@@ -6,10 +6,14 @@ import BlockView from "@/modules/components/BlockView";
 import { Canvas } from "@react-three/fiber";
 import { LED_COUNTS } from "@/modules/common/utils/size";
 import SelectablePattern from "@/modules/components/SelectablePattern";
+import { action } from "mobx";
+import { useStore } from "@/modules/common/types/StoreContext";
 
 const PATTERN_PREVIEW_DISPLAY_FACTOR = 1.5;
 
 export default function PatternList() {
+  const store = useStore();
+
   const [selectedPatternIndex, setSelectedPatternIndex] = useState(0);
   const pattern = patterns[selectedPatternIndex];
   const block = useMemo(() => new Block(pattern), [pattern]);
@@ -35,6 +39,7 @@ export default function PatternList() {
             pattern={p}
             selected={i === selectedPatternIndex}
             onSelect={() => setSelectedPatternIndex(i)}
+            onPatternInsert={action(() => store.insertClonedPattern(p))}
           />
         ))}
       </VStack>

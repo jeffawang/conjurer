@@ -1,4 +1,5 @@
 import { Block } from "@/modules/common/types/Block";
+import { Pattern } from "@/modules/common/types/Pattern";
 import { PatternParams } from "@/modules/common/types/PatternParams";
 import Timer from "@/modules/common/types/Timer";
 import Rainbow from "@/modules/patterns/Rainbow";
@@ -29,6 +30,11 @@ export default class Store {
     );
   }
 
+  get endTime() {
+    const lastBlock = this.blocks[this.blocks.length - 1];
+    return lastBlock.startTime + lastBlock.duration;
+  }
+
   constructor() {
     makeAutoObservable(this);
 
@@ -42,4 +48,14 @@ export default class Store {
     this.blocks[1].setTiming(7, 3);
     this.initialized = true;
   };
+
+  insertClonedPattern = (pattern: Pattern) => {
+    const clonedPattern = clone(pattern);
+    const newBlock = new Block(clonedPattern);
+    newBlock.setTiming(this.endTime, 3);
+    this.blocks.push(newBlock);
+  };
 }
+
+const clone = (orig: Object) =>
+  Object.assign(Object.create(Object.getPrototypeOf(orig)), orig);
