@@ -1,6 +1,6 @@
 # Conjurer
 
-Conjurer is a web app that allows one to design audiovisual experiences for the [Canopy of Luminous Conjure](https://se.cretfi.re/canopy/).
+Conjurer is a web app that allows one to design audiovisual experiences for the [Canopy of Luminous Conjury](https://se.cretfi.re/canopy/).
 
 ## Developing
 
