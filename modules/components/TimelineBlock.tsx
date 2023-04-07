@@ -1,10 +1,11 @@
 import { Block } from "@/modules/common/types/Block";
 import { StandardParams } from "@/modules/common/types/PatternParams";
 import { timeToX } from "@/modules/common/utils/time";
-import { Card, Text, VStack } from "@chakra-ui/react";
+import { Box, Card, Text, VStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRef } from "react";
 import Draggable from "react-draggable";
+import { MdDragIndicator } from "react-icons/md";
 
 type TimelineBlockProps = {
   block: Block<StandardParams>;
@@ -21,6 +22,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   return (
     <Draggable
       nodeRef={dragNodeRef}
+      handle=".handle"
       axis="x"
       bounds="parent"
       onDrag={handleDrag}
@@ -34,7 +36,12 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         height="100%"
         border="solid"
         borderWidth={1}
+        alignItems="center"
       >
+        <Box className="handle" position="absolute" top={2} cursor="move">
+          <MdDragIndicator size={30} />
+        </Box>
+
         <VStack height="100%" justify="center">
           <Text>{block.pattern.name}</Text>
         </VStack>
