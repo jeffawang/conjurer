@@ -21,7 +21,7 @@ export default class Store {
   timer = new Timer();
 
   blocks: Block<StandardParams>[] = [];
-  selectedBlocks: Block<StandardParams>[] = [];
+  selectedBlocks: Block<StandardParams>[] = []; // not kept in order. make a set?
 
   // TODO: make this more efficient, do binary search
   get currentBlock() {
@@ -33,6 +33,8 @@ export default class Store {
   }
 
   get endTime() {
+    if (this.blocks.length === 0) return 0;
+
     const lastBlock = this.blocks[this.blocks.length - 1];
     return lastBlock.startTime + lastBlock.duration;
   }
@@ -60,6 +62,10 @@ export default class Store {
 
   selectBlock = (block: Block<StandardParams>) => {
     this.selectedBlocks = [block];
+  };
+
+  addBlockToSelection = (block: Block<StandardParams>) => {
+    this.selectedBlocks.push(block);
   };
 
   deselectBlock = (block: Block<StandardParams>) => {

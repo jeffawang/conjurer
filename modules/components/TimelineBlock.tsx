@@ -44,11 +44,11 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
 
     if (selectedBlocks.includes(block)) {
       store.deselectBlock(block);
+    } else if (e.shiftKey) {
+      store.addBlockToSelection(block);
     } else {
-      // TODO: if shift is pressed, add to selection
       store.selectBlock(block);
     }
-
     e.stopPropagation();
   });
 
