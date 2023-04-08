@@ -20,8 +20,12 @@ export default observer(function KeyboardListener() {
         store.selectAllBlocks();
         e.preventDefault();
       } else if (e.key === "Escape") store.deselectAllBlocks();
-      else if (e.key === "Delete" || e.key === "Backspace")
+      if (e.key === "Delete" || e.key === "Backspace")
         store.deleteSelectedBlocks();
+      else if (e.key === "d" && (e.ctrlKey || e.metaKey)) {
+        store.duplicateBlocks();
+        e.preventDefault();
+      }
     });
     window.addEventListener("keydown", handleKeyDown);
 

@@ -1,7 +1,9 @@
 import { Card, Text, VStack } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import Draggable from "react-draggable";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { Pattern } from "@/modules/common/types/Pattern";
+import { useStore } from "@/modules/common/types/StoreContext";
+import { action } from "mobx";
 
 type SelectablePatternProps = {
   pattern: Pattern;
@@ -16,25 +18,33 @@ export default function SelectablePattern({
   onSelect,
   onPatternInsert,
 }: SelectablePatternProps) {
+  const store = useStore();
   const dragNodeRef = useRef(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const handleDrag = (e: any, data: any) => {
+
+  const handleStart = action((e: DraggableEvent) => {
+    store.draggingPattern = true;
+  });
+  const handleDrag = action((e: DraggableEvent, data: DraggableData) => {
     setPosition({ x: data.x, y: data.y });
-  };
-  const handleStop = () => {
+  });
+  const handleStop = action((e: DraggableEvent) => {
     setPosition({ x: 0, y: 0 });
-  };
+    store.draggingPattern = false;
+    // TODO: check if dropped on timeline, if so, insert new block for this pattern
+  });
 
   return (
     <Draggable
       nodeRef={dragNodeRef}
       position={position}
+      onStart={handleStart}
       onDrag={handleDrag}
       onStop={handleStop}
+      onMouseDown={onSelect}
     >
       <Card
         ref={dragNodeRef}
-        onClick={onSelect}
         border="solid"
         borderWidth={1}
         zIndex={2}

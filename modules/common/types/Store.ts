@@ -4,6 +4,7 @@ import { StandardParams } from "@/modules/common/types/PatternParams";
 import Timer from "@/modules/common/types/Timer";
 import Rainbow from "@/modules/patterns/Rainbow";
 import SunCycle from "@/modules/patterns/SunCycle";
+import { patterns } from "@/modules/patterns/patterns";
 import { makeAutoObservable, configure, runInAction } from "mobx";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
@@ -21,7 +22,11 @@ export default class Store {
   timer = new Timer();
 
   blocks: Block<StandardParams>[] = [];
-  selectedBlocks: Block<StandardParams>[] = []; // not kept in order. make a set?
+  selectedBlocks: Block<StandardParams>[] = []; // TODO: make this a set
+
+  patterns: Pattern[] = patterns;
+  selectedPattern: Pattern = patterns[0];
+  draggingPattern: boolean = false;
 
   // TODO: make this more efficient, do binary search
   get currentBlock() {
@@ -50,6 +55,7 @@ export default class Store {
     this.blocks.push(new Block(SunCycle()), new Block(Rainbow()));
     this.blocks[0].setTiming(0, 7);
     this.blocks[1].setTiming(7, 3);
+
     this.initialized = true;
   };
 
@@ -98,6 +104,15 @@ export default class Store {
     const newBlocks = blocks.map((b) => {
       const newBlock = new Block(clone(b.pattern));
       // TODO: paste blocks at specific locations
+      newBlock.setTiming(this.endTime, b.duration);
+      return newBlock;
+    });
+    this.blocks.push(...newBlocks);
+  };
+
+  duplicateBlocks = () => {
+    const newBlocks = this.selectedBlocks.map((b) => {
+      const newBlock = new Block(clone(b.pattern));
       newBlock.setTiming(this.endTime, b.duration);
       return newBlock;
     });
