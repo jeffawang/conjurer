@@ -13,7 +13,7 @@ configure({
   enforceActions: "always",
   computedRequiresReaction: true,
   reactionRequiresObservable: true,
-  observableRequiresReaction: true,
+  observableRequiresReaction: false, // This will trigger false positives sometimes...
 });
 
 export default class Store {

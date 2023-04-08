@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { Box } from "@chakra-ui/react";
-import TimelineBlock from "@/modules/components/TimelineBlock";
 import { timeToX } from "@/modules/common/utils/time";
 import { useStore } from "@/modules/common/types/StoreContext";
+import LayerBlocks from "@/modules/components/LayerBlocks";
 
 export default observer(function Layer() {
-  const { timer, blocks } = useStore();
+  const { timer } = useStore();
 
   return (
     <Box
@@ -15,19 +15,16 @@ export default observer(function Layer() {
       height={200}
       bgColor="gray.400"
     >
-      <Box
+      {/* <Box
         position="absolute"
         top={0}
         transform={`translateX(${timeToX(timer.globalTime)})`}
-        willChange="transform"
         bgColor="red"
         width="1px"
         height="100%"
         zIndex={1}
-      />
-      {blocks.map((block, index) => (
-        <TimelineBlock key={index} block={block} />
-      ))}
+      /> */}
+      <LayerBlocks />
     </Box>
   );
 });

@@ -8,18 +8,13 @@ import {
   IconButton,
   VStack,
 } from "@chakra-ui/react";
-import {
-  FaPlay,
-  FaPause,
-  FaStepForward,
-  FaStepBackward,
-  FaLongArrowAltDown,
-} from "react-icons/fa";
-import { MAX_TIME, timeToX, xToTime } from "@/modules/common/utils/time";
+import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa";
+import { MAX_TIME, xToTime } from "@/modules/common/utils/time";
 import Ruler from "@/modules/components/Ruler";
 import { useStore } from "@/modules/common/types/StoreContext";
 import { action } from "mobx";
 import Layer from "@/modules/components/Layer";
+import TimeMarker from "@/modules/components/TimeMarker";
 
 export default observer(function Timeline() {
   const { timer } = useStore();
@@ -73,18 +68,7 @@ export default observer(function Timeline() {
           })}
         >
           <Ruler />
-          <Box
-            position="absolute"
-            top={0}
-            transform={`translateX(${timeToX(timer.globalTime)})`}
-            willChange="transform"
-          >
-            <FaLongArrowAltDown
-              style={{ position: "absolute", top: "8px", left: "-12px" }}
-              size={25}
-              color="red"
-            />
-          </Box>
+          <TimeMarker />
         </Box>
       </GridItem>
       <GridItem area="layersHeader">
