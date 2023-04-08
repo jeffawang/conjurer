@@ -7,7 +7,7 @@ export default observer(function LayerBlocks() {
 
   return (
     <>
-      {blocks.map((block, index) => (
+      {blocks.map((block) => (
         <TimelineBlock key={block.id} block={block} />
       ))}
     </>

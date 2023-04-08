@@ -1,6 +1,6 @@
 import { Block } from "@/modules/common/types/Block";
 import { Pattern } from "@/modules/common/types/Pattern";
-import { PatternParams } from "@/modules/common/types/PatternParams";
+import { StandardParams } from "@/modules/common/types/PatternParams";
 import Timer from "@/modules/common/types/Timer";
 import Rainbow from "@/modules/patterns/Rainbow";
 import SunCycle from "@/modules/patterns/SunCycle";
@@ -13,15 +13,17 @@ configure({
   enforceActions: "always",
   computedRequiresReaction: true,
   reactionRequiresObservable: true,
-  observableRequiresReaction: false, // This will trigger false positives sometimes...
+  observableRequiresReaction: false, // This will trigger false positives sometimes, so turning off
 });
 
 export default class Store {
   initialized = false;
-  blocks: Block<PatternParams>[] = [];
   timer = new Timer();
 
-  // TODO: make this more efficient
+  blocks: Block<StandardParams>[] = [];
+  selectedBlocks: Block<StandardParams>[] = [];
+
+  // TODO: make this more efficient, do binary search
   get currentBlock() {
     return this.blocks.find(
       (b) =>
@@ -49,11 +51,19 @@ export default class Store {
     this.initialized = true;
   };
 
-  insertClonedPattern = (pattern: Pattern) => {
+  insertCloneOfPattern = (pattern: Pattern) => {
     const clonedPattern = clone(pattern);
     const newBlock = new Block(clonedPattern);
     newBlock.setTiming(this.endTime, 3);
     this.blocks.push(newBlock);
+  };
+
+  selectBlock = (block: Block<StandardParams>) => {
+    this.selectedBlocks = [block];
+  };
+
+  deselectBlock = (block: Block<StandardParams>) => {
+    this.selectedBlocks = this.selectedBlocks.filter((b) => b !== block);
   };
 }
 

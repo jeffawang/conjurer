@@ -39,7 +39,7 @@ export default function PatternList() {
             pattern={p}
             selected={i === selectedPatternIndex}
             onSelect={() => setSelectedPatternIndex(i)}
-            onPatternInsert={action(() => store.insertClonedPattern(p))}
+            onPatternInsert={action(() => store.insertCloneOfPattern(p))}
           />
         ))}
       </VStack>

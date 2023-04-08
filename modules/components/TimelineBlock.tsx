@@ -1,12 +1,15 @@
 import { Block } from "@/modules/common/types/Block";
 import { StandardParams } from "@/modules/common/types/PatternParams";
+import { useStore } from "@/modules/common/types/StoreContext";
 import { timeToX, xToTime } from "@/modules/common/utils/time";
 import TimelineBlockBound from "@/modules/components/TimelineBlockBound";
-import { Box, Card, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Card, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useRef, useState } from "react";
 import Draggable from "react-draggable";
+import { DraggableData } from "react-draggable";
+import { DraggableEvent } from "react-draggable";
 import { MdDragIndicator } from "react-icons/md";
 
 type TimelineBlockProps = {
@@ -14,28 +17,40 @@ type TimelineBlockProps = {
 };
 
 export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
+  const store = useStore();
+  const { selectedBlocks } = store;
+
   const dragNodeRef = useRef(null);
+  const lastMouseDown = useRef(0);
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const handleDrag = (e: any, data: any) => {
+  const handleDrag = (e: DraggableEvent, data: DraggableData) => {
     setPosition({ x: data.x, y: 0 });
   };
   const onDragStop = action(() => {
     block.startTime += xToTime(position.x);
+    // TODO: potentially reorder blocks
+    // TODO: prevent block overlaps for now
     setPosition({ x: 0, y: 0 });
+    console.log("drag stop", block.startTime, block.duration);
   });
 
-  const rightBoundDragNodeRef = useRef(null);
-  const [rightBoundDragging, setRightBoundDragging] = useState(false);
-  const [rightBoundPosition, setLeftBoundPosition] = useState({ x: 0, y: 0 });
-  const handleRightBoundDrag = (e: any, data: any) => {
-    setLeftBoundPosition({ x: data.x, y: 0 });
-  };
-  const onRightBoundDragStop = action(() => {
-    block.duration += xToTime(rightBoundPosition.x);
-    setLeftBoundPosition({ x: 0, y: 0 });
-    setRightBoundDragging(false);
+  const handleMouseDown = action((e: MouseEvent) => {
+    lastMouseDown.current = e.clientX;
   });
+
+  const handleClick = action((e: any) => {
+    if (Math.abs(e.clientX - lastMouseDown.current) > 5) return;
+
+    if (selectedBlocks.includes(block)) {
+      store.deselectBlock(block);
+    } else {
+      // TODO: if shift is pressed, add to selection
+      store.selectBlock(block);
+    }
+  });
+
+  const isSelected = selectedBlocks.includes(block);
 
   return (
     <Draggable
@@ -46,6 +61,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
       onDrag={handleDrag}
       onStop={onDragStop}
       position={position}
+      onMouseDown={handleMouseDown}
     >
       <Card
         ref={dragNodeRef}
@@ -55,10 +71,18 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         width={timeToX(block.duration)}
         height="100%"
         border="solid"
-        borderWidth={1}
+        borderColor={isSelected ? "blue.500" : "gray.300"}
+        borderWidth={3}
         alignItems="center"
+        onClick={handleClick}
       >
-        <Box className="handle" position="absolute" top={2} cursor="move">
+        <Box
+          color={isSelected ? "blue.500" : "gray.300"}
+          className="handle"
+          position="absolute"
+          top={2}
+          cursor="move"
+        >
           <MdDragIndicator size={30} />
         </Box>
 
@@ -79,7 +103,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         />
 
         <VStack pointerEvents="none" height="100%" justify="center">
-          <Text textOverflow="clip" overflowWrap="anywhere">
+          <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
             {block.pattern.name}
           </Text>
         </VStack>

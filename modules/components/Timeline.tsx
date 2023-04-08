@@ -57,9 +57,7 @@ export default observer(function Timeline() {
       <GridItem area="ruler">
         <Box
           position="relative"
-          height={10}
-          borderY="solid"
-          borderColor="white"
+          height={9}
           bgColor="gray.500"
           onClick={action((e) => {
             timer.globalTime = xToTime(
