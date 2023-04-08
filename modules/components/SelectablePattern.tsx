@@ -43,7 +43,7 @@ export default function SelectablePattern({
         onDoubleClick={onPatternInsert}
       >
         <VStack width="150px" height={10} justify="center">
-          <Text color={selected ? "teal.200" : "ButtonText"}>
+          <Text userSelect="none" color={selected ? "teal.200" : "ButtonText"}>
             {selected ? `> ${pattern.name} <` : pattern.name}
           </Text>
         </VStack>

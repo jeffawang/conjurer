@@ -21,8 +21,12 @@ export default function PatternList() {
   return (
     <VStack mt={6}>
       <Heading size="md">Pattern List</Heading>
-      <Text fontSize="xs">previewing</Text>
-      <Text lineHeight={0.5}>{pattern.name}</Text>
+      <Text userSelect="none" fontSize="xs">
+        previewing
+      </Text>
+      <Text userSelect="none" lineHeight={0.5}>
+        {pattern.name}
+      </Text>
       <Box
         width={`${LED_COUNTS.x * PATTERN_PREVIEW_DISPLAY_FACTOR}px`}
         height={`${LED_COUNTS.y * PATTERN_PREVIEW_DISPLAY_FACTOR}px`}

@@ -15,6 +15,7 @@ import { useStore } from "@/modules/common/types/StoreContext";
 import { action } from "mobx";
 import Layer from "@/modules/components/Layer";
 import TimeMarker from "@/modules/components/TimeMarker";
+import TimerReadout from "@/modules/components/TimerReadout";
 
 export default observer(function Timeline() {
   const { timer } = useStore();
@@ -65,6 +66,7 @@ export default observer(function Timeline() {
             );
           })}
         >
+          <TimerReadout />
           <Ruler />
           <TimeMarker />
         </Box>
