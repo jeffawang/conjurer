@@ -26,7 +26,6 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
 
   // dereference block.startTime here so that we are not accessing an observable inside the useFrame callback
   const { timer } = useStore();
-  console.log("rerendering blockview");
   useFrame(({ clock }) => {
     // mobx linting will complain about these lines if observableRequiresReaction is enabled, but
     // it's fine. We don't want this function to react to changes in these variables - it runs every

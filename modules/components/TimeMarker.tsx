@@ -3,6 +3,8 @@ import { Box } from "@chakra-ui/react";
 import { FaLongArrowAltDown } from "react-icons/fa";
 import { timeToX } from "@/modules/common/utils/time";
 import { useStore } from "@/modules/common/types/StoreContext";
+import styles from "@/styles/TimeMarker.module.css";
+import classNames from "classnames";
 
 export default observer(function TimeMarker() {
   const { timer } = useStore();
@@ -12,6 +14,7 @@ export default observer(function TimeMarker() {
     <Box
       position="absolute"
       top={0}
+      // className={classNames(styles.marker, { [styles.playing]: timer.playing })}
       transform={`translateX(${timeToX(timer.globalTime)})`}
       willChange="transform"
       overflowY="visible"
