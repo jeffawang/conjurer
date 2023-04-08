@@ -20,9 +20,13 @@ export default class Timer {
   };
 
   tick = () => {
-    if (this.playing) {
-      this.globalTime += 1 / FRAMES_PER_SECOND;
-      if (this.globalTime > MAX_TIME) this.playing = false;
+    if (!this.playing) return;
+
+    if (this.globalTime > MAX_TIME) {
+      this.playing = false;
+      return;
     }
+
+    this.globalTime += 1 / FRAMES_PER_SECOND;
   };
 }

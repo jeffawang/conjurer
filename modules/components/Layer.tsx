@@ -18,7 +18,8 @@ export default observer(function Layer() {
       <Box
         position="absolute"
         top={0}
-        left={timeToX(timer.globalTime)}
+        transform={`translateX(${timeToX(timer.globalTime)})`}
+        willChange="transform"
         bgColor="red"
         width="1px"
         height="100%"

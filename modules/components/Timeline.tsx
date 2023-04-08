@@ -73,7 +73,12 @@ export default observer(function Timeline() {
           })}
         >
           <Ruler />
-          <Box position="absolute" top={0} left={timeToX(timer.globalTime)}>
+          <Box
+            position="absolute"
+            top={0}
+            transform={`translateX(${timeToX(timer.globalTime)})`}
+            willChange="transform"
+          >
             <FaLongArrowAltDown
               style={{ position: "absolute", top: "8px", left: "-12px" }}
               size={25}
