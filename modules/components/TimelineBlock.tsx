@@ -48,6 +48,8 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
       // TODO: if shift is pressed, add to selection
       store.selectBlock(block);
     }
+
+    e.stopPropagation();
   });
 
   const isSelected = selectedBlocks.includes(block);

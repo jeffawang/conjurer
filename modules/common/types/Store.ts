@@ -65,6 +65,38 @@ export default class Store {
   deselectBlock = (block: Block<StandardParams>) => {
     this.selectedBlocks = this.selectedBlocks.filter((b) => b !== block);
   };
+
+  selectAllBlocks = () => {
+    this.selectedBlocks = this.blocks;
+  };
+
+  deselectAllBlocks = () => {
+    this.selectedBlocks = [];
+  };
+
+  deleteSelectedBlocks = () => {
+    this.blocks = this.blocks.filter((b) => !this.selectedBlocks.includes(b));
+    this.selectedBlocks = [];
+  };
+
+  copyBlocks = (clipboardData: DataTransfer) => {
+    clipboardData.setData(
+      "text/plain",
+      this.selectedBlocks.map((b) => b.id).join(","),
+    );
+  };
+
+  pasteBlocks = (clipboardData: DataTransfer) => {
+    const ids = clipboardData.getData("text/plain").split(",");
+    const blocks = this.blocks.filter((b) => ids.includes(b.id));
+    const newBlocks = blocks.map((b) => {
+      const newBlock = new Block(clone(b.pattern));
+      // TODO: paste blocks at specific locations
+      newBlock.setTiming(this.endTime, b.duration);
+      return newBlock;
+    });
+    this.blocks.push(...newBlocks);
+  };
 }
 
 const clone = (orig: Object) =>
