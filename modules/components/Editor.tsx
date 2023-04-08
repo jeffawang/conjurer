@@ -2,10 +2,12 @@ import Timeline from "@/modules/components/Timeline";
 import { Box, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
 import Display from "@/modules/components/Display";
 import PatternList from "@/modules/components/PatternList";
+import KeyboardListener from "@/modules/components/KeyboardListener";
 
 export default function Editor() {
   return (
     <Box w="100vw" h="100vh">
+      <KeyboardListener />
       <Grid
         templateAreas={`"patterns header"
                         "patterns display"

@@ -1,0 +1,16 @@
+.marker {
+  animation: advance 3600s linear infinite paused;
+}
+
+.playing {
+  animation-play-state: running;
+}
+
+@keyframes advance {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(144000px);
+  }
+}

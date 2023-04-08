@@ -7,6 +7,7 @@ type PatternParamsController<PP extends PatternParams> = {
 };
 
 export class Block<T extends PatternParams> {
+  id: string = Math.random().toString(16).slice(2); // unique id
   pattern: Pattern;
   spc: PatternParamsController<T>;
 

@@ -25,10 +25,14 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
   }, [block, size.width, size.height]);
 
   // dereference block.startTime here so that we are not accessing an observable inside the useFrame callback
-  const { startTime } = block;
   const { timer } = useStore();
-  const { globalTime } = timer; // this accessing of global time means that every BlockView will re-render every frame. Maybe optimize this later
   useFrame(({ clock }) => {
+    // mobx linting will complain about these lines if observableRequiresReaction is enabled, but
+    // it's fine. We don't want this function to react to changes in these variables - it runs every
+    // frame already.
+    const { globalTime } = timer;
+    const { startTime } = block;
+
     if (autorun) {
       block.update(clock.elapsedTime, clock.elapsedTime);
     } else {

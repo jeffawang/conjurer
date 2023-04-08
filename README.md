@@ -16,7 +16,8 @@ yarn dev
 
 ### Tips
 
-- We use Chakra for our UI in this repo. It can help to familiarize yourself with the [default theme of Chakra](https://chakra-ui.com/docs/styled-system/theme#gray) which we use.
+- We use [default theme](https://chakra-ui.com/docs/styled-system/theme#gray) of [Chakra](https://chakra-ui.com/) for our UI in this repo.
+- We use [MobX](https://github.com/mobxjs/mobx) for state management. It's not Redux!
 
 ## Concepts
 
