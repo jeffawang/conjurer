@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import Pattern from "./Pattern";
 import { PatternParams } from "./PatternParams";
+import { clone } from "@/modules/common/utils/object";
 
 type PatternParamsController<PP extends PatternParams> = {
   [K in keyof PP]?: ({ sp, time }: { sp: PP[K]; time: number }) => void;
@@ -39,4 +40,6 @@ export default class Block<T extends PatternParams> {
       f({ sp: this.pattern.params[u], time, globalTime });
     });
   };
+
+  clone = () => new Block(clone(this.pattern));
 }

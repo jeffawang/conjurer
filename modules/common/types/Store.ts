@@ -2,6 +2,7 @@ import Block from "@/modules/common/types/Block";
 import Pattern from "@/modules/common/types/Pattern";
 import { StandardParams } from "@/modules/common/types/PatternParams";
 import Timer from "@/modules/common/types/Timer";
+import { clone } from "@/modules/common/utils/object";
 import { DEFAULT_BLOCK_DURATION } from "@/modules/common/utils/time";
 import Rainbow from "@/modules/patterns/Rainbow";
 import SunCycle from "@/modules/patterns/SunCycle";
@@ -119,7 +120,7 @@ export default class Store {
 
     this.selectedBlocks = new Set();
     for (const blockToCopy of blocksToCopy) {
-      const newBlock = new Block(clone(blockToCopy.pattern)); // TODO: implement block.clone()
+      const newBlock = blockToCopy.clone();
       const nextGap = this.nextFiniteGap(
         this.timer.globalTime,
         blockToCopy.duration,
@@ -136,7 +137,7 @@ export default class Store {
     const selectedBlocks = Array.from(this.selectedBlocks);
     this.selectedBlocks = new Set();
     for (const selectedBlock of selectedBlocks) {
-      const newBlock = new Block(clone(selectedBlock.pattern));
+      const newBlock = selectedBlock.clone();
       const nextGap = this.nextFiniteGap(
         selectedBlock.endTime,
         selectedBlock.duration,
@@ -222,6 +223,3 @@ export default class Store {
     };
   };
 }
-
-const clone = (orig: Object) =>
-  Object.assign(Object.create(Object.getPrototypeOf(orig)), orig);
