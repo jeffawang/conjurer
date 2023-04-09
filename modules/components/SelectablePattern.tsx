@@ -1,5 +1,5 @@
 import { Card, Text, VStack } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { Pattern } from "@/modules/common/types/Pattern";
 import { useStore } from "@/modules/common/types/StoreContext";
@@ -8,15 +8,11 @@ import { action } from "mobx";
 type SelectablePatternProps = {
   pattern: Pattern;
   selected: boolean;
-  onSelect: () => void;
-  onPatternInsert: () => void;
 };
 
-export default function SelectablePattern({
+export default memo(function SelectablePattern({
   pattern,
   selected,
-  onSelect,
-  onPatternInsert,
 }: SelectablePatternProps) {
   const store = useStore();
   const dragNodeRef = useRef(null);
@@ -34,6 +30,11 @@ export default function SelectablePattern({
     // TODO: check if dropped on timeline, if so, insert new block for this pattern
   });
 
+  const handleSelect = action(() => {
+    store.selectedPattern = pattern;
+  });
+  const handleInsert = action(() => store.insertCloneOfPattern(pattern));
+
   return (
     <Draggable
       nodeRef={dragNodeRef}
@@ -41,7 +42,7 @@ export default function SelectablePattern({
       onStart={handleStart}
       onDrag={handleDrag}
       onStop={handleStop}
-      onMouseDown={onSelect}
+      onMouseDown={handleSelect}
     >
       <Card
         ref={dragNodeRef}
@@ -50,7 +51,7 @@ export default function SelectablePattern({
         zIndex={2}
         alignItems="center"
         cursor="move"
-        onDoubleClick={onPatternInsert}
+        onDoubleClick={handleInsert}
       >
         <VStack width="150px" height={10} justify="center">
           <Text userSelect="none" color={selected ? "teal.200" : "ButtonText"}>
@@ -60,4 +61,4 @@ export default function SelectablePattern({
       </Card>
     </Draggable>
   );
-}
+});
