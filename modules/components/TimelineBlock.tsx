@@ -1,7 +1,7 @@
 import Block from "@/modules/common/types/Block";
 import { StandardParams } from "@/modules/common/types/PatternParams";
 import { useStore } from "@/modules/common/types/StoreContext";
-import { timeToX, xToTime } from "@/modules/common/utils/time";
+import { timeToXPixels, xToTime } from "@/modules/common/utils/time";
 import TimelineBlockBound from "@/modules/components/TimelineBlockBound";
 import { Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
@@ -29,9 +29,13 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
     setPosition({ x: data.x, y: 0 });
   };
   const onDragStop = action(() => {
-    block.startTime += xToTime(position.x);
-    // TODO: potentially reorder blocks
-    // TODO: prevent block overlaps for now
+    // prevent block overlaps for now
+    const validTimeDelta = store.nearestValidStartTimeDelta(
+      block,
+      xToTime(position.x),
+    );
+    block.startTime += validTimeDelta;
+    store.reorderBlock(block); // TODO: error prone to have to call this manually...
     setPosition({ x: 0, y: 0 });
   });
 
@@ -69,8 +73,8 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         ref={dragNodeRef}
         position="absolute"
         top={0}
-        left={timeToX(block.startTime)}
-        width={timeToX(block.duration)}
+        left={timeToXPixels(block.startTime)}
+        width={timeToXPixels(block.duration)}
         height="100%"
         border="solid"
         borderColor={isSelected ? "blue.500" : "gray.300"}

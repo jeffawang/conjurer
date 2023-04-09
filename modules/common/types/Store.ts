@@ -79,6 +79,15 @@ export default class Store {
     this.blocks.splice(index, 0, block);
   };
 
+  removeBlock = (block: Block<StandardParams>) => {
+    this.blocks = this.blocks.filter((b) => b !== block);
+  };
+
+  reorderBlock = (block: Block<StandardParams>) => {
+    this.removeBlock(block);
+    this.addBlock(block);
+  };
+
   selectBlock = (block: Block<StandardParams>) => {
     this.selectedBlocks = new Set([block]);
   };
@@ -221,5 +230,28 @@ export default class Store {
         ? Math.min(gap.duration, maxDuration)
         : maxDuration,
     };
+  };
+
+  nearestValidStartTimeDelta = (
+    block: Block<StandardParams>,
+    desiredDeltaTime: number,
+  ) => {
+    const desiredStartTime = block.startTime + desiredDeltaTime;
+    const desiredEndTime = block.endTime + desiredDeltaTime;
+    for (const otherBlock of this.blocks) {
+      if (otherBlock === block) continue;
+
+      // check if desired time span overlaps with other block
+      if (
+        (desiredStartTime >= otherBlock.startTime &&
+          desiredStartTime < otherBlock.endTime) ||
+        (desiredEndTime > otherBlock.startTime &&
+          desiredEndTime <= otherBlock.endTime)
+      )
+        // TODO: actually find the nearest valid delta time
+        return 0;
+    }
+
+    return desiredDeltaTime;
   };
 }
