@@ -9,8 +9,10 @@ export default observer(function KeyboardListener() {
 
   useEffect(() => {
     const handleKeyDown = action((e: KeyboardEvent) => {
-      if (e.key === " ") timer.togglePlaying();
-      else if (e.key === "ArrowLeft") timer.globalTime -= 0.2;
+      if (e.key === " ") {
+        timer.togglePlaying();
+        e.preventDefault();
+      } else if (e.key === "ArrowLeft") timer.globalTime -= 0.2;
       else if (e.key === "ArrowRight") timer.globalTime += 0.2;
       // else if (e.key === "c" && e.ctrlKey) store.copyBlocks();
       // else if (e.key === "v" && e.ctrlKey) store.pasteBlocks();

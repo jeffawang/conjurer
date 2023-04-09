@@ -22,6 +22,7 @@ export default observer(function TimerReadout() {
       bgColor="gray.500"
       color="black"
       userSelect="none"
+      lineHeight={1.2}
     >
       {formatTime(timer.globalTime)}
     </Text>
