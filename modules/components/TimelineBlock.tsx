@@ -1,4 +1,4 @@
-import { Block } from "@/modules/common/types/Block";
+import Block from "@/modules/common/types/Block";
 import { StandardParams } from "@/modules/common/types/PatternParams";
 import { useStore } from "@/modules/common/types/StoreContext";
 import { timeToX, xToTime } from "@/modules/common/utils/time";

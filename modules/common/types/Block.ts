@@ -1,12 +1,12 @@
 import { makeAutoObservable } from "mobx";
-import { Pattern } from "./Pattern";
+import Pattern from "./Pattern";
 import { PatternParams } from "./PatternParams";
 
 type PatternParamsController<PP extends PatternParams> = {
   [K in keyof PP]?: ({ sp, time }: { sp: PP[K]; time: number }) => void;
 };
 
-export class Block<T extends PatternParams> {
+export default class Block<T extends PatternParams> {
   id: string = Math.random().toString(16).slice(2); // unique id
   pattern: Pattern;
   spc: PatternParamsController<T>;

@@ -1,4 +1,4 @@
-import { Pattern } from "@/modules/common/types/Pattern";
+import Pattern from "@/modules/common/types/Pattern";
 import gradient from "./shaders/gradient.frag";
 import { Vector2 } from "three";
 

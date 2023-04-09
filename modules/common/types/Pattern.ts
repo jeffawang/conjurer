@@ -6,7 +6,7 @@ import {
 } from "./PatternParams";
 import { LED_COUNTS } from "@/modules/common/utils/size";
 
-export class Pattern {
+export default class Pattern {
   name: string;
   src: string;
   params: StandardParams & PatternParams;

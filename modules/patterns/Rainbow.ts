@@ -1,4 +1,4 @@
-import { Pattern } from "@/modules/common/types/Pattern";
+import Pattern from "@/modules/common/types/Pattern";
 import rainbow from "./shaders/rainbow.frag";
 
 const Rainbow = () => new Pattern("Rainbow", rainbow);

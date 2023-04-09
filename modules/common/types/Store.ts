@@ -1,5 +1,5 @@
-import { Block } from "@/modules/common/types/Block";
-import { Pattern } from "@/modules/common/types/Pattern";
+import Block from "@/modules/common/types/Block";
+import Pattern from "@/modules/common/types/Pattern";
 import { StandardParams } from "@/modules/common/types/PatternParams";
 import Timer from "@/modules/common/types/Timer";
 import Rainbow from "@/modules/patterns/Rainbow";

@@ -1,7 +1,7 @@
 import { Card, Text, VStack } from "@chakra-ui/react";
 import { memo, useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
-import { Pattern } from "@/modules/common/types/Pattern";
+import Pattern from "@/modules/common/types/Pattern";
 import { useStore } from "@/modules/common/types/StoreContext";
 import { action } from "mobx";
 
