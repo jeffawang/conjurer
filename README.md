@@ -35,3 +35,8 @@ yarn dev
   - u_global_time
   - u_resolution
   - generic other stuff defined
+
+## Performance Issues
+
+- Potentially need to use useCallback to better leverage memoization
+- React fiber deep dive https://blog.logrocket.com/deep-dive-react-fiber/
