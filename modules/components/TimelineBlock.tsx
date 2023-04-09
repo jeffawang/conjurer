@@ -77,6 +77,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         borderWidth={3}
         alignItems="center"
         onClick={handleClick}
+        role="button"
       >
         <Box
           color={isSelected ? "blue.500" : "gray.300"}

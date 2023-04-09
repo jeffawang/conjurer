@@ -52,6 +52,7 @@ export default memo(function SelectablePattern({
         alignItems="center"
         cursor="move"
         onDoubleClick={handleInsert}
+        role="button"
       >
         <VStack width="150px" height={10} justify="center">
           <Text userSelect="none" color={selected ? "teal.200" : "ButtonText"}>

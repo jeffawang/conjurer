@@ -73,7 +73,9 @@ export default observer(function Timeline() {
       </GridItem>
       <GridItem area="layersHeader">
         <VStack height="100%" justify="center">
-          <Heading size="md">Layer 1</Heading>
+          <Heading userSelect="none" size="md">
+            Layer 1
+          </Heading>
         </VStack>
       </GridItem>
       <GridItem area="layers">
