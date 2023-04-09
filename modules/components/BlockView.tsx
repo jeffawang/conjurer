@@ -1,4 +1,4 @@
-import { Block } from "../common/types/Block";
+import Block from "../common/types/Block";
 import { ShaderMaterial, Vector2 } from "three";
 import { StandardParams } from "../common/types/PatternParams";
 import { useFrame, useThree } from "@react-three/fiber";

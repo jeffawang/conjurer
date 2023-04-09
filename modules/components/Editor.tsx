@@ -1,18 +1,17 @@
 import Timeline from "@/modules/components/Timeline";
-import { Box, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Heading, Text, VStack } from "@chakra-ui/react";
 import Display from "@/modules/components/Display";
 import PatternList from "@/modules/components/PatternList";
-import KeyboardListener from "@/modules/components/KeyboardListener";
+import Keyboard from "@/modules/components/Keyboard";
 
 export default function Editor() {
   return (
     <Box w="100vw" h="100vh">
-      <KeyboardListener />
       <Grid
         templateAreas={`"patterns header"
                         "patterns display"
                         "patterns timeline"
-                        "patterns ."`}
+                        "patterns instructions"`}
         gridTemplateColumns="165px 1fr"
         gridTemplateRows="auto auto auto 1fr"
         gap={2}
@@ -28,12 +27,13 @@ export default function Editor() {
           <PatternList />
         </GridItem>
         <GridItem pl="2" area="display">
-          {/* todo: optimize display */}
           <Display />
         </GridItem>
         <GridItem pl="2" area="timeline">
-          {/* todo: optimize timeline */}
           <Timeline />
+        </GridItem>
+        <GridItem pl="2" area="instructions">
+          <Keyboard />
         </GridItem>
       </Grid>
     </Box>

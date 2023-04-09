@@ -1,6 +1,6 @@
 import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 import { useMemo } from "react";
-import { Block } from "../common/types/Block";
+import Block from "../common/types/Block";
 import BlockView from "@/modules/components/BlockView";
 import { Canvas } from "@react-three/fiber";
 import { LED_COUNTS } from "@/modules/common/utils/size";
@@ -42,6 +42,12 @@ export default observer(function PatternList() {
           />
         ))}
       </VStack>
+      <Text userSelect="none" fontSize="xs">
+        click to preview
+      </Text>
+      <Text userSelect="none" fontSize="xs">
+        double click to insert
+      </Text>
     </VStack>
   );
 });
