@@ -42,6 +42,12 @@ export default observer(function PatternList() {
           />
         ))}
       </VStack>
+      <Text userSelect="none" fontSize="xs">
+        click to preview
+      </Text>
+      <Text userSelect="none" fontSize="xs">
+        double click to insert
+      </Text>
     </VStack>
   );
 });

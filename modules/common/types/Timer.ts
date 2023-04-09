@@ -2,8 +2,16 @@ import { FRAMES_PER_SECOND, MAX_TIME } from "@/modules/common/utils/time";
 import { makeAutoObservable, runInAction } from "mobx";
 
 export default class Timer {
-  globalTime = 0;
+  _globalTime = 0;
   playing = false;
+
+  get globalTime() {
+    return this._globalTime;
+  }
+
+  set globalTime(time: number) {
+    this._globalTime = time < 0 ? 0 : time;
+  }
 
   constructor() {
     makeAutoObservable(this);

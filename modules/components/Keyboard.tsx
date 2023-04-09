@@ -1,9 +1,10 @@
 import { useStore } from "@/modules/common/types/StoreContext";
+import { Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 
-export default observer(function KeyboardListener() {
+export default observer(function Keyboard() {
   const store = useStore();
   const { timer } = store;
 
@@ -52,5 +53,17 @@ export default observer(function KeyboardListener() {
     };
   }, [store, timer]);
 
-  return null;
+  return (
+    <VStack justifyContent="center">
+      <Text userSelect="none">spacebar: play/pause</Text>
+      <Text userSelect="none">←/→: scan backward/forward</Text>
+      <Text userSelect="none">cmd+c: copy block(s)</Text>
+      <Text userSelect="none">cmd+v: paste block(s)</Text>
+      <Text userSelect="none">cmd+d: duplicate block(s)</Text>
+      <Text userSelect="none">cmd+a: select all blocks</Text>
+      <Text userSelect="none">delete: delete selected block(s)</Text>
+      {/* <Text>cmd+z: undo</Text> */}
+      {/* <Text>cmd+shift+z: redo</Text> */}
+    </VStack>
+  );
 });
