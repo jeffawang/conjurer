@@ -29,7 +29,13 @@ export default class Block<T extends PatternParams> {
     makeAutoObservable(this, { pattern: false, spc: false, update: false });
   }
 
-  setTiming = (startTime: number, duration: number) => {
+  setTiming = ({
+    startTime,
+    duration,
+  }: {
+    startTime: number;
+    duration: number;
+  }) => {
     this.startTime = startTime;
     this.duration = duration;
   };

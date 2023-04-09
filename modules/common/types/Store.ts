@@ -55,8 +55,8 @@ export default class Store {
   initialize = () => {
     // Temporary hard-coded blocks
     this.blocks.push(new Block(SunCycle()), new Block(Rainbow()));
-    this.blocks[0].setTiming(0, 7);
-    this.blocks[1].setTiming(7, 3);
+    this.blocks[0].setTiming({ startTime: 0, duration: 7 });
+    this.blocks[1].setTiming({ startTime: 7, duration: 3 });
 
     this.initialized = true;
   };
@@ -64,7 +64,7 @@ export default class Store {
   insertCloneOfPattern = (pattern: Pattern) => {
     const newBlock = new Block(clone(pattern));
     const nextGap = this.nextFiniteGap(this.timer.globalTime);
-    newBlock.setTiming(nextGap.startTime, nextGap.duration);
+    newBlock.setTiming(nextGap);
     this.addBlock(newBlock);
   };
 
@@ -125,7 +125,7 @@ export default class Store {
         this.timer.globalTime,
         blockToCopy.duration,
       );
-      newBlock.setTiming(nextGap.startTime, nextGap.duration);
+      newBlock.setTiming(nextGap);
       this.addBlock(newBlock);
       this.addBlockToSelection(newBlock);
     }
@@ -142,7 +142,7 @@ export default class Store {
         selectedBlock.endTime,
         selectedBlock.duration,
       );
-      newBlock.setTiming(nextGap.startTime, nextGap.duration);
+      newBlock.setTiming(nextGap);
       this.addBlock(newBlock);
       this.addBlockToSelection(newBlock);
     }

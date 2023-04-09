@@ -25,6 +25,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const handleDrag = (e: DraggableEvent, data: DraggableData) => {
+    // TODO: implement snapping here
     setPosition({ x: data.x, y: 0 });
   };
   const onDragStop = action(() => {
