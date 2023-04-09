@@ -2,6 +2,7 @@ import Block from "@/modules/common/types/Block";
 import Pattern from "@/modules/common/types/Pattern";
 import { StandardParams } from "@/modules/common/types/PatternParams";
 import Timer from "@/modules/common/types/Timer";
+import { binarySearchForBlockAtTime } from "@/modules/common/utils/algorithm";
 import { clone } from "@/modules/common/utils/object";
 import { DEFAULT_BLOCK_DURATION } from "@/modules/common/utils/time";
 import Rainbow from "@/modules/patterns/Rainbow";
@@ -30,13 +31,25 @@ export default class Store {
   selectedPattern: Pattern = patterns[0];
   draggingPattern: boolean = false;
 
-  // TODO: make this more efficient, do binary search
+  _lastComputedCurrentBlock: Block<StandardParams> | null = null;
+
+  // returns the block that the global time is inside of, or null if none
+  // runs every frame, so we keep this performant with caching + a binary search
   get currentBlock() {
-    return this.blocks.find(
-      (b) =>
-        b.startTime <= this.timer.globalTime &&
-        this.timer.globalTime < b.startTime + b.duration,
+    if (
+      this._lastComputedCurrentBlock &&
+      this._lastComputedCurrentBlock.startTime <= this.timer.globalTime &&
+      this.timer.globalTime < this._lastComputedCurrentBlock.endTime
+    ) {
+      return this._lastComputedCurrentBlock;
+    }
+
+    const currentBlockIndex = binarySearchForBlockAtTime(
+      this.blocks,
+      this.timer.globalTime,
     );
+    this._lastComputedCurrentBlock = this.blocks[currentBlockIndex] ?? null;
+    return this._lastComputedCurrentBlock;
   }
 
   get endTime() {
@@ -47,7 +60,9 @@ export default class Store {
   }
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      _lastComputedCurrentBlock: false, // don't make this observable, since it's just a cache
+    });
 
     runInAction(() => this.initialize());
   }
