@@ -42,7 +42,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   const handleClick = action((e: any) => {
     if (Math.abs(e.clientX - lastMouseDown.current) > 5) return;
 
-    if (selectedBlocks.includes(block)) {
+    if (selectedBlocks.has(block)) {
       store.deselectBlock(block);
     } else if (e.shiftKey) {
       store.addBlockToSelection(block);
@@ -52,7 +52,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
     e.stopPropagation();
   });
 
-  const isSelected = selectedBlocks.includes(block);
+  const isSelected = selectedBlocks.has(block);
 
   return (
     <Draggable

@@ -22,7 +22,7 @@ export default class Store {
   timer = new Timer();
 
   blocks: Block<StandardParams>[] = [];
-  selectedBlocks: Block<StandardParams>[] = []; // TODO: make this a set
+  selectedBlocks: Set<Block<StandardParams>> = new Set();
 
   patterns: Pattern[] = patterns;
   selectedPattern: Pattern = patterns[0];
@@ -67,34 +67,36 @@ export default class Store {
   };
 
   selectBlock = (block: Block<StandardParams>) => {
-    this.selectedBlocks = [block];
+    this.selectedBlocks = new Set([block]);
   };
 
   addBlockToSelection = (block: Block<StandardParams>) => {
-    this.selectedBlocks.push(block);
+    this.selectedBlocks.add(block);
   };
 
   deselectBlock = (block: Block<StandardParams>) => {
-    this.selectedBlocks = this.selectedBlocks.filter((b) => b !== block);
+    this.selectedBlocks.delete(block);
   };
 
   selectAllBlocks = () => {
-    this.selectedBlocks = this.blocks;
+    this.selectedBlocks = new Set(this.blocks);
   };
 
   deselectAllBlocks = () => {
-    this.selectedBlocks = [];
+    this.selectedBlocks = new Set();
   };
 
   deleteSelectedBlocks = () => {
-    this.blocks = this.blocks.filter((b) => !this.selectedBlocks.includes(b));
-    this.selectedBlocks = [];
+    this.blocks = this.blocks.filter((b) => !this.selectedBlocks.has(b));
+    this.selectedBlocks = new Set();
   };
 
   copyBlocks = (clipboardData: DataTransfer) => {
     clipboardData.setData(
       "text/plain",
-      this.selectedBlocks.map((b) => b.id).join(","),
+      Array.from(this.selectedBlocks)
+        .map((b) => b.id)
+        .join(","),
     );
   };
 
@@ -111,8 +113,9 @@ export default class Store {
   };
 
   duplicateBlocks = () => {
-    const newBlocks = this.selectedBlocks.map((b) => {
+    const newBlocks = Array.from(this.selectedBlocks).map((b) => {
       const newBlock = new Block(clone(b.pattern));
+      // TODO: duplicate blocks at specific location(s)
       newBlock.setTiming(this.endTime, b.duration);
       return newBlock;
     });
