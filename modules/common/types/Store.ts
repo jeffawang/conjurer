@@ -190,6 +190,9 @@ export default class Store {
   /**
    * Returns the next gap in the timeline, starting from the given time.
    * A missing duration means that the gap is infinite.
+   *
+   * @param {number} fromTime
+   * @memberof Store
    */
   nextGap = (fromTime: number): { startTime: number; duration?: number } => {
     // no blocks
@@ -248,6 +251,9 @@ export default class Store {
   /**
    * Returns the next gap in the timeline, starting from the given time.
    * The gap will always be of a finite duration, and no more than the given maxDuration.
+   * @param {number} fromTime
+   * @param {number} [maxDuration=DEFAULT_BLOCK_DURATION]
+   * @memberof Store
    */
   nextFiniteGap = (
     fromTime: number,
