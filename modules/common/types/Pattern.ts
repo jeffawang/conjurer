@@ -1,10 +1,10 @@
-import { Vector2 } from "three";
 import {
   ParamValues,
   ParamsProxy,
   PatternParams,
   StandardParams,
 } from "./PatternParams";
+import { LED_COUNTS } from "@/modules/common/utils/size";
 
 export class Pattern {
   name: string;
@@ -27,8 +27,7 @@ export class Pattern {
       },
       u_resolution: {
         name: "Resolution",
-        // TODO: pipe this through from elsewhere
-        value: new Vector2(96, 75),
+        value: LED_COUNTS.clone(),
       },
       ...parameters,
     };
