@@ -33,14 +33,14 @@ export default observer(function KeyboardListener() {
 
     const handleCopy = (e: ClipboardEvent) => {
       if (!e.clipboardData) return;
-      store.copyBlocks(e.clipboardData);
+      store.copyBlocksToClipboard(e.clipboardData);
       e.preventDefault();
     };
     window.addEventListener("copy", handleCopy);
 
     const handlePaste = (e: ClipboardEvent) => {
       if (!e.clipboardData) return;
-      store.pasteBlocks(e.clipboardData);
+      store.pasteBlocksFromClipboard(e.clipboardData);
       e.preventDefault();
     };
     window.addEventListener("paste", handlePaste);

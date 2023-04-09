@@ -32,7 +32,6 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
     // TODO: potentially reorder blocks
     // TODO: prevent block overlaps for now
     setPosition({ x: 0, y: 0 });
-    console.log("drag stop", block.startTime, block.duration);
   });
 
   const handleMouseDown = action((e: MouseEvent) => {
