@@ -28,11 +28,9 @@ export default function Editor() {
           <PatternList />
         </GridItem>
         <GridItem pl="2" area="display">
-          {/* todo: optimize display */}
           <Display />
         </GridItem>
         <GridItem pl="2" area="timeline">
-          {/* todo: optimize timeline */}
           <Timeline />
         </GridItem>
       </Grid>

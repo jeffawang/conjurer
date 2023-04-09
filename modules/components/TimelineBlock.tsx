@@ -3,7 +3,7 @@ import { StandardParams } from "@/modules/common/types/PatternParams";
 import { useStore } from "@/modules/common/types/StoreContext";
 import { timeToX, xToTime } from "@/modules/common/utils/time";
 import TimelineBlockBound from "@/modules/components/TimelineBlockBound";
-import { Box, Card, Text, VStack } from "@chakra-ui/react";
+import { Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useRef, useState } from "react";
@@ -79,19 +79,21 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         onClick={handleClick}
         role="button"
       >
-        <Box
+        <HStack
           color={isSelected ? "blue.500" : "gray.300"}
           className="handle"
           position="absolute"
           top={2}
+          justifyContent="center"
           cursor="move"
         >
           <MdDragIndicator size={30} />
-        </Box>
+        </HStack>
 
         <TimelineBlockBound
           leftBound
           onBoundChange={action((delta) => {
+            // Do not allow start of block to be dragged after end of block
             if (delta > block.duration) return;
             block.startTime += delta;
             block.duration -= delta;
@@ -100,6 +102,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         <TimelineBlockBound
           rightBound
           onBoundChange={action((delta) => {
+            // Do not allow end of block to be dragged before start of block
             if (block.duration + delta < 0) return;
             block.duration += delta;
           })}
