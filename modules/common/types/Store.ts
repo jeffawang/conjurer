@@ -98,6 +98,21 @@ export default class Store {
     this.blocks = this.blocks.filter((b) => b !== block);
   };
 
+  /**
+   * Changes a blocks starting time, and reorders it in the list of blocks
+   *
+   * @param {Block<StandardParams>} block
+   * @param {number} newStartTime
+   * @memberof Store
+   */
+  changeBlockStartTime = (
+    block: Block<StandardParams>,
+    newStartTime: number,
+  ) => {
+    block.startTime = newStartTime;
+    this.reorderBlock(block);
+  };
+
   reorderBlock = (block: Block<StandardParams>) => {
     this.removeBlock(block);
     this.addBlock(block);
