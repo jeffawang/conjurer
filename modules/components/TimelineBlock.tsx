@@ -25,17 +25,18 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const handleDrag = (e: DraggableEvent, data: DraggableData) => {
-    // TODO: implement snapping here
+    // TODO: implement optional snapping here
     setPosition({ x: data.x, y: 0 });
   };
+
+  // handle moving a block to a new start time
   const onDragStop = action(() => {
-    // prevent block overlaps for now
+    // prevent block overlaps for now by snapping to nearest valid start time
     const validTimeDelta = store.nearestValidStartTimeDelta(
       block,
       xToTime(position.x),
     );
-    block.startTime += validTimeDelta;
-    store.reorderBlock(block); // TODO: error prone to have to call this manually...
+    store.changeBlockStartTime(block, block.startTime + validTimeDelta);
     setPosition({ x: 0, y: 0 });
   });
 

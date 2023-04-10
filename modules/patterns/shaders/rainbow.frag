@@ -1,5 +1,6 @@
 uniform vec2 u_resolution;
 uniform float u_time;
+varying vec2 v_uv;
 
 vec3 rgb2hsb(in vec3 c) {
     vec4 K = vec4(0., - 1. / 3., 2. / 3., - 1.);
@@ -18,7 +19,7 @@ vec3 hsb2rgb(in vec3 c) {
 }
 
 void main() {
-    vec2 st = gl_FragCoord.xy / u_resolution;
+    vec2 st = v_uv;
     vec3 color = vec3(0.);
 
     // We map x (0.0 - 1.0) to the hue (0.0 - 1.0)

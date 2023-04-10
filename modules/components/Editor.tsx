@@ -1,5 +1,5 @@
 import Timeline from "@/modules/components/Timeline";
-import { Box, Grid, GridItem, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
 import Display from "@/modules/components/Display";
 import PatternList from "@/modules/components/PatternList";
 import Keyboard from "@/modules/components/Keyboard";

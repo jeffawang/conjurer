@@ -10,7 +10,13 @@ export default observer(function Keyboard() {
 
   useEffect(() => {
     const handleKeyDown = action((e: KeyboardEvent) => {
-      if (e.key === " ") {
+      if (
+        e.key === " " &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey &&
+        !e.shiftKey
+      ) {
         timer.togglePlaying();
         e.preventDefault();
       } else if (e.key === "ArrowLeft") timer.globalTime -= 0.2;
