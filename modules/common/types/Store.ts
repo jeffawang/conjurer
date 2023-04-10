@@ -71,7 +71,7 @@ export default class Store {
     // Temporary hard-coded blocks
     this.blocks.push(new Block(SunCycle()), new Block(Rainbow()));
     this.blocks[0].setTiming({ startTime: 0, duration: 7 });
-    this.blocks[1].setTiming({ startTime: 7, duration: 3 });
+    this.blocks[1].setTiming({ startTime: 7, duration: 7 });
 
     this.initialized = true;
   };
