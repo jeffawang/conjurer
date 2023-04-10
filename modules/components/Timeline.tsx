@@ -8,9 +8,11 @@ import Layer from "@/modules/components/Layer";
 import TimeMarker from "@/modules/components/TimeMarker";
 import TimerReadout from "@/modules/components/TimerReadout";
 import Controls from "@/modules/components/Controls";
+import { useRef } from "react";
 
 export default observer(function Timeline() {
   const { timer } = useStore();
+  const rulerBoxRef = useRef<HTMLDivElement>(null);
 
   return (
     <Grid
@@ -24,13 +26,15 @@ export default observer(function Timeline() {
       </GridItem>
       <GridItem area="ruler">
         <Box
+          ref={rulerBoxRef}
           position="relative"
           height={9}
           bgColor="gray.500"
           onClick={action((e) => {
-            timer.globalTime = xToTime(
-              e.clientX - (e.target as HTMLElement).getBoundingClientRect().x,
-            );
+            if (rulerBoxRef.current)
+              timer.globalTime = xToTime(
+                e.clientX - rulerBoxRef.current.getBoundingClientRect().x,
+              );
           })}
         >
           <TimerReadout />
