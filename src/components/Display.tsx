@@ -4,7 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import { LED_COUNTS } from "@/src/utils/size";
-import CanopyView from "@/src/components/CanopyView";
+import CanopyCanvas from "@/src/components/CanopyCanvas";
 
 // Multiplier on the base LED size for the main display only
 const DISPLAY_FACTOR = 5;
@@ -30,11 +30,7 @@ export default observer(function Display({}: DisplayProps) {
         width={`${LED_COUNTS.y * DISPLAY_FACTOR}px`}
         height={`${LED_COUNTS.y * DISPLAY_FACTOR}px`}
       >
-        <Canvas>
-          {currentBlock && (
-            <CanopyView key={currentBlock.pattern.name} block={currentBlock} />
-          )}
-        </Canvas>
+        <CanopyCanvas />
       </Box>
     </HStack>
   );

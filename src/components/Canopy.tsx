@@ -1,25 +1,34 @@
-import Block from "../types/Block";
 import { BufferAttribute, BufferGeometry, ShaderMaterial } from "three";
-import { StandardParams } from "../types/PatternParams";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import vert from "@/src/patterns/shaders/canopy.vert";
-import { LED_COUNTS } from "@/src/utils/size";
+import { LED_COUNTS, STRIP_LENGTH } from "@/src/utils/size";
+import catenary from "@/src/utils/catenary";
 
-type CanopyViewProps = {
-  block: Block<StandardParams>;
-};
+type CanopyViewProps = {};
 
-export default observer(function CanopyView({ block }: CanopyViewProps) {
+export default observer(function Canopy({}: CanopyViewProps) {
+  const { currentBlock } = useStore();
   const shaderMaterial = useRef<ShaderMaterial>(null);
 
   const bufferGeometry = useMemo(() => {
+    // TODO: fix this horrible hack
+    const catenaryCoordinates = catenary(
+      { x: 1, y: 0 },
+      { x: 8, y: 0 },
+      STRIP_LENGTH,
+      LED_COUNTS.y,
+    );
     const ledPositions = [];
     for (let x = 0; x < LED_COUNTS.x; x++) {
       for (let y = 0; y < LED_COUNTS.y; y++) {
-        ledPositions.push(x, y, 0);
+        ledPositions.push(
+          x / (LED_COUNTS.x - 1),
+          y / (LED_COUNTS.y - 1),
+          -catenaryCoordinates[y][1],
+        );
       }
     }
     const positionsFloatArray = new Float32Array(ledPositions);
@@ -33,23 +42,26 @@ export default observer(function CanopyView({ block }: CanopyViewProps) {
   }, []);
 
   const { timer } = useStore();
-  useFrame(({ clock }) => {
+  useFrame(() => {
     // mobx linting will complain about these lines if observableRequiresReaction is enabled, but
     // it's fine. We don't want this function to react to changes in these variables - it runs every
     // frame already.
     const { globalTime } = timer;
-    const { startTime } = block;
 
-    block.update(globalTime - startTime, globalTime);
+    if (currentBlock)
+      currentBlock.update(globalTime - currentBlock.startTime, globalTime);
   });
+
+  if (!currentBlock) return null;
 
   return (
     <points>
       <primitive attach="geometry" object={bufferGeometry} />
       <shaderMaterial
+        key={currentBlock.id}
         ref={shaderMaterial}
-        uniforms={block.pattern.params}
-        fragmentShader={block.pattern.src}
+        uniforms={currentBlock.pattern.params}
+        fragmentShader={currentBlock.pattern.src}
         vertexShader={vert}
       />
     </points>
