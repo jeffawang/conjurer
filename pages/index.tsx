@@ -1,6 +1,6 @@
-import Store from "@/modules/common/types/Store";
-import StoreContext from "@/modules/common/types/StoreContext";
-import Editor from "@/modules/components/Editor";
+import Store from "@/src/types/Store";
+import StoreContext from "@/src/types/StoreContext";
+import Editor from "@/src/components/Editor";
 import { ChakraProvider, theme } from "@chakra-ui/react";
 import Head from "next/head";
 
