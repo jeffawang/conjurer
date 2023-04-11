@@ -1,4 +1,4 @@
-import { xToTime } from "@/modules/common/utils/time";
+import { useStore } from "@/modules/common/types/StoreContext";
 import { Box } from "@chakra-ui/react";
 import { action } from "mobx";
 import { useRef, useState } from "react";
@@ -15,6 +15,8 @@ export default function TimelineBlockBound({
   leftBound,
   rightBound,
 }: TimelineBlockProps) {
+  const { uiStore } = useStore();
+
   const dragNodeRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -22,7 +24,7 @@ export default function TimelineBlockBound({
     setPosition({ x: data.x, y: 0 });
   };
   const handleStop = action(() => {
-    onBoundChange(xToTime(position.x));
+    onBoundChange(uiStore.xToTime(position.x));
     setPosition({ x: 0, y: 0 });
     setDragging(false);
   });

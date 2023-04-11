@@ -292,4 +292,17 @@ export default class Store {
 
     return desiredDeltaTime;
   };
+
+  resizeBlockLeftBound = (block: Block<StandardParams>, delta: number) => {
+    // Do not allow start of block to be dragged after end of block
+    if (delta > block.duration) return;
+    block.startTime += delta;
+    block.duration -= delta;
+  };
+
+  resizeBlockRightBound = (block: Block<StandardParams>, delta: number) => {
+    // Do not allow end of block to be dragged before start of block
+    if (block.duration + delta < 0) return;
+    block.duration += delta;
+  };
 }

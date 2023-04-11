@@ -5,7 +5,7 @@ import TimelineBlockBound from "@/modules/components/TimelineBlockBound";
 import { Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import { DraggableData } from "react-draggable";
 import { DraggableEvent } from "react-draggable";
@@ -23,13 +23,12 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   const lastMouseDown = useRef(0);
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const handleDrag = (e: DraggableEvent, data: DraggableData) => {
+  const handleDrag = useCallback((e: DraggableEvent, data: DraggableData) => {
     // TODO: implement optional snapping here
     setPosition({ x: data.x, y: 0 });
-  };
-
+  }, []);
   // handle moving a block to a new start time
-  const onDragStop = action(() => {
+  const handleDragStop = action(() => {
     // prevent block overlaps for now by snapping to nearest valid start time
     const validTimeDelta = store.nearestValidStartTimeDelta(
       block,
@@ -39,24 +38,36 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
     setPosition({ x: 0, y: 0 });
   });
 
-  const handleMouseDown = action((e: MouseEvent) => {
+  const handleMouseDown = useCallback((e: MouseEvent) => {
     lastMouseDown.current = e.clientX;
-  });
+  }, []);
 
-  const handleClick = action((e: any) => {
-    if (Math.abs(e.clientX - lastMouseDown.current) > 5) return;
+  const handleClick = useCallback(
+    (e: any) => {
+      if (Math.abs(e.clientX - lastMouseDown.current) > 5) return;
 
-    if (selectedBlocks.has(block)) {
-      store.deselectBlock(block);
-    } else if (e.shiftKey) {
-      store.addBlockToSelection(block);
-    } else {
-      store.selectBlock(block);
-    }
-    e.stopPropagation();
-  });
+      if (selectedBlocks.has(block)) {
+        store.deselectBlock(block);
+      } else if (e.shiftKey) {
+        store.addBlockToSelection(block);
+      } else {
+        store.selectBlock(block);
+      }
+      e.stopPropagation();
+    },
+    [store, block, selectedBlocks],
+  );
 
   const isSelected = selectedBlocks.has(block);
+
+  const handleLeftBoundResize = useCallback(
+    (delta: number) => store.resizeBlockLeftBound(block, delta),
+    [block, store],
+  );
+  const handleRightBoundResize = useCallback(
+    (delta: number) => store.resizeBlockRightBound(block, delta),
+    [block, store],
+  );
 
   return (
     <Draggable
@@ -65,7 +76,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
       axis="x"
       bounds="parent"
       onDrag={handleDrag}
-      onStop={onDragStop}
+      onStop={handleDragStop}
       position={position}
       onMouseDown={handleMouseDown}
     >
@@ -94,23 +105,8 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
           <MdDragIndicator size={30} />
         </HStack>
 
-        <TimelineBlockBound
-          leftBound
-          onBoundChange={action((delta) => {
-            // Do not allow start of block to be dragged after end of block
-            if (delta > block.duration) return;
-            block.startTime += delta;
-            block.duration -= delta;
-          })}
-        />
-        <TimelineBlockBound
-          rightBound
-          onBoundChange={action((delta) => {
-            // Do not allow end of block to be dragged before start of block
-            if (block.duration + delta < 0) return;
-            block.duration += delta;
-          })}
-        />
+        <TimelineBlockBound leftBound onBoundChange={handleLeftBoundResize} />
+        <TimelineBlockBound rightBound onBoundChange={handleRightBoundResize} />
 
         <VStack pointerEvents="none" height="100%" justify="center">
           <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
