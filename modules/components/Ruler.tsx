@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { PIXELS_PER_SECOND } from "@/modules/common/utils/time";
+import styles from "@/styles/Ruler.module.css";
 
 export default memo(function Ruler() {
   return (
@@ -34,6 +35,17 @@ export default memo(function Ruler() {
           />
         </pattern>
       </defs>
+
+      {Array.from({ length: 60 }).map((_, i) => (
+        <text
+          key={i}
+          className={styles.rulerText}
+          x={i * PIXELS_PER_SECOND + 3}
+          y="12"
+        >
+          {i % 60}
+        </text>
+      ))}
       <rect
         fill="url(#mix-editor-grid-pattern)"
         x="0"

@@ -26,6 +26,7 @@ export default observer(function Display({}: DisplayProps) {
         </Canvas>
       </Box>
       <Box
+        // keep this a square aspect ratio
         width={`${LED_COUNTS.y * DISPLAY_FACTOR}px`}
         height={`${LED_COUNTS.y * DISPLAY_FACTOR}px`}
       >
