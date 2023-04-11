@@ -1,5 +1,8 @@
 import { makeAutoObservable, runInAction } from "mobx";
 
+const MAX_PIXELS_PER_SECOND = 100;
+const MIN_PIXELS_PER_SECOND = 12;
+
 /**
  * MobX store for UI state.
  *
@@ -23,9 +26,15 @@ export default class UIStore {
 
   zoomOut = () => {
     this.pixelsPerSecond -= 2;
+    if (this.pixelsPerSecond < MIN_PIXELS_PER_SECOND) {
+      this.pixelsPerSecond = MIN_PIXELS_PER_SECOND;
+    }
   };
 
   zoomIn = () => {
     this.pixelsPerSecond += 2;
+    if (this.pixelsPerSecond > MAX_PIXELS_PER_SECOND) {
+      this.pixelsPerSecond = MAX_PIXELS_PER_SECOND;
+    }
   };
 }

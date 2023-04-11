@@ -9,13 +9,18 @@ import TimerReadout from "@/modules/components/TimerReadout";
 import TimerControls from "@/modules/components/TimerControls";
 import { useRef } from "react";
 import Controls from "@/modules/components/Controls";
+import useWheelZooming from "@/modules/hooks/wheelZooming";
 
 export default observer(function Timeline() {
   const { timer, uiStore } = useStore();
   const rulerBoxRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useWheelZooming(gridRef.current);
 
   return (
     <Grid
+      ref={gridRef}
       templateAreas={`"timerControls  controls"
                       "timer          ruler"
                       "layersHeader   layers"`}

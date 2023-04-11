@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export default observer(function Keyboard() {
   const store = useStore();
-  const { timer } = store;
+  const { timer, uiStore } = store;
 
   useEffect(() => {
     const handleKeyDown = action((e: KeyboardEvent) => {
@@ -27,12 +27,13 @@ export default observer(function Keyboard() {
         store.selectAllBlocks();
         e.preventDefault();
       } else if (e.key === "Escape") store.deselectAllBlocks();
-      if (e.key === "Delete" || e.key === "Backspace")
+      else if (e.key === "Delete" || e.key === "Backspace")
         store.deleteSelectedBlocks();
       else if (e.key === "d" && (e.ctrlKey || e.metaKey)) {
         store.duplicateBlocks();
         e.preventDefault();
-      }
+      } else if (e.key === "+" || e.key === "=") uiStore.zoomIn();
+      else if (e.key === "-") uiStore.zoomOut();
     });
     window.addEventListener("keydown", handleKeyDown);
 
@@ -55,17 +56,34 @@ export default observer(function Keyboard() {
       window.removeEventListener("copy", handleCopy);
       window.removeEventListener("paste", handlePaste);
     };
-  }, [store, timer]);
+  }, [store, timer, uiStore]);
 
   return (
     <VStack justifyContent="center">
-      <Text userSelect="none">spacebar: play/pause</Text>
-      <Text userSelect="none">←/→: scan backward/forward</Text>
-      <Text userSelect="none">cmd+c: copy block(s)</Text>
-      <Text userSelect="none">cmd+v: paste block(s)</Text>
-      <Text userSelect="none">cmd+d: duplicate block(s)</Text>
-      <Text userSelect="none">cmd+a: select all blocks</Text>
-      <Text userSelect="none">delete: delete selected block(s)</Text>
+      <Text fontSize={13} userSelect="none">
+        spacebar: play/pause
+      </Text>
+      <Text fontSize={13} userSelect="none">
+        ←/→: scan backward/forward
+      </Text>
+      <Text fontSize={13} userSelect="none">
+        +/-: zoom in/out
+      </Text>
+      <Text fontSize={13} userSelect="none">
+        cmd+c: copy block(s)
+      </Text>
+      <Text fontSize={13} userSelect="none">
+        cmd+v: paste block(s)
+      </Text>
+      <Text fontSize={13} userSelect="none">
+        cmd+d: duplicate block(s)
+      </Text>
+      <Text fontSize={13} userSelect="none">
+        cmd+a: select all blocks
+      </Text>
+      <Text fontSize={13} userSelect="none">
+        delete: delete selected block(s)
+      </Text>
       {/* <Text>cmd+z: undo</Text> */}
       {/* <Text>cmd+shift+z: redo</Text> */}
     </VStack>
