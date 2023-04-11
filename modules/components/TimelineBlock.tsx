@@ -1,7 +1,6 @@
 import Block from "@/modules/common/types/Block";
 import { StandardParams } from "@/modules/common/types/PatternParams";
 import { useStore } from "@/modules/common/types/StoreContext";
-import { timeToXPixels, xToTime } from "@/modules/common/utils/time";
 import TimelineBlockBound from "@/modules/components/TimelineBlockBound";
 import { Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
@@ -18,7 +17,7 @@ type TimelineBlockProps = {
 
 export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   const store = useStore();
-  const { selectedBlocks } = store;
+  const { selectedBlocks, uiStore } = store;
 
   const dragNodeRef = useRef(null);
   const lastMouseDown = useRef(0);
@@ -34,7 +33,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
     // prevent block overlaps for now by snapping to nearest valid start time
     const validTimeDelta = store.nearestValidStartTimeDelta(
       block,
-      xToTime(position.x),
+      uiStore.xToTime(position.x),
     );
     store.changeBlockStartTime(block, block.startTime + validTimeDelta);
     setPosition({ x: 0, y: 0 });
@@ -74,8 +73,8 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         ref={dragNodeRef}
         position="absolute"
         top={0}
-        left={timeToXPixels(block.startTime)}
-        width={timeToXPixels(block.duration)}
+        left={uiStore.timeToXPixels(block.startTime)}
+        width={uiStore.timeToXPixels(block.duration)}
         height="100%"
         border="solid"
         borderColor={isSelected ? "blue.500" : "gray.300"}

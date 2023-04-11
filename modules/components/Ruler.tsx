@@ -1,8 +1,11 @@
-import { memo } from "react";
-import { PIXELS_PER_SECOND } from "@/modules/common/utils/time";
 import styles from "@/styles/Ruler.module.css";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/modules/common/types/StoreContext";
 
-export default memo(function Ruler() {
+export default observer(function Ruler() {
+  const { uiStore } = useStore();
+  const { pixelsPerSecond } = uiStore;
+
   return (
     <svg width="1000" height="36">
       <defs>
@@ -10,7 +13,7 @@ export default memo(function Ruler() {
           id="mix-editor-grid-pattern"
           x="0"
           y="0"
-          width={`${PIXELS_PER_SECOND}`}
+          width={`${pixelsPerSecond}`}
           height="36"
           patternUnits="userSpaceOnUse"
         >
@@ -18,19 +21,19 @@ export default memo(function Ruler() {
           <rect
             width="0.5"
             height="3240"
-            x={`${PIXELS_PER_SECOND * 0.25}`}
+            x={`${pixelsPerSecond * 0.25}`}
             y="30"
           />
           <rect
             width="0.5"
             height="3240"
-            x={`${PIXELS_PER_SECOND * 0.5}`}
+            x={`${pixelsPerSecond * 0.5}`}
             y="30"
           />
           <rect
             width="0.5"
             height="3240"
-            x={`${PIXELS_PER_SECOND * 0.75}`}
+            x={`${pixelsPerSecond * 0.75}`}
             y="30"
           />
         </pattern>
@@ -40,7 +43,7 @@ export default memo(function Ruler() {
         <text
           key={i}
           className={styles.rulerText}
-          x={i * PIXELS_PER_SECOND + 3}
+          x={i * pixelsPerSecond + 3}
           y="12"
         >
           {i % 60}

@@ -1,39 +1,27 @@
 import { observer } from "mobx-react-lite";
 import { HStack, IconButton } from "@chakra-ui/react";
-import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa";
+import { RiZoomInLine, RiZoomOutLine } from "react-icons/ri";
 import { MAX_TIME } from "@/modules/common/utils/time";
 import { useStore } from "@/modules/common/types/StoreContext";
 import { action } from "mobx";
 
-export default observer(function Controls() {
-  const { timer } = useStore();
+export default observer(function TimerControls() {
+  const { uiStore } = useStore();
 
   return (
-    <HStack height="100%">
+    <>
       <IconButton
-        aria-label="Backward"
+        aria-label="Zoom out "
         height={6}
-        icon={<FaStepBackward size={10} />}
-        onClick={action(() => {
-          timer.globalTime = 0;
-        })}
+        icon={<RiZoomOutLine size={17} />}
+        onClick={action(() => uiStore.zoomOut())}
       />
       <IconButton
-        aria-label="Play"
-        color={timer.playing ? "orange" : "green"}
+        aria-label="Zoom in"
         height={6}
-        icon={timer.playing ? <FaPause size={10} /> : <FaPlay size={10} />}
-        onClick={action(timer.togglePlaying)}
+        icon={<RiZoomInLine size={17} />}
+        onClick={action(() => uiStore.zoomIn())}
       />
-      <IconButton
-        aria-label="Forward"
-        height={6}
-        icon={<FaStepForward size={10} />}
-        onClick={action(() => {
-          timer.globalTime = MAX_TIME;
-          timer.playing = false;
-        })}
-      />
-    </HStack>
+    </>
   );
 });

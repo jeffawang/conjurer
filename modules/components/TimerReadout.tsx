@@ -15,15 +15,7 @@ export default observer(function TimerReadout() {
   const { timer } = useStore();
 
   return (
-    <Text
-      position="absolute"
-      left={1}
-      fontSize={17}
-      bgColor="gray.500"
-      color="black"
-      userSelect="none"
-      lineHeight={1.2}
-    >
+    <Text textAlign="center" fontSize={22} color="black" userSelect="none">
       {formatTime(timer.globalTime)}
     </Text>
   );

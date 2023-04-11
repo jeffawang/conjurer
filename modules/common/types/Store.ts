@@ -2,6 +2,7 @@ import Block from "@/modules/common/types/Block";
 import Pattern from "@/modules/common/types/Pattern";
 import { StandardParams } from "@/modules/common/types/PatternParams";
 import Timer from "@/modules/common/types/Timer";
+import UIStore from "@/modules/common/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/modules/common/utils/algorithm";
 import { clone } from "@/modules/common/utils/object";
 import { DEFAULT_BLOCK_DURATION } from "@/modules/common/utils/time";
@@ -23,6 +24,7 @@ configure({
 export default class Store {
   initialized = false;
   timer = new Timer();
+  uiStore = new UIStore();
 
   blocks: Block<StandardParams>[] = [];
   selectedBlocks: Set<Block<StandardParams>> = new Set();
