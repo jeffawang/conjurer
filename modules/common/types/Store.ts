@@ -294,15 +294,43 @@ export default class Store {
   };
 
   resizeBlockLeftBound = (block: Block<StandardParams>, delta: number) => {
-    // Do not allow start of block to be dragged after end of block
-    if (delta > block.duration) return;
+    const desiredStartTime = block.startTime + delta;
+
+    // do not allow changing start of this block past end of self
+    if (desiredStartTime >= block.endTime) return;
+
+    // do not allow changing start of this block before end of prior block
+    const previousBlock = this.blocks[this.blocks.indexOf(block) - 1];
+    if (previousBlock && desiredStartTime < previousBlock.endTime) {
+      block.duration = block.endTime - previousBlock.endTime;
+      block.startTime = previousBlock.endTime;
+      return;
+    }
+
+    // do not allow changing start of block past start of timeline
+    if (desiredStartTime < 0) {
+      block.duration = block.endTime;
+      block.startTime = 0;
+      return;
+    }
+
     block.startTime += delta;
     block.duration -= delta;
   };
 
   resizeBlockRightBound = (block: Block<StandardParams>, delta: number) => {
-    // Do not allow end of block to be dragged before start of block
-    if (block.duration + delta < 0) return;
+    const desiredEndTime = block.endTime + delta;
+
+    // do not allow changing end of block past start of self
+    if (desiredEndTime <= block.startTime) return;
+
+    // do not allow changing end of block past start of next block
+    const nextBlock = this.blocks[this.blocks.indexOf(block) + 1];
+    if (nextBlock && desiredEndTime > nextBlock.startTime) {
+      block.duration = nextBlock.startTime - block.startTime;
+      return;
+    }
+
     block.duration += delta;
   };
 }
