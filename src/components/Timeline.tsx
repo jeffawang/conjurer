@@ -21,6 +21,7 @@ export default observer(function Timeline() {
   return (
     <Grid
       ref={gridRef}
+      width="90vw" // TODO: do better
       templateAreas={`"timerControls  controls"
                       "timer          ruler"
                       "layersHeader   layers"`}
