@@ -1,4 +1,4 @@
-import theme from "@/modules/common/theme/theme";
+import theme from "@/src/theme/theme";
 import { ColorModeScript } from "@chakra-ui/react";
 import { Html, Head, Main, NextScript } from "next/document";
 
