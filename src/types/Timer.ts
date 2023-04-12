@@ -2,6 +2,7 @@ import { FRAMES_PER_SECOND, MAX_TIME } from "@/src/utils/time";
 import { makeAutoObservable, runInAction } from "mobx";
 
 export default class Timer {
+  _lastStartedAt = 0;
   _globalTime = 0;
   playing = false;
 
@@ -25,6 +26,10 @@ export default class Timer {
 
   togglePlaying = () => {
     this.playing = !this.playing;
+
+    if (this.playing) {
+      this._lastStartedAt = Date.now();
+    }
   };
 
   tick = () => {
@@ -35,6 +40,6 @@ export default class Timer {
       return;
     }
 
-    this.globalTime += 1 / FRAMES_PER_SECOND;
+    this.globalTime = (Date.now() - this._lastStartedAt) / 1000;
   };
 }

@@ -10,6 +10,7 @@ import TimerControls from "@/src/components/TimerControls";
 import { useRef } from "react";
 import Controls from "@/src/components/Controls";
 import useWheelZooming from "@/src/hooks/wheelZooming";
+import Waveform from "@/src/components/Waveform";
 
 export default observer(function Timeline() {
   const { timer, uiStore } = useStore();
@@ -44,6 +45,7 @@ export default observer(function Timeline() {
         </Box>
       </GridItem>
       <GridItem area="ruler">
+        <Waveform />
         <Box
           ref={rulerBoxRef}
           position="relative"
