@@ -23,11 +23,11 @@ export default observer(function Waveform() {
         container: waveformRef.current!,
         waveColor: "#eee",
         progressColor: "#0178FF",
-        cursorColor: "OrangeRed",
+        cursorColor: "#00000000",
         barWidth: 2,
         barRadius: 2,
         responsive: true,
-        height: 36,
+        height: 32,
         normalize: true,
         partialRender: true,
         hideScrollbar: true,
@@ -58,8 +58,16 @@ export default observer(function Waveform() {
     wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
   }, [uiStore.pixelsPerSecond]);
 
+  useEffect(() => {
+    if (wavesurferRef.current) {
+      const progress =
+        timer.lastCursorPosition / wavesurferRef.current.getDuration();
+      wavesurferRef.current.seekTo(progress);
+    }
+  }, [timer.lastCursorPosition]);
+
   return (
-    <Box width={"100%"}>
+    <Box position="absolute" top={1.5} width="100%">
       <div id="waveform" ref={waveformRef} />
     </Box>
   );

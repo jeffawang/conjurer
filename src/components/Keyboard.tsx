@@ -19,8 +19,8 @@ export default observer(function Keyboard() {
       ) {
         timer.togglePlaying();
         e.preventDefault();
-      } else if (e.key === "ArrowLeft") timer.globalTime -= 0.2;
-      else if (e.key === "ArrowRight") timer.globalTime += 0.2;
+      } else if (e.key === "ArrowLeft") timer.skipBackward();
+      else if (e.key === "ArrowRight") timer.skipForward();
       // else if (e.key === "z" && e.ctrlKey) store.undo();
       // else if (e.key === "y" && e.ctrlKey) store.redo();
       else if (e.key === "a" && (e.ctrlKey || e.metaKey)) {

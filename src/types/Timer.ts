@@ -2,8 +2,10 @@ import { FRAMES_PER_SECOND, MAX_TIME } from "@/src/utils/time";
 import { makeAutoObservable, runInAction } from "mobx";
 
 export default class Timer {
-  _lastStartedAt = 0;
+  _lastStartedAtDateTime = 0;
   _globalTime = 0;
+
+  lastCursorPosition = 0;
   playing = false;
 
   get globalTime() {
@@ -28,7 +30,8 @@ export default class Timer {
     this.playing = !this.playing;
 
     if (this.playing) {
-      this._lastStartedAt = Date.now();
+      this._lastStartedAtDateTime = Date.now();
+      this.lastCursorPosition = this._globalTime;
     }
   };
 
@@ -40,6 +43,22 @@ export default class Timer {
       return;
     }
 
-    this.globalTime = (Date.now() - this._lastStartedAt) / 1000;
+    this.globalTime =
+      this.lastCursorPosition +
+      (Date.now() - this._lastStartedAtDateTime) / 1000;
+  };
+
+  setTime = (time: number) => {
+    this.globalTime = time;
+    this.lastCursorPosition = time;
+    this._lastStartedAtDateTime = Date.now();
+  };
+
+  skipBackward = () => {
+    this.setTime(this.globalTime - 0.2);
+  };
+
+  skipForward = () => {
+    this.setTime(this.globalTime + 0.2);
   };
 }

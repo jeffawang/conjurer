@@ -17,7 +17,7 @@ export default observer(function TimeMarker() {
       transform={`translateX(${uiStore.timeToXPixels(timer.globalTime)})`}
       willChange="transform"
       overflowY="visible"
-      zIndex={1}
+      zIndex={10}
     >
       <FaLongArrowAltDown
         style={{ position: "absolute", top: "8px", left: "-12px" }}
@@ -30,7 +30,6 @@ export default observer(function TimeMarker() {
         bgColor="red"
         width="1px"
         height="200px"
-        zIndex={1}
       />
     </Box>
   );

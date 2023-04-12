@@ -40,24 +40,26 @@ export default observer(function Timeline() {
         </HStack>
       </GridItem>
       <GridItem area="timer">
-        <Box height={9} bgColor="gray.500">
+        <VStack height={10} bgColor="gray.500" justify="center">
           <TimerReadout />
-        </Box>
+        </VStack>
       </GridItem>
       <GridItem area="ruler">
-        <Waveform />
         <Box
           ref={rulerBoxRef}
           position="relative"
-          height={9}
+          height={10}
           bgColor="gray.500"
           onClick={action((e) => {
             if (rulerBoxRef.current)
-              timer.globalTime = uiStore.xToTime(
-                e.clientX - rulerBoxRef.current.getBoundingClientRect().x,
+              timer.setTime(
+                uiStore.xToTime(
+                  e.clientX - rulerBoxRef.current.getBoundingClientRect().x,
+                ),
               );
           })}
         >
+          <Waveform />
           <Ruler />
           <TimeMarker />
         </Box>

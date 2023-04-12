@@ -7,14 +7,14 @@ export default observer(function Ruler() {
   const { pixelsPerSecond } = uiStore;
 
   return (
-    <svg width="3000" height="36">
+    <svg width="3000" height="40">
       <defs>
         <pattern
           id="mix-editor-grid-pattern"
           x="0"
           y="0"
           width={`${pixelsPerSecond}`}
-          height="36"
+          height="40"
           patternUnits="userSpaceOnUse"
         >
           <rect width="0.5" height="3240" x="0" y="0" />
@@ -38,23 +38,25 @@ export default observer(function Ruler() {
           />
         </pattern>
       </defs>
+      <g z="1">
+        {Array.from({ length: 60 * 4 }).map((_, i) => (
+          <text
+            key={i}
+            className={styles.rulerText}
+            x={i * pixelsPerSecond + 3}
+            y="12"
+          >
+            {i % 60}
+          </text>
+        ))}
+      </g>
 
-      {Array.from({ length: 60 * 4 }).map((_, i) => (
-        <text
-          key={i}
-          className={styles.rulerText}
-          x={i * pixelsPerSecond + 3}
-          y="12"
-        >
-          {i % 60}
-        </text>
-      ))}
       <rect
         fill="url(#mix-editor-grid-pattern)"
         x="0"
         y="0"
         width="3000"
-        height="36"
+        height="40"
       />
     </svg>
   );
