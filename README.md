@@ -21,7 +21,6 @@ yarn dev
 
 ## Major todos
 
-- Play an audio file - Show it as a wave form above the pattern layer
 - Persist arrangement to local storage
   - Potentially allow sharing via base64 encoded strings?
 - Persist to a backend
