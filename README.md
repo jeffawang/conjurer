@@ -16,27 +16,15 @@ yarn dev
 
 ### Tips
 
-- We use [default theme](https://chakra-ui.com/docs/styled-system/theme#gray) of [Chakra](https://chakra-ui.com/) for our UI in this repo.
+- We use the [default theme](https://chakra-ui.com/docs/styled-system/theme#gray) of [Chakra](https://chakra-ui.com/) for our UI in this repo.
 - We use [MobX](https://github.com/mobxjs/mobx) for state management. It's not Redux!
 
-## Concepts
+## Major todos
 
-- timeline
-- pattern
-  - shader source code (frag?)
-  - uniforms definition (generic + )
-- effect
-- block
-
-  - abstract container of a pattern or effect
-
-- uniforms
-  - u_time
-  - u_global_time
-  - u_resolution
-  - generic other stuff defined
-
-## Performance Issues
-
-- Potentially need to use useCallback to better leverage memoization
-- React fiber deep dive https://blog.logrocket.com/deep-dive-react-fiber/
+- Play an audio file - Show it as a wave form above the pattern layer
+- Persist arrangement to local storage
+  - Potentially allow sharing via base64 encoded strings?
+- Persist to a backend
+- Add effects - shaders that accept a texture and apply an effect, outputting a new texture that can be rendered to the screen or fed into another effect
+- Add parameter variations - easing functions that can be applied to pattern or effect parameters (shader uniforms)
+- Make all the patterns! Make all the effects!
