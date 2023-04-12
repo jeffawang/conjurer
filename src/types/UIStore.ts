@@ -1,3 +1,4 @@
+import { INITIAL_PIXELS_PER_SECOND } from "@/src/utils/time";
 import { makeAutoObservable, runInAction } from "mobx";
 
 const MAX_PIXELS_PER_SECOND = 100;
@@ -10,7 +11,7 @@ const MIN_PIXELS_PER_SECOND = 12;
  * @class UIStore
  */
 export default class UIStore {
-  pixelsPerSecond = 40; // this controls the zoom of the timeline
+  pixelsPerSecond = INITIAL_PIXELS_PER_SECOND; // this controls the zoom of the timeline
 
   constructor() {
     makeAutoObservable(this);
