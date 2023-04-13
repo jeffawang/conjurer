@@ -1,5 +1,5 @@
 import { FRAMES_PER_SECOND, MAX_TIME } from "@/src/utils/time";
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 
 export default class Timer {
   _lastStartedAtDateTime = 0;
