@@ -22,9 +22,10 @@ export default observer(function Timeline() {
   const rulerDrag = action((e: MouseEvent) => {
     if (rulerBoxRef.current)
       timer.setTime(
-        uiStore.xToTime(
-          e.clientX - rulerBoxRef.current.getBoundingClientRect().x,
-        ),
+        Math.max(0,
+          uiStore.xToTime(
+            e.clientX - rulerBoxRef.current.getBoundingClientRect().x,
+          )),
       );
   })
 
