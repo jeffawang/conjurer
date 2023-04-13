@@ -8,31 +8,25 @@ export default function Editor() {
   return (
     <Box w="100vw" h="100vh">
       <Grid
-        templateAreas={`"patterns header"
-                        "patterns display"
+        templateAreas={`"patterns display"
                         "patterns timeline"
                         "patterns instructions"`}
-        gridTemplateColumns="165px 1fr"
-        gridTemplateRows="auto auto auto 1fr"
-        gap={2}
+        gridTemplateColumns="165px calc(100vw - 165px)"
+        gridTemplateRows="auto auto 1fr"
         height="100vh"
         fontWeight="bold"
       >
-        <GridItem marginY="2" area="header">
-          <VStack justifyContent="center">
-            <Heading>Conjurer</Heading>
-          </VStack>
-        </GridItem>
+        <GridItem area="header"></GridItem>
         <GridItem px="2" area="patterns" bgColor="gray.600">
           <PatternList />
         </GridItem>
-        <GridItem pl="2" area="display">
+        <GridItem area="display">
           <Display />
         </GridItem>
-        <GridItem pl="2" area="timeline">
+        <GridItem area="timeline">
           <Timeline />
         </GridItem>
-        <GridItem pl="2" area="instructions">
+        <GridItem area="instructions">
           <Keyboard />
         </GridItem>
       </Grid>
