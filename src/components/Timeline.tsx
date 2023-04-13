@@ -19,6 +19,15 @@ export default observer(function Timeline() {
 
   useWheelZooming(gridRef.current);
 
+  const rulerDrag = action((e: MouseEvent) => {
+    if (rulerBoxRef.current)
+      timer.setTime(
+        uiStore.xToTime(
+          e.clientX - rulerBoxRef.current.getBoundingClientRect().x,
+        ),
+      );
+  })
+
   return (
     <Grid
       ref={gridRef}
@@ -50,13 +59,10 @@ export default observer(function Timeline() {
           position="relative"
           height={10}
           bgColor="gray.500"
-          onClick={action((e) => {
-            if (rulerBoxRef.current)
-              timer.setTime(
-                uiStore.xToTime(
-                  e.clientX - rulerBoxRef.current.getBoundingClientRect().x,
-                ),
-              );
+          onMouseDown={action((e) => {
+            rulerDrag(e.nativeEvent);
+            window.addEventListener('mousemove', rulerDrag);
+            window.addEventListener('mouseup', ()=>window.removeEventListener('mousemove', rulerDrag));
           })}
         >
           <Waveform />
