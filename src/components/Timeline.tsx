@@ -62,7 +62,7 @@ export default observer(function Timeline() {
           onMouseDown={action((e) => {
             rulerDrag(e.nativeEvent);
             window.addEventListener('mousemove', rulerDrag);
-            window.addEventListener('mouseup', ()=>window.removeEventListener('mousemove', rulerDrag));
+            window.addEventListener('mouseup', () => window.removeEventListener('mousemove', rulerDrag), { once: true });
           })}
         >
           <Waveform />
