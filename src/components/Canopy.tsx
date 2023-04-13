@@ -4,12 +4,13 @@ import { useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import vert from "@/src/patterns/shaders/canopy.vert";
+import black from "@/src/patterns/shaders/black.frag"
 import { LED_COUNTS, STRIP_LENGTH } from "@/src/utils/size";
 import catenary from "@/src/utils/catenary";
 
 type CanopyViewProps = {};
 
-export default observer(function Canopy({}: CanopyViewProps) {
+export default observer(function Canopy({ }: CanopyViewProps) {
   const { currentBlock } = useStore();
   const shaderMaterial = useRef<ShaderMaterial>(null);
 
@@ -52,16 +53,14 @@ export default observer(function Canopy({}: CanopyViewProps) {
       currentBlock.update(globalTime - currentBlock.startTime, globalTime);
   });
 
-  if (!currentBlock) return null;
-
   return (
     <points>
       <primitive attach="geometry" object={bufferGeometry} />
       <shaderMaterial
-        key={currentBlock.id}
+        key={currentBlock?.id}
         ref={shaderMaterial}
-        uniforms={currentBlock.pattern.params}
-        fragmentShader={currentBlock.pattern.src}
+        uniforms={currentBlock?.pattern.params}
+        fragmentShader={currentBlock ? currentBlock.pattern.src : black}
         vertexShader={vert}
       />
     </points>
