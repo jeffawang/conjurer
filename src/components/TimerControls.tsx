@@ -15,7 +15,7 @@ export default observer(function TimerControls() {
         height={6}
         icon={<FaStepBackward size={10} />}
         onClick={action(() => {
-          timer.globalTime = 0;
+          timer.setTime(0);
         })}
       />
       <IconButton
