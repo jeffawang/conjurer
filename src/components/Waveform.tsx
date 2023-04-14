@@ -2,73 +2,141 @@ import { useStore } from "@/src/types/StoreContext";
 import { INITIAL_PIXELS_PER_SECOND } from "@/src/utils/time";
 import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import * as THREE from "three";
+import waveformShaderSrc from "@/src/patterns/shaders/waveform.frag";
+import vert from "@/src/patterns/shaders/default.vert";
+import { Texture } from "@react-three/postprocessing";
 
 export default observer(function Waveform() {
   const initialized = useRef(false);
-  const wavesurferRef = useRef<WaveSurfer | null>(null);
-  const waveformRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { timer, uiStore } = useStore();
+  const [numSamples, setNumSamples] = useState(0);
+
+  class AudioTextureStore {
+    texture?: THREE.DataTexture;
+
+    setTexture(texture: THREE.DataTexture) {
+      this.texture = texture;
+    }
+  }
+
+  const audioTextureStore = new AudioTextureStore();
 
   useEffect(() => {
     if (initialized.current) return;
-
     const create = async () => {
-      // Cannot be run on the server, so we need to use dynamic import
-      const WaveSurfer = (await import("wavesurfer.js")).default;
+      const audioContext = new AudioContext();
+      fetch("/cloudkicker-explorebecurious.mp3")
+        .then((response) => response.arrayBuffer())
+        .then((arrayBuffer) => audioContext.decodeAudioData(arrayBuffer))
+        .then((audioBuffer) => {
+          const audioData = audioBuffer.getChannelData(0);
+          const floatArray = Float32Array.from(audioData);
+          // console.log(floatArray.length);
+          // const sampleTex = new THREE.DataTexture(
+          //   floatArray,
+          //   audioBuffer.length,
+          //   1,
+          //   THREE.RedFormat,
+          //   THREE.FloatType
+          // );
+          // sampleTex.needsUpdate = true;
 
-      // https://wavesurfer-js.org/docs/options.html
-      const options = {
-        container: waveformRef.current!,
-        waveColor: "#eee",
-        progressColor: "#0178FF",
-        cursorColor: "#00000000",
-        barWidth: 2,
-        barRadius: 2,
-        responsive: true,
-        height: 32,
-        normalize: true,
-        partialRender: true,
-        hideScrollbar: true,
-        interact: false,
-        minPxPerSec: INITIAL_PIXELS_PER_SECOND,
-      };
-      wavesurferRef.current = WaveSurfer.create(options);
-      wavesurferRef.current.zoom(INITIAL_PIXELS_PER_SECOND);
+          const sampleCount = audioBuffer.length;
+          const sampleTexWidth = 1024;
+          const sampleTexHeight = Math.floor(
+            sampleCount / (4 * sampleTexWidth)
+          );
+          const sampleTex = new THREE.DataTexture(
+            floatArray,
+            sampleTexWidth,
+            sampleTexHeight,
+            THREE.RGBAFormat,
+            THREE.FloatType
+          );
+          sampleTex.needsUpdate = true;
 
-      wavesurferRef.current.load("/cloudkicker-explorebecurious.mp3");
+          // Too bad this doesn't work :'(
+          setNumSamples(audioData.length);
+
+          audioTextureStore.setTexture(sampleTex);
+          if (canvasRef.current != null) {
+            const renderer = new THREE.WebGLRenderer({
+              canvas: canvasRef.current,
+              alpha: false,
+            });
+            const uniforms = {
+              bgColor: { value: new THREE.Vector4(0.2, 0.3, 0.7, 1) },
+              activeColor: { value: new THREE.Vector4(0.9, 0.9, 0.9, 1) },
+              outWidth: { value: 1024.0 },
+              outHeight: { value: 40.0 },
+              sampleStart: { value: 0.0 },
+              sampleEnd: { value: audioData.length },
+              sampleWidth: { value: 1024.0 },
+              sampleHeight: { value: sampleTexHeight },
+              samples: { value: sampleTex },
+              numSamples: { value: audioData.length },
+            };
+            console.log(uniforms);
+            const geometry = new THREE.PlaneGeometry(2, 2);
+            const waveformShader = new THREE.ShaderMaterial({
+              uniforms: uniforms,
+              //   vertexShader: `
+              //   void main() {
+              //     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+              //   }
+              // `,
+              vertexShader: vert,
+              fragmentShader: waveformShaderSrc,
+            });
+            const mesh = new THREE.Mesh(geometry, waveformShader);
+            const scene = new THREE.Scene();
+            scene.add(mesh);
+            const camera = new THREE.OrthographicCamera(
+              -1, // Left
+              1, // Right
+              1, // Top
+              -1, // Bottom
+              0.1, // Near
+              10 // Far
+            );
+            camera.position.z = 1;
+            renderer.setSize(1024, 40); // Set the size of the renderer
+            renderer.render(scene, camera);
+          }
+        })
+        .catch((error) => console.error(error));
     };
 
     create();
     initialized.current = true;
 
-    return () => wavesurferRef.current?.destroy();
+    return () => {};
   }, []);
 
   useEffect(() => {
     if (timer.playing) {
-      wavesurferRef.current?.play();
-    } else {
-      wavesurferRef.current?.pause();
     }
   }, [timer.playing]);
 
   useEffect(() => {
-    wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
+    uiStore.pixelsPerSecond;
   }, [uiStore.pixelsPerSecond]);
 
   useEffect(() => {
-    if (wavesurferRef.current) {
-      const duration = wavesurferRef.current.getDuration();
-      const progress = duration > 0 ? timer.lastCursor.position / duration : 0;
-      wavesurferRef.current.seekTo(progress);
+    if (/*is initialized*/ true) {
+      const progress =
+        timer.lastCursorPosition / 1; /*wavesurferRef.current.getDuration()*/
+      //wavesurferRef.current.seekTo(progress);
     }
   }, [timer.lastCursor.position]);
 
   return (
     <Box position="absolute" top={1.5} width="100%">
-      <div id="waveform" ref={waveformRef} />
+      <canvas id="itsamethecanvas" ref={canvasRef} />
     </Box>
   );
 });
