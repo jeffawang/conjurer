@@ -11,20 +11,10 @@ export default observer(function Waveform() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { timer, uiStore } = useStore();
-  const [numSamples, setNumSamples] = useState(0);
-
-  class AudioTextureStore {
-    texture?: THREE.DataTexture;
-
-    setTexture(texture: THREE.DataTexture) {
-      this.texture = texture;
-    }
-  }
-
-  const audioTextureStore = new AudioTextureStore();
 
   useEffect(() => {
     if (initialized.current) return;
+
     const create = async () => {
       const response = await fetch("/cloudkicker-explorebecurious.mp3");
       const arrayBuffer = await response.arrayBuffer();
@@ -55,54 +45,50 @@ export default observer(function Waveform() {
       );
       sampleTex.needsUpdate = true;
 
-      // Too bad this doesn't work :'(
-      setNumSamples(audioData.length);
+      if (!canvasRef.current) return;
 
-      audioTextureStore.setTexture(sampleTex);
-      if (canvasRef.current != null) {
-        const renderer = new THREE.WebGLRenderer({
-          canvas: canvasRef.current,
-          alpha: false,
-        });
-        const uniforms = {
-          bgColor: { value: new THREE.Vector4(0.2, 0.3, 0.7, 1) },
-          activeColor: { value: new THREE.Vector4(0.9, 0.9, 0.9, 1) },
-          outWidth: { value: 1024.0 },
-          outHeight: { value: 40.0 },
-          sampleStart: { value: 0.0 },
-          sampleEnd: { value: audioData.length },
-          sampleWidth: { value: 1024.0 },
-          sampleHeight: { value: sampleTexHeight },
-          samples: { value: sampleTex },
-          numSamples: { value: audioData.length },
-        };
-        console.log(uniforms);
-        const geometry = new THREE.PlaneGeometry(2, 2);
-        const waveformShader = new THREE.ShaderMaterial({
-          uniforms: uniforms,
-          //   vertexShader: `
-          //   void main() {
-          //     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          //   }
-          // `,
-          vertexShader: vert,
-          fragmentShader: waveformShaderSrc,
-        });
-        const mesh = new THREE.Mesh(geometry, waveformShader);
-        const scene = new THREE.Scene();
-        scene.add(mesh);
-        const camera = new THREE.OrthographicCamera(
-          -1, // Left
-          1, // Right
-          1, // Top
-          -1, // Bottom
-          0.1, // Near
-          10 // Far
-        );
-        camera.position.z = 1;
-        renderer.setSize(1024, 40); // Set the size of the renderer
-        renderer.render(scene, camera);
-      }
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvasRef.current,
+        alpha: false,
+      });
+      const uniforms = {
+        bgColor: { value: new THREE.Vector4(0.2, 0.3, 0.7, 1) },
+        activeColor: { value: new THREE.Vector4(0.9, 0.9, 0.9, 1) },
+        outWidth: { value: 1024.0 },
+        outHeight: { value: 40.0 },
+        sampleStart: { value: 0.0 },
+        sampleEnd: { value: audioData.length },
+        sampleWidth: { value: 1024.0 },
+        sampleHeight: { value: sampleTexHeight },
+        samples: { value: sampleTex },
+        numSamples: { value: audioData.length },
+      };
+      console.log(uniforms);
+      const geometry = new THREE.PlaneGeometry(2, 2);
+      const waveformShader = new THREE.ShaderMaterial({
+        uniforms: uniforms,
+        //   vertexShader: `
+        //   void main() {
+        //     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        //   }
+        // `,
+        vertexShader: vert,
+        fragmentShader: waveformShaderSrc,
+      });
+      const mesh = new THREE.Mesh(geometry, waveformShader);
+      const scene = new THREE.Scene();
+      scene.add(mesh);
+      const camera = new THREE.OrthographicCamera(
+        -1, // Left
+        1, // Right
+        1, // Top
+        -1, // Bottom
+        0.1, // Near
+        10 // Far
+      );
+      camera.position.z = 1;
+      renderer.setSize(1024, 40); // Set the size of the renderer
+      renderer.render(scene, camera);
     };
 
     create();
