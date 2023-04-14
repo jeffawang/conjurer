@@ -2,9 +2,9 @@ import { FRAMES_PER_SECOND, MAX_TIME } from "@/src/utils/time";
 import { makeAutoObservable, runInAction } from "mobx";
 
 export default class Timer {
-  _lastStartedAtDateTime = 0;
-  _globalTime = 0;
-  _lastCursorPosition = 0;
+  private _lastStartedAtDateTime = 0;
+  private _globalTime = 0;
+  private _lastCursor = { position: 0 };
 
   playing = false;
 
@@ -16,12 +16,23 @@ export default class Timer {
     this._globalTime = time < 0 ? 0 : time;
   }
 
+  /**
+   * The last cursor position that was set by the user. This is listenable/observable, since it is and object and not a primitive.
+   *
+   * @readonly
+   * @memberof Timer
+   */
+  get lastCursor() {
+    return this._lastCursor;
+  }
+
   get lastCursorPosition() {
-    return this._lastCursorPosition;
+    return this._lastCursor.position;
   }
 
   set lastCursorPosition(time: number) {
-    this._lastCursorPosition = time < 0 ? 0 : time;
+    // instantiate a new object here to trigger Mobx reactions
+    this._lastCursor = { position: time < 0 ? 0 : time };
   }
 
   constructor() {
@@ -39,7 +50,7 @@ export default class Timer {
 
     if (this.playing) {
       this._lastStartedAtDateTime = Date.now();
-      this.lastCursorPosition = this._globalTime;
+      this.lastCursorPosition = this.globalTime;
     }
   };
 

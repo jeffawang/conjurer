@@ -61,10 +61,10 @@ export default observer(function Waveform() {
   useEffect(() => {
     if (wavesurferRef.current) {
       const duration = wavesurferRef.current.getDuration();
-      const progress = duration > 0 ? timer.lastCursorPosition / wavesurferRef.current.getDuration() : 0;
+      const progress = duration > 0 ? timer.lastCursor.position / duration : 0;
       wavesurferRef.current.seekTo(progress);
     }
-  }, [timer.lastCursorPosition]);
+  }, [timer.lastCursor.position]);
 
   return (
     <Box position="absolute" top={1.5} width="100%">

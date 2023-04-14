@@ -14,9 +14,7 @@ export default observer(function TimerControls() {
         aria-label="Backward"
         height={6}
         icon={<FaStepBackward size={10} />}
-        onClick={action(() => {
-          timer.setTime(0);
-        })}
+        onClick={action(() => timer.setTime(0))}
       />
       <IconButton
         aria-label="Play"
@@ -30,7 +28,7 @@ export default observer(function TimerControls() {
         height={6}
         icon={<FaStepForward size={10} />}
         onClick={action(() => {
-          timer.globalTime = MAX_TIME;
+          timer.setTime(MAX_TIME);
           timer.playing = false;
         })}
       />
