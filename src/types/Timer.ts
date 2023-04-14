@@ -4,8 +4,8 @@ import { makeAutoObservable, runInAction } from "mobx";
 export default class Timer {
   _lastStartedAtDateTime = 0;
   _globalTime = 0;
+  _lastCursorPosition = 0;
 
-  lastCursorPosition = 0;
   playing = false;
 
   get globalTime() {
@@ -14,6 +14,14 @@ export default class Timer {
 
   set globalTime(time: number) {
     this._globalTime = time < 0 ? 0 : time;
+  }
+
+  get lastCursorPosition() {
+    return this._lastCursorPosition;
+  }
+
+  set lastCursorPosition(time: number) {
+    this._lastCursorPosition = time < 0 ? 0 : time;
   }
 
   constructor() {
