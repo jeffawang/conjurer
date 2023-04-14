@@ -64,7 +64,7 @@ export default observer(function Waveform() {
       const progress = duration > 0 ? timer.lastCursorPosition / wavesurferRef.current.getDuration() : 0;
       wavesurferRef.current.seekTo(progress);
     }
-  }, [timer.lastCursorPosition, timer._lastStartedAtDateTime]);
+  }, [timer.lastCursorPosition]);
 
   return (
     <Box position="absolute" top={1.5} width="100%">
