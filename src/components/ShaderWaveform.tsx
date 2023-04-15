@@ -1,6 +1,4 @@
-import { useStore } from "@/src/types/StoreContext";
 import { Box } from "@chakra-ui/react";
-import { observer } from "mobx-react-lite";
 import { useRef, useEffect, memo, useState } from "react";
 import * as THREE from "three";
 import { IUniform } from "three";
@@ -8,7 +6,7 @@ import waveformShaderSrc from "@/src/patterns/shaders/waveform.frag";
 import vert from "@/src/patterns/shaders/default.vert";
 import { Canvas } from "@react-three/fiber";
 
-export default memo(function Waveform() {
+export default memo(function ShaderWaveform() {
   const [initialized, setInitialized] = useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
