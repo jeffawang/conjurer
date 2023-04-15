@@ -4,17 +4,22 @@ import { useCallback, useEffect } from "react";
 export default function useWheelZooming(element: HTMLElement | null) {
   const { uiStore } = useStore();
 
-  // TODO: fix zooming on trackpads
   const wheelZooming = useCallback(
     (e: WheelEvent) => {
-      e.preventDefault();
-      if (e.deltaY > 0) {
+      // If scrolling horizontally, don't zoom
+      console.log(e.deltaX, e.deltaY);
+      if (e.deltaX > 1 || e.deltaX < -1) return;
+
+      if (e.deltaY > 1) {
+        console.log(e.deltaY);
         uiStore.zoomOut();
-      } else {
+        e.preventDefault();
+      } else if (e.deltaY < -1) {
         uiStore.zoomIn();
+        e.preventDefault();
       }
     },
-    [uiStore],
+    [uiStore]
   );
 
   useEffect(() => {

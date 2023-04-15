@@ -1,6 +1,7 @@
 import styles from "@/styles/Ruler.module.css";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
+import { MAX_TIME } from "@/src/utils/time";
 
 export default observer(function Ruler() {
   const { uiStore } = useStore();
@@ -40,7 +41,7 @@ export default observer(function Ruler() {
       </defs>
       <g z="1">
         {/* TODO: maybe do something different here, use pattern? */}
-        {Array.from({ length: 60 * 4 }).map((_, i) => (
+        {Array.from({ length: MAX_TIME }).map((_, i) => (
           <text
             key={i}
             className={styles.rulerText}

@@ -2,7 +2,7 @@ import { INITIAL_PIXELS_PER_SECOND } from "@/src/utils/time";
 import { makeAutoObservable, runInAction } from "mobx";
 
 const MAX_PIXELS_PER_SECOND = 90;
-const MIN_PIXELS_PER_SECOND = 12;
+const MIN_PIXELS_PER_SECOND = 2;
 
 /**
  * MobX store for UI state.

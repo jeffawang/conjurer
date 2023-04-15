@@ -12,6 +12,7 @@ import Controls from "@/src/components/Controls";
 import useWheelZooming from "@/src/hooks/wheelZooming";
 import ShaderWaveform from "@/src/components/ShaderWaveform";
 import WavesurferWaveform from "@/src/components/WavesurferWaveform";
+import { MAX_TIME } from "@/src/utils/time";
 
 export default observer(function Timeline() {
   const { timer, uiStore } = useStore();
@@ -34,26 +35,33 @@ export default observer(function Timeline() {
 
   return (
     <>
-      <Box
-        ref={rulerBoxRef}
-        position="relative"
-        height={10}
-        bgColor="gray.500"
-        onMouseDown={action((e) => {
-          rulerDrag(e.nativeEvent);
-          window.addEventListener("mousemove", rulerDrag);
-          window.addEventListener(
-            "mouseup",
-            () => window.removeEventListener("mousemove", rulerDrag),
-            { once: true }
-          );
-        })}
-      >
-        {uiStore.usingWavesurfer ? <WavesurferWaveform /> : <ShaderWaveform />}
-        <Ruler />
-        <TimeMarker />
+      <Box overflowX="scroll">
+        <Box
+          ref={rulerBoxRef}
+          position="relative"
+          height={10}
+          width={uiStore.timeToXPixels(MAX_TIME)}
+          bgColor="gray.500"
+          onMouseDown={action((e) => {
+            rulerDrag(e.nativeEvent);
+            window.addEventListener("mousemove", rulerDrag);
+            window.addEventListener(
+              "mouseup",
+              () => window.removeEventListener("mousemove", rulerDrag),
+              { once: true }
+            );
+          })}
+        >
+          {uiStore.usingWavesurfer ? (
+            <WavesurferWaveform />
+          ) : (
+            <ShaderWaveform />
+          )}
+          <Ruler />
+          <TimeMarker />
+        </Box>
+        <Layer />
       </Box>
-      <Layer />
     </>
   );
 });
