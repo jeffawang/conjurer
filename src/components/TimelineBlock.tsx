@@ -1,5 +1,5 @@
 import Block from "@/src/types/Block";
-import { StandardParams } from "@/src/types/PatternParams";
+import { PatternParams } from "@/src/types/PatternParams";
 import { useStore } from "@/src/types/StoreContext";
 import TimelineBlockBound from "@/src/components/TimelineBlockBound";
 import { Card, HStack, Text, VStack } from "@chakra-ui/react";
@@ -10,9 +10,10 @@ import Draggable from "react-draggable";
 import { DraggableData } from "react-draggable";
 import { DraggableEvent } from "react-draggable";
 import { MdDragIndicator } from "react-icons/md";
+import ParametersList from "@/src/components/ParametersList";
 
 type TimelineBlockProps = {
-  block: Block<StandardParams>;
+  block: Block<PatternParams>;
 };
 
 export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
@@ -32,7 +33,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
     // prevent block overlaps for now by snapping to nearest valid start time
     const validTimeDelta = store.nearestValidStartTimeDelta(
       block,
-      uiStore.xToTime(position.x),
+      uiStore.xToTime(position.x)
     );
     store.changeBlockStartTime(block, block.startTime + validTimeDelta);
     setPosition({ x: 0, y: 0 });
@@ -55,18 +56,18 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
       }
       e.stopPropagation();
     },
-    [store, block, selectedBlocks],
+    [store, block, selectedBlocks]
   );
 
   const isSelected = selectedBlocks.has(block);
 
   const handleLeftBoundResize = useCallback(
     (delta: number) => store.resizeBlockLeftBound(block, delta),
-    [block, store],
+    [block, store]
   );
   const handleRightBoundResize = useCallback(
     (delta: number) => store.resizeBlockRightBound(block, delta),
-    [block, store],
+    [block, store]
   );
 
   return (
@@ -112,6 +113,10 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
           <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
             {block.pattern.name}
           </Text>
+          <ParametersList
+            block={block}
+            width={uiStore.timeToX(block.duration)}
+          />
         </VStack>
       </Card>
     </Draggable>
