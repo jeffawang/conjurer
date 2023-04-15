@@ -10,7 +10,8 @@ import TimerControls from "@/src/components/TimerControls";
 import { useRef } from "react";
 import Controls from "@/src/components/Controls";
 import useWheelZooming from "@/src/hooks/wheelZooming";
-import Waveform from "@/src/components/ShaderWaveform";
+import ShaderWaveform from "@/src/components/ShaderWaveform";
+import WavesurferWaveform from "@/src/components/WavesurferWaveform";
 
 export default observer(function Timeline() {
   const { timer, uiStore } = useStore();
@@ -72,7 +73,11 @@ export default observer(function Timeline() {
             );
           })}
         >
-          <Waveform />
+          {uiStore.usingWavesurfer ? (
+            <WavesurferWaveform />
+          ) : (
+            <ShaderWaveform />
+          )}
           <Ruler />
           <TimeMarker />
         </Box>
