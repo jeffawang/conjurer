@@ -4,7 +4,7 @@ import Ruler from "@/src/components/Ruler";
 import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
 import Layer from "@/src/components/Layer";
-import TimeMarker from "@/src/components/TimeMarker";
+import PlayHead from "@/src/components/PlayHead";
 import TimerReadout from "@/src/components/TimerReadout";
 import TimerControls from "@/src/components/TimerControls";
 import { useRef } from "react";
@@ -58,7 +58,7 @@ export default observer(function Timeline() {
             <ShaderWaveform />
           )}
           <Ruler />
-          <TimeMarker />
+          <PlayHead />
         </Box>
         <Layer />
       </Box>
