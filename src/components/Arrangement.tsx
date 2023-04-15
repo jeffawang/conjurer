@@ -13,7 +13,7 @@ import useWheelZooming from "@/src/hooks/wheelZooming";
 import ShaderWaveform from "@/src/components/ShaderWaveform";
 import WavesurferWaveform from "@/src/components/WavesurferWaveform";
 
-export default observer(function Timeline() {
+export default observer(function Arrangement() {
   const { timer, uiStore } = useStore();
   const rulerBoxRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -36,8 +36,7 @@ export default observer(function Timeline() {
     <Grid
       ref={gridRef}
       templateAreas={`"timerControls  controls"
-                      "timer          ruler"
-                      "layersHeader   layers"`}
+                      "left          right"`}
       gridTemplateColumns="150px calc(100vw - 165px - 150px)" // TODO: do better
       fontWeight="bold"
     >
@@ -51,12 +50,17 @@ export default observer(function Timeline() {
           <Controls />
         </HStack>
       </GridItem>
-      <GridItem area="timer">
+      <GridItem area="left">
         <VStack height={10} bgColor="gray.500" justify="center">
           <TimerReadout />
         </VStack>
+        <VStack height="100%" justify="center">
+          <Heading userSelect="none" size="md">
+            Layer
+          </Heading>
+        </VStack>
       </GridItem>
-      <GridItem area="ruler">
+      <GridItem area="right">
         <Box
           ref={rulerBoxRef}
           position="relative"
@@ -80,15 +84,6 @@ export default observer(function Timeline() {
           <Ruler />
           <TimeMarker />
         </Box>
-      </GridItem>
-      <GridItem area="layersHeader">
-        <VStack height="100%" justify="center">
-          <Heading userSelect="none" size="md">
-            Layer
-          </Heading>
-        </VStack>
-      </GridItem>
-      <GridItem area="layers">
         <Layer />
       </GridItem>
     </Grid>
