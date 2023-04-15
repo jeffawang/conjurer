@@ -39,6 +39,7 @@ export default observer(function Ruler() {
         </pattern>
       </defs>
       <g z="1">
+        {/* TODO: maybe do something different here, use pattern? */}
         {Array.from({ length: 60 * 4 }).map((_, i) => (
           <text
             key={i}
