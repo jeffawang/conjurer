@@ -3,6 +3,7 @@ import { INITIAL_PIXELS_PER_SECOND } from "@/src/utils/time";
 import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRef, useEffect } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import type WaveSurfer from "wavesurfer.js";
 
 export default observer(function WaveSurferWaveform() {
@@ -56,10 +57,15 @@ export default observer(function WaveSurferWaveform() {
     }
   }, [timer.playing]);
 
+  const zoomDebounced = useDebouncedCallback(
+    (pixelsPerSecond: number) => wavesurferRef.current?.zoom(pixelsPerSecond),
+    250
+  );
+
   useEffect(() => {
     if (ready.current && wavesurferRef.current)
-      wavesurferRef.current.zoom(uiStore.pixelsPerSecond);
-  }, [uiStore.pixelsPerSecond]);
+      zoomDebounced(uiStore.pixelsPerSecond);
+  }, [zoomDebounced, uiStore.pixelsPerSecond]);
 
   useEffect(() => {
     if (ready.current && wavesurferRef.current) {
