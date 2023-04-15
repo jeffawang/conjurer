@@ -35,11 +35,10 @@ export default observer(function Timeline() {
   return (
     <Grid
       ref={gridRef}
-      width="90vw" // TODO: do better
       templateAreas={`"timerControls  controls"
                       "timer          ruler"
                       "layersHeader   layers"`}
-      gridTemplateColumns="150px 1fr"
+      gridTemplateColumns="150px calc(100vw - 165px - 150px)" // TODO: do better
       fontWeight="bold"
     >
       <GridItem area="timerControls">
