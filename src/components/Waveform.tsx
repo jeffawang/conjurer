@@ -40,12 +40,8 @@ export default memo(function Waveform() {
 
         if (!canvasRef.current) return;
 
-        // const renderer = new THREE.WebGLRenderer({
-        //   canvas: canvasRef.current,
-        //   alpha: false,
-        // });
         uniforms.current = {
-          bgColor: { value: new THREE.Vector4(0.2, 0.3, 0.7, 1) },
+          bgColor: { value: new THREE.Vector4(0, 0, 0, 0) },
           activeColor: { value: new THREE.Vector4(0.9, 0.9, 0.9, 1) },
           outWidth: { value: 1024.0 },
           outHeight: { value: 40.0 },
@@ -63,8 +59,6 @@ export default memo(function Waveform() {
     };
 
     create();
-
-    return () => {};
   }, []);
 
   return (
