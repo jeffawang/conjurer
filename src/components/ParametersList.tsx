@@ -1,12 +1,9 @@
 import Block from "@/src/types/Block";
-import { PatternParams, StandardParams } from "@/src/types/PatternParams";
-import { useStore } from "@/src/types/StoreContext";
-import { action } from "mobx";
-import { observer } from "mobx-react-lite";
-import { useCallback, useRef, useState } from "react";
-import { DraggableData } from "react-draggable";
-import { DraggableEvent } from "react-draggable";
+import { PatternParams } from "@/src/types/PatternParams";
+import { Divider, HStack, Text } from "@chakra-ui/react";
+import { memo, useCallback, useState } from "react";
 import { LineChart, Line } from "recharts";
+import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 
 const data = [
   {
@@ -53,38 +50,86 @@ const data = [
   },
 ];
 
+const uniformNamesToExclude = ["u_resolution"];
+
 type ParametersListProps = {
   block: Block<PatternParams>;
   width: number;
 };
 
-export default observer(function ParametersList({
+export default memo(function ParametersList({
   block,
   width,
 }: ParametersListProps) {
   // const store = useStore();
+  const [selectedUniformName, setSelectedUniformName] = useState<string | null>(
+    null
+  );
+
+  const handleClick = useCallback(
+    (e: any, uniformName: string) => {
+      setSelectedUniformName(
+        uniformName === selectedUniformName ? null : uniformName
+      );
+      e.stopPropagation();
+    },
+    [selectedUniformName, setSelectedUniformName]
+  );
 
   return (
-    <LineChart
-      width={width}
-      height={50}
-      data={data}
-      // margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-    >
-      <Line
-        isAnimationActive={false}
-        type="monotone"
-        dataKey="uv"
-        stroke="#ff7300"
-        yAxisId={0}
-      />
-      <Line
-        isAnimationActive={false}
-        type="monotone"
-        dataKey="pv"
-        stroke="#387908"
-        yAxisId={1}
-      />
-    </LineChart>
+    <>
+      {Object.entries(block.pattern.params).map(
+        ([uniformName, patternParam]) => {
+          if (uniformNamesToExclude.includes(uniformName)) return null;
+
+          const isSelected = uniformName === selectedUniformName;
+
+          return (
+            <>
+              <Divider key={uniformName} />
+              <HStack
+                key={uniformName + "name"}
+                width="100%"
+                onClick={(e) => handleClick(e, uniformName)}
+                justify="center"
+              >
+                <Text lineHeight={1} userSelect={"none"} fontSize={10}>
+                  {patternParam.name}
+                </Text>
+                {isSelected ? (
+                  <BsCaretUp size={10} />
+                ) : (
+                  <BsCaretDown size={10} />
+                )}
+              </HStack>
+
+              {isSelected && (
+                <LineChart
+                  key={uniformName + "chart"}
+                  width={width}
+                  height={30}
+                  data={data}
+                >
+                  <Line
+                    isAnimationActive={false}
+                    type="monotone"
+                    dataKey="uv"
+                    stroke="#ff7300"
+                    yAxisId={0}
+                  />
+                  <Line
+                    isAnimationActive={false}
+                    type="monotone"
+                    dataKey="pv"
+                    stroke="#387908"
+                    yAxisId={1}
+                  />
+                </LineChart>
+              )}
+            </>
+          );
+        }
+      )}
+    </>
   );
 });

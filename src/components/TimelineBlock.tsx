@@ -109,7 +109,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         <TimelineBlockBound leftBound onBoundChange={handleLeftBoundResize} />
         <TimelineBlockBound rightBound onBoundChange={handleRightBoundResize} />
 
-        <VStack pointerEvents="none" height="100%" justify="center">
+        <VStack width="100%" height="100%" justify="center">
           <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
             {block.pattern.name}
           </Text>
