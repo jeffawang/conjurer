@@ -1,6 +1,6 @@
 import Block from "@/src/types/Block";
 import Pattern from "@/src/types/Pattern";
-import { StandardParams } from "@/src/types/PatternParams";
+import { PatternParams } from "@/src/types/PatternParams";
 import Timer from "@/src/types/Timer";
 import UIStore from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";
@@ -26,14 +26,14 @@ export default class Store {
   timer = new Timer();
   uiStore = new UIStore();
 
-  blocks: Block<StandardParams>[] = [];
-  selectedBlocks: Set<Block<StandardParams>> = new Set();
+  blocks: Block<PatternParams>[] = [];
+  selectedBlocks: Set<Block<PatternParams>> = new Set();
 
   patterns: Pattern[] = patterns;
   selectedPattern: Pattern = patterns[0];
   draggingPattern: boolean = false;
 
-  _lastComputedCurrentBlock: Block<StandardParams> | null = null;
+  _lastComputedCurrentBlock: Block<PatternParams> | null = null;
 
   // returns the block that the global time is inside of, or null if none
   // runs every frame, so we keep this performant with caching + a binary search
@@ -48,7 +48,7 @@ export default class Store {
 
     const currentBlockIndex = binarySearchForBlockAtTime(
       this.blocks,
-      this.timer.globalTime,
+      this.timer.globalTime
     );
     this._lastComputedCurrentBlock = this.blocks[currentBlockIndex] ?? null;
     return this._lastComputedCurrentBlock;
@@ -85,7 +85,7 @@ export default class Store {
     this.addBlock(newBlock);
   };
 
-  addBlock = (block: Block<StandardParams>) => {
+  addBlock = (block: Block<PatternParams>) => {
     // insert block in sorted order
     const index = this.blocks.findIndex((b) => b.startTime > block.startTime);
     if (index === -1) {
@@ -96,39 +96,39 @@ export default class Store {
     this.blocks.splice(index, 0, block);
   };
 
-  removeBlock = (block: Block<StandardParams>) => {
+  removeBlock = (block: Block<PatternParams>) => {
     this.blocks = this.blocks.filter((b) => b !== block);
   };
 
   /**
    * Changes a blocks starting time, and reorders it in the list of blocks
    *
-   * @param {Block<StandardParams>} block
+   * @param {Block<PatternParams>} block
    * @param {number} newStartTime
    * @memberof Store
    */
   changeBlockStartTime = (
-    block: Block<StandardParams>,
-    newStartTime: number,
+    block: Block<PatternParams>,
+    newStartTime: number
   ) => {
     block.startTime = newStartTime;
     this.reorderBlock(block);
   };
 
-  reorderBlock = (block: Block<StandardParams>) => {
+  reorderBlock = (block: Block<PatternParams>) => {
     this.removeBlock(block);
     this.addBlock(block);
   };
 
-  selectBlock = (block: Block<StandardParams>) => {
+  selectBlock = (block: Block<PatternParams>) => {
     this.selectedBlocks = new Set([block]);
   };
 
-  addBlockToSelection = (block: Block<StandardParams>) => {
+  addBlockToSelection = (block: Block<PatternParams>) => {
     this.selectedBlocks.add(block);
   };
 
-  deselectBlock = (block: Block<StandardParams>) => {
+  deselectBlock = (block: Block<PatternParams>) => {
     this.selectedBlocks.delete(block);
   };
 
@@ -150,7 +150,7 @@ export default class Store {
       "text/plain",
       Array.from(this.selectedBlocks)
         .map((b) => b.id)
-        .join(","),
+        .join(",")
     );
   };
 
@@ -164,7 +164,7 @@ export default class Store {
       const newBlock = blockToCopy.clone();
       const nextGap = this.nextFiniteGap(
         this.timer.globalTime,
-        blockToCopy.duration,
+        blockToCopy.duration
       );
       newBlock.setTiming(nextGap);
       this.addBlock(newBlock);
@@ -181,7 +181,7 @@ export default class Store {
       const newBlock = selectedBlock.clone();
       const nextGap = this.nextFiniteGap(
         selectedBlock.endTime,
-        selectedBlock.duration,
+        selectedBlock.duration
       );
       newBlock.setTiming(nextGap);
       this.addBlock(newBlock);
@@ -259,7 +259,7 @@ export default class Store {
    */
   nextFiniteGap = (
     fromTime: number,
-    maxDuration: number = DEFAULT_BLOCK_DURATION,
+    maxDuration: number = DEFAULT_BLOCK_DURATION
   ): { startTime: number; duration: number } => {
     const gap = this.nextGap(fromTime);
     return {
@@ -271,8 +271,8 @@ export default class Store {
   };
 
   nearestValidStartTimeDelta = (
-    block: Block<StandardParams>,
-    desiredDeltaTime: number,
+    block: Block<PatternParams>,
+    desiredDeltaTime: number
   ) => {
     const desiredStartTime = block.startTime + desiredDeltaTime;
     const desiredEndTime = block.endTime + desiredDeltaTime;
@@ -293,7 +293,7 @@ export default class Store {
     return desiredDeltaTime;
   };
 
-  resizeBlockLeftBound = (block: Block<StandardParams>, delta: number) => {
+  resizeBlockLeftBound = (block: Block<PatternParams>, delta: number) => {
     const desiredStartTime = block.startTime + delta;
 
     // do not allow changing start of this block past end of self
@@ -318,7 +318,7 @@ export default class Store {
     block.duration -= delta;
   };
 
-  resizeBlockRightBound = (block: Block<StandardParams>, delta: number) => {
+  resizeBlockRightBound = (block: Block<PatternParams>, delta: number) => {
     const desiredEndTime = block.endTime + delta;
 
     // do not allow changing end of block past start of self
