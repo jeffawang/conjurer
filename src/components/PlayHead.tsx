@@ -5,7 +5,7 @@ import { useStore } from "@/src/types/StoreContext";
 import styles from "@/styles/TimeMarker.module.css";
 import classNames from "classnames";
 
-export default observer(function TimeMarker() {
+export default observer(function PlayHead() {
   const { timer, uiStore } = useStore();
 
   // TODO: renders every frame. need to optimize this

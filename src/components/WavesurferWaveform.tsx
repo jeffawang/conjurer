@@ -3,6 +3,8 @@ import { INITIAL_PIXELS_PER_SECOND } from "@/src/utils/time";
 import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRef, useEffect } from "react";
+import { clamp } from "three/src/math/MathUtils";
+import { useDebouncedCallback } from "use-debounce";
 import type WaveSurfer from "wavesurfer.js";
 
 export default observer(function WaveSurferWaveform() {
@@ -40,7 +42,6 @@ export default observer(function WaveSurferWaveform() {
       };
       wavesurferRef.current = WaveSurfer.create(options);
       await wavesurferRef.current.load("/cloudkicker-explorebecurious.mp3");
-      wavesurferRef.current.zoom(INITIAL_PIXELS_PER_SECOND);
       ready.current = true;
     };
 
@@ -57,16 +58,21 @@ export default observer(function WaveSurferWaveform() {
     }
   }, [timer.playing]);
 
+  const zoomDebounced = useDebouncedCallback(
+    (pixelsPerSecond: number) => wavesurferRef.current?.zoom(pixelsPerSecond),
+    250
+  );
+
   useEffect(() => {
     if (ready.current && wavesurferRef.current)
-      wavesurferRef.current.zoom(uiStore.pixelsPerSecond);
-  }, [uiStore.pixelsPerSecond]);
+      zoomDebounced(uiStore.pixelsPerSecond);
+  }, [zoomDebounced, uiStore.pixelsPerSecond]);
 
   useEffect(() => {
     if (ready.current && wavesurferRef.current) {
       const duration = wavesurferRef.current.getDuration();
       const progress = duration > 0 ? timer.lastCursor.position / duration : 0;
-      wavesurferRef.current.seekTo(progress);
+      wavesurferRef.current.seekTo(clamp(progress, 0, 1));
     }
   }, [timer.lastCursor]);
 

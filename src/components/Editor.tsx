@@ -1,4 +1,4 @@
-import Timeline from "@/src/components/Timeline";
+import Arrangement from "@/src/components/Arrangement";
 import { Box, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
 import Display from "@/src/components/Display";
 import PatternList from "@/src/components/PatternList";
@@ -24,7 +24,7 @@ export default function Editor() {
           <Display />
         </GridItem>
         <GridItem area="timeline">
-          <Timeline />
+          <Arrangement />
         </GridItem>
         <GridItem area="instructions">
           <Keyboard />
