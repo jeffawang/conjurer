@@ -3,6 +3,7 @@ import { INITIAL_PIXELS_PER_SECOND } from "@/src/utils/time";
 import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRef, useEffect } from "react";
+import { clamp } from "three/src/math/MathUtils";
 import { useDebouncedCallback } from "use-debounce";
 import type WaveSurfer from "wavesurfer.js";
 
@@ -71,7 +72,7 @@ export default observer(function WaveSurferWaveform() {
     if (ready.current && wavesurferRef.current) {
       const duration = wavesurferRef.current.getDuration();
       const progress = duration > 0 ? timer.lastCursor.position / duration : 0;
-      wavesurferRef.current.seekTo(progress);
+      wavesurferRef.current.seekTo(clamp(progress, 0, 1));
     }
   }, [timer.lastCursor]);
 
