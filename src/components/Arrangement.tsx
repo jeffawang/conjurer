@@ -1,11 +1,11 @@
-import { observer } from "mobx-react-lite";
 import { Grid, GridItem, HStack, Heading, VStack } from "@chakra-ui/react";
 import TimerReadout from "@/src/components/TimerReadout";
 import TimerControls from "@/src/components/TimerControls";
 import Controls from "@/src/components/Controls";
 import Timeline from "@/src/components/Timeline";
+import { memo } from "react";
 
-export default observer(function Arrangement() {
+export default memo(function Arrangement() {
   return (
     <Grid
       templateAreas={`"timerControls  controls"
@@ -27,7 +27,7 @@ export default observer(function Arrangement() {
         <VStack height={10} bgColor="gray.500" justify="center">
           <TimerReadout />
         </VStack>
-        <VStack height="100%" justify="center">
+        <VStack height={200} justify="center">
           <Heading userSelect="none" size="md">
             Layer
           </Heading>

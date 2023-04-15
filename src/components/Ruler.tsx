@@ -7,8 +7,10 @@ export default observer(function Ruler() {
   const { uiStore } = useStore();
   const { pixelsPerSecond } = uiStore;
 
+  const width = MAX_TIME * pixelsPerSecond;
+
   return (
-    <svg width="3000" height="40">
+    <svg width={`${width}`} height="40">
       <defs>
         <pattern
           id="mix-editor-grid-pattern"
@@ -18,29 +20,23 @@ export default observer(function Ruler() {
           height="40"
           patternUnits="userSpaceOnUse"
         >
-          <rect width="0.5" height="3240" x="0" y="0" />
+          <rect width="0.5" height="40" x="0" y="0" />
           <rect
             width="0.5"
-            height="3240"
+            height="40"
             x={`${pixelsPerSecond * 0.25}`}
             y="30"
           />
+          <rect width="0.5" height="40" x={`${pixelsPerSecond * 0.5}`} y="30" />
           <rect
             width="0.5"
-            height="3240"
-            x={`${pixelsPerSecond * 0.5}`}
-            y="30"
-          />
-          <rect
-            width="0.5"
-            height="3240"
+            height="40"
             x={`${pixelsPerSecond * 0.75}`}
             y="30"
           />
         </pattern>
       </defs>
       <g z="1">
-        {/* TODO: maybe do something different here, use pattern? */}
         {Array.from({ length: MAX_TIME }).map((_, i) => (
           <text
             key={i}
@@ -57,7 +53,7 @@ export default observer(function Ruler() {
         fill="url(#mix-editor-grid-pattern)"
         x="0"
         y="0"
-        width="3000"
+        width={`${width}`}
         height="40"
       />
     </svg>
