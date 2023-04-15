@@ -10,7 +10,8 @@ import TimerControls from "@/src/components/TimerControls";
 import { useRef } from "react";
 import Controls from "@/src/components/Controls";
 import useWheelZooming from "@/src/hooks/wheelZooming";
-import Waveform from "@/src/components/Waveform";
+import ShaderWaveform from "@/src/components/ShaderWaveform";
+import WavesurferWaveform from "@/src/components/WavesurferWaveform";
 
 export default observer(function Timeline() {
   const { timer, uiStore } = useStore();
@@ -22,21 +23,22 @@ export default observer(function Timeline() {
   const rulerDrag = action((e: MouseEvent) => {
     if (rulerBoxRef.current)
       timer.setTime(
-        Math.max(0,
+        Math.max(
+          0,
           uiStore.xToTime(
-            e.clientX - rulerBoxRef.current.getBoundingClientRect().x,
-          )),
+            e.clientX - rulerBoxRef.current.getBoundingClientRect().x
+          )
+        )
       );
-  })
+  });
 
   return (
     <Grid
       ref={gridRef}
-      width="90vw" // TODO: do better
       templateAreas={`"timerControls  controls"
                       "timer          ruler"
                       "layersHeader   layers"`}
-      gridTemplateColumns="150px 1fr"
+      gridTemplateColumns="150px calc(100vw - 165px - 150px)" // TODO: do better
       fontWeight="bold"
     >
       <GridItem area="timerControls">
@@ -62,11 +64,19 @@ export default observer(function Timeline() {
           bgColor="gray.500"
           onMouseDown={action((e) => {
             rulerDrag(e.nativeEvent);
-            window.addEventListener('mousemove', rulerDrag);
-            window.addEventListener('mouseup', () => window.removeEventListener('mousemove', rulerDrag), { once: true });
+            window.addEventListener("mousemove", rulerDrag);
+            window.addEventListener(
+              "mouseup",
+              () => window.removeEventListener("mousemove", rulerDrag),
+              { once: true }
+            );
           })}
         >
-          <Waveform />
+          {uiStore.usingWavesurfer ? (
+            <WavesurferWaveform />
+          ) : (
+            <ShaderWaveform />
+          )}
           <Ruler />
           <TimeMarker />
         </Box>

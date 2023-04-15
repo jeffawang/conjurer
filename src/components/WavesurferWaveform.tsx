@@ -3,9 +3,11 @@ import { INITIAL_PIXELS_PER_SECOND } from "@/src/utils/time";
 import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useRef, useEffect } from "react";
+import type WaveSurfer from "wavesurfer.js";
 
-export default observer(function Waveform() {
+export default observer(function WaveSurferWaveform() {
   const initialized = useRef(false);
+  const ready = useRef(false);
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const waveformRef = useRef(null);
 
@@ -13,6 +15,7 @@ export default observer(function Waveform() {
 
   useEffect(() => {
     if (initialized.current) return;
+    initialized.current = true;
 
     const create = async () => {
       // Cannot be run on the server, so we need to use dynamic import
@@ -21,7 +24,7 @@ export default observer(function Waveform() {
       // https://wavesurfer-js.org/docs/options.html
       const options = {
         container: waveformRef.current!,
-        waveColor: "#eee",
+        waveColor: "#ddd",
         progressColor: "#0178FF",
         cursorColor: "#00000000",
         barWidth: 2,
@@ -31,17 +34,17 @@ export default observer(function Waveform() {
         normalize: true,
         partialRender: true,
         hideScrollbar: true,
+        fillParent: false,
         interact: false,
         minPxPerSec: INITIAL_PIXELS_PER_SECOND,
       };
       wavesurferRef.current = WaveSurfer.create(options);
+      await wavesurferRef.current.load("/cloudkicker-explorebecurious.mp3");
       wavesurferRef.current.zoom(INITIAL_PIXELS_PER_SECOND);
-
-      wavesurferRef.current.load("/cloudkicker-explorebecurious.mp3");
+      ready.current = true;
     };
 
     create();
-    initialized.current = true;
 
     return () => wavesurferRef.current?.destroy();
   }, []);
@@ -55,19 +58,20 @@ export default observer(function Waveform() {
   }, [timer.playing]);
 
   useEffect(() => {
-    wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
+    if (ready.current && wavesurferRef.current)
+      wavesurferRef.current.zoom(uiStore.pixelsPerSecond);
   }, [uiStore.pixelsPerSecond]);
 
   useEffect(() => {
-    if (wavesurferRef.current) {
+    if (ready.current && wavesurferRef.current) {
       const duration = wavesurferRef.current.getDuration();
       const progress = duration > 0 ? timer.lastCursor.position / duration : 0;
       wavesurferRef.current.seekTo(progress);
     }
-  }, [timer.lastCursor.position]);
+  }, [timer.lastCursor]);
 
   return (
-    <Box position="absolute" top={1.5} width="100%">
+    <Box position="absolute" top={1.5}>
       <div id="waveform" ref={waveformRef} />
     </Box>
   );

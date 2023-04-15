@@ -1,7 +1,7 @@
 import { INITIAL_PIXELS_PER_SECOND } from "@/src/utils/time";
 import { makeAutoObservable, runInAction } from "mobx";
 
-const MAX_PIXELS_PER_SECOND = 100;
+const MAX_PIXELS_PER_SECOND = 90;
 const MIN_PIXELS_PER_SECOND = 12;
 
 /**
@@ -12,6 +12,7 @@ const MIN_PIXELS_PER_SECOND = 12;
  */
 export default class UIStore {
   pixelsPerSecond = INITIAL_PIXELS_PER_SECOND; // this controls the zoom of the timeline
+  usingWavesurfer = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -37,5 +38,9 @@ export default class UIStore {
     if (this.pixelsPerSecond > MAX_PIXELS_PER_SECOND) {
       this.pixelsPerSecond = MAX_PIXELS_PER_SECOND;
     }
+  };
+
+  toggleWavesurfer = () => {
+    this.usingWavesurfer = !this.usingWavesurfer;
   };
 }

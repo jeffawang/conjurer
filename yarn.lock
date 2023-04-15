@@ -1267,11 +1267,6 @@
   dependencies:
     tslib "^2.4.0"
 
-"@types/debounce@*":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@types/debounce/-/debounce-1.2.1.tgz#79b65710bc8b6d44094d286aecf38e44f9627852"
-  integrity sha512-epMsEE85fi4lfmJUH/89/iV/LI+F5CvNIvmgs5g5jYFPfhO2S/ae8WSsLOKWdwtoaZw9Q2IhJ4tQ5tFCcS/4HA==
-
 "@types/json-schema@^7.0.8":
   version "7.0.11"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.11.tgz#d421b6c527a3037f7c84433fd2c4229e016863d3"
@@ -1363,13 +1358,6 @@
   integrity sha512-WMEWfMISiJ2QKyk5/dSdgL0ZwP//PZj0jmDU0hMh51FmLq4WIYzjlngsUQZXejQL+QtkXJUOGjb3G3UCvgZuSQ==
   dependencies:
     typescript "*"
-
-"@types/wavesurfer.js@^6.0.4":
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/@types/wavesurfer.js/-/wavesurfer.js-6.0.4.tgz#7ae92d5752dba5b96df27560484da3cb4ff380f4"
-  integrity sha512-TGWy48OTZc9fuedxBmtM5WGNK4WDloRzf6/mE+OXmM9JuLzshhWZXSbZHiGnzpYB19mfdwnoEE4/8PNvyr/JBQ==
-  dependencies:
-    "@types/debounce" "*"
 
 "@types/webxr@*":
   version "0.5.1"
@@ -4040,10 +4028,10 @@ utility-types@^3.10.0:
   resolved "https://registry.yarnpkg.com/utility-types/-/utility-types-3.10.0.tgz#ea4148f9a741015f05ed74fd615e1d20e6bed82b"
   integrity sha512-O11mqxmi7wMKCo6HKFt5AhO4BwY3VV68YU07tgxfz8zJTIxr4BpsezN49Ffwy9j3ZpwwJp4fkRwjRzq3uWE6Rg==
 
-wavesurfer.js@^6.6.3:
-  version "6.6.3"
-  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-6.6.3.tgz#eadebf0542be702f1eef2f52c3e312b839030166"
-  integrity sha512-XqUOXe8+SOTe8uKCHaqW0vJ5etCCQvq/NgaPycn9HAX/nUi+2zoWD+w9i7H5vBT9UCDNawOia+vS5Ct3kZGQzA==
+wavesurfer.js@^7.0.0-alpha.30:
+  version "7.0.0-alpha.30"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-7.0.0-alpha.30.tgz#83857b60d6c8f9365965c14fa6f0b2400615bbd7"
+  integrity sha512-R00dFV5pDqN3/7TYvfuRcsvp8c1bYcaE8UtmFyOcUrDmTjgp1msPqYXjOmBKX1iaz5efgM/0oZgitemdDxEHcA==
 
 webgl-constants@^1.1.1:
   version "1.1.1"
