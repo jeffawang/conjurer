@@ -12,9 +12,8 @@ import Controls from "@/src/components/Controls";
 import useWheelZooming from "@/src/hooks/wheelZooming";
 import ShaderWaveform from "@/src/components/ShaderWaveform";
 import WavesurferWaveform from "@/src/components/WavesurferWaveform";
-import Timeline from "@/src/components/Timeline";
 
-export default observer(function Arrangement() {
+export default observer(function Timeline() {
   const { timer, uiStore } = useStore();
   const rulerBoxRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -34,36 +33,27 @@ export default observer(function Arrangement() {
   });
 
   return (
-    <Grid
-      ref={gridRef}
-      templateAreas={`"timerControls  controls"
-                      "left          right"`}
-      gridTemplateColumns="150px calc(100vw - 165px - 150px)" // TODO: do better
-      fontWeight="bold"
-    >
-      <GridItem area="timerControls">
-        <HStack my={2} width="100%" justify="center">
-          <TimerControls />
-        </HStack>
-      </GridItem>
-      <GridItem area="controls">
-        <HStack my={2} width="100%">
-          <Controls />
-        </HStack>
-      </GridItem>
-      <GridItem area="left">
-        <VStack height={10} bgColor="gray.500" justify="center">
-          <TimerReadout />
-        </VStack>
-        <VStack height="100%" justify="center">
-          <Heading userSelect="none" size="md">
-            Layer
-          </Heading>
-        </VStack>
-      </GridItem>
-      <GridItem area="right">
-        <Timeline />
-      </GridItem>
-    </Grid>
+    <>
+      <Box
+        ref={rulerBoxRef}
+        position="relative"
+        height={10}
+        bgColor="gray.500"
+        onMouseDown={action((e) => {
+          rulerDrag(e.nativeEvent);
+          window.addEventListener("mousemove", rulerDrag);
+          window.addEventListener(
+            "mouseup",
+            () => window.removeEventListener("mousemove", rulerDrag),
+            { once: true }
+          );
+        })}
+      >
+        {uiStore.usingWavesurfer ? <WavesurferWaveform /> : <ShaderWaveform />}
+        <Ruler />
+        <TimeMarker />
+      </Box>
+      <Layer />
+    </>
   );
 });
