@@ -40,7 +40,6 @@ export default observer(function WaveSurferWaveform() {
       };
       wavesurferRef.current = WaveSurfer.create(options);
       await wavesurferRef.current.load("/cloudkicker-explorebecurious.mp3");
-      wavesurferRef.current.zoom(INITIAL_PIXELS_PER_SECOND);
       ready.current = true;
     };
 
