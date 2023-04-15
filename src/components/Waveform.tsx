@@ -1,7 +1,7 @@
 import { useStore } from "@/src/types/StoreContext";
 import { Box } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import * as THREE from "three";
 import waveformShaderSrc from "@/src/patterns/shaders/waveform.frag";
 import vert from "@/src/patterns/shaders/default.vert";
@@ -9,8 +9,6 @@ import vert from "@/src/patterns/shaders/default.vert";
 export default observer(function Waveform() {
   const initialized = useRef(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const { timer, uiStore } = useStore();
 
   useEffect(() => {
     if (initialized.current) return;
@@ -23,15 +21,6 @@ export default observer(function Waveform() {
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
       const audioData = audioBuffer.getChannelData(0);
       const floatArray = Float32Array.from(audioData);
-      // console.log(floatArray.length);
-      // const sampleTex = new THREE.DataTexture(
-      //   floatArray,
-      //   audioBuffer.length,
-      //   1,
-      //   THREE.RedFormat,
-      //   THREE.FloatType
-      // );
-      // sampleTex.needsUpdate = true;
 
       const sampleCount = audioBuffer.length;
       const sampleTexWidth = 1024;
@@ -67,11 +56,6 @@ export default observer(function Waveform() {
       const geometry = new THREE.PlaneGeometry(2, 2);
       const waveformShader = new THREE.ShaderMaterial({
         uniforms: uniforms,
-        //   vertexShader: `
-        //   void main() {
-        //     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        //   }
-        // `,
         vertexShader: vert,
         fragmentShader: waveformShaderSrc,
       });
@@ -96,23 +80,6 @@ export default observer(function Waveform() {
 
     return () => {};
   }, []);
-
-  useEffect(() => {
-    if (timer.playing) {
-    }
-  }, [timer.playing]);
-
-  useEffect(() => {
-    uiStore.pixelsPerSecond;
-  }, [uiStore.pixelsPerSecond]);
-
-  useEffect(() => {
-    if (/*is initialized*/ true) {
-      const progress =
-        timer.lastCursorPosition / 1; /*wavesurferRef.current.getDuration()*/
-      //wavesurferRef.current.seekTo(progress);
-    }
-  }, [timer.lastCursor.position]);
 
   return (
     <Box position="absolute" top={1.5} width="100%">
