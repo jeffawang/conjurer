@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import Pattern from "./Pattern";
 import { PatternParams } from "./PatternParams";
 import { clone } from "@/src/utils/object";
+import Variation from "@/src/types/Variation";
 
 type PatternParamsController<PP extends PatternParams> = {
   [K in keyof PP]?: ({ sp, time }: { sp: PP[K]; time: number }) => void;
@@ -9,8 +10,9 @@ type PatternParamsController<PP extends PatternParams> = {
 
 export default class Block<T extends PatternParams> {
   id: string = Math.random().toString(16).slice(2); // unique id
-  pattern: Pattern;
-  spc: PatternParamsController<T>;
+  pattern: Pattern<T>;
+  // spc: PatternParamsController<T>;
+  parameterVariations: { [K in keyof T]?: Variation[] } = {};
 
   startTime: number = 0; // global time that block starts playing at in seconds
   duration: number = 5; // duration that block plays for in seconds
@@ -20,13 +22,17 @@ export default class Block<T extends PatternParams> {
   }
 
   constructor(
-    pattern: Pattern,
-    spc: PatternParamsController<T> = {} as PatternParamsController<T>,
+    pattern: Pattern<T>
+    // spc: PatternParamsController<T> = {} as PatternParamsController<T>
   ) {
     this.pattern = pattern;
-    this.spc = spc;
+    // this.spc = spc;
 
-    makeAutoObservable(this, { pattern: false, spc: false, update: false });
+    makeAutoObservable(this, {
+      pattern: false,
+      // spc: false,
+      updateParameters: false,
+    });
   }
 
   setTiming = ({
@@ -40,11 +46,39 @@ export default class Block<T extends PatternParams> {
     this.duration = duration;
   };
 
-  update = (time: number, globalTime: number) => {
+  updateParameters = (time: number, globalTime: number) => {
     this.pattern.paramValues.u_time = time;
-    Object.entries(this.spc).map(([u, f]) => {
-      f({ sp: this.pattern.params[u], time, globalTime });
-    });
+
+    for (const parameter of Object.keys(this.parameterVariations)) {
+      this.updateParameter(parameter as keyof T, time);
+    }
+
+    // Object.entries(this.spc).map(([u, f]) => {
+    //   f({ sp: this.pattern.params[u], time, globalTime });
+    // });
+  };
+
+  updateParameter = (parameter: keyof T, time: number) => {
+    const variations = this.parameterVariations[parameter];
+    if (!variations) return;
+
+    let variationTime = 0;
+    for (const variation of variations) {
+      if (
+        // if infinite duration variation, OR
+        variation.duration < 0 ||
+        // this is the variation that is active at this time
+        time < variationTime + variation.duration
+      ) {
+        this.pattern.paramValues[parameter] = variation.valueAtTime(
+          this.pattern.paramValues[parameter],
+          time - variationTime
+        );
+        break;
+      }
+
+      variationTime += variation.duration;
+    }
   };
 
   clone = () => new Block(clone(this.pattern));

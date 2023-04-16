@@ -24,9 +24,9 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
     const { startTime } = block;
 
     if (autorun) {
-      block.update(clock.elapsedTime, clock.elapsedTime);
+      block.updateParameters(clock.elapsedTime, clock.elapsedTime);
     } else {
-      block.update(globalTime - startTime, globalTime);
+      block.updateParameters(globalTime - startTime, globalTime);
     }
   });
 

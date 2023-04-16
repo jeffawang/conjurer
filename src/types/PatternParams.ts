@@ -1,11 +1,11 @@
 import { Texture, Vector2 } from "three";
 
-export type PatternParam<T = Vector2 | number | Texture> = {
+export type ParamType = number | Vector2 | Texture;
+
+export type PatternParam<T = ParamType> = {
   name: string;
   value: T;
 };
-
-export type PatternParams = Record<string, PatternParam>;
 
 export type StandardParams = {
   u_time: {
@@ -22,6 +22,10 @@ export type StandardParams = {
   };
 };
 
+export type ExtraParams = Record<string, PatternParam>;
+
+export type PatternParams = StandardParams & ExtraParams;
+
 export type ParamValues<T extends PatternParams> = {
   [K in keyof T]: T[K]["value"];
 };
@@ -29,7 +33,7 @@ export type ParamValues<T extends PatternParams> = {
 type ParamsProxyConstructor = {
   new <T extends PatternParams, H extends ParamValues<T>>(
     target: T,
-    handler: ProxyHandler<H>,
+    handler: ProxyHandler<H>
   ): H;
 };
 
