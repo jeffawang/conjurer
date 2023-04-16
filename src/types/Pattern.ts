@@ -2,12 +2,11 @@ import {
   ExtraParams,
   ParamValues,
   ParamsProxy,
-  PatternParams,
   StandardParams,
 } from "./PatternParams";
 import { LED_COUNTS } from "@/src/utils/size";
 
-export default class Pattern<T extends ExtraParams> {
+export default class Pattern<T extends ExtraParams = {}> {
   name: string;
   src: string;
   params: StandardParams & T;

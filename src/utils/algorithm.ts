@@ -1,12 +1,11 @@
 import Block from "@/src/types/Block";
-import { StandardParams } from "@/src/types/PatternParams";
 
 // binary search over an ordered list of blocks
 export function binarySearchForBlockAtTime(
-  blocks: Block<StandardParams>[],
+  blocks: Block[],
   time: number,
   start = 0,
-  end = blocks.length - 1,
+  end = blocks.length - 1
 ): number {
   if (start > end) return -1;
   const mid = Math.floor((start + end) / 2);

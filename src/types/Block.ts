@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import Pattern from "./Pattern";
-import { PatternParams } from "./PatternParams";
+import { ExtraParams, PatternParams } from "./PatternParams";
 import { clone } from "@/src/utils/object";
 import Variation from "@/src/types/Variation";
 
@@ -8,7 +8,7 @@ type PatternParamsController<PP extends PatternParams> = {
   [K in keyof PP]?: ({ sp, time }: { sp: PP[K]; time: number }) => void;
 };
 
-export default class Block<T extends PatternParams> {
+export default class Block<T extends ExtraParams = {}> {
   id: string = Math.random().toString(16).slice(2); // unique id
   pattern: Pattern<T>;
   // spc: PatternParamsController<T>;
@@ -50,7 +50,7 @@ export default class Block<T extends PatternParams> {
     this.pattern.paramValues.u_time = time;
 
     for (const parameter of Object.keys(this.parameterVariations)) {
-      this.updateParameter(parameter as keyof T, time);
+      this.updateParameter(parameter, time);
     }
 
     // Object.entries(this.spc).map(([u, f]) => {

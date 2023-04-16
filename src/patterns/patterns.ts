@@ -1,9 +1,10 @@
 import GradientPattern from "@/src/patterns/GradientPattern";
 import Rainbow from "@/src/patterns/Rainbow";
 import SunCycle from "@/src/patterns/SunCycle";
+import Pattern from "@/src/types/Pattern";
 import { Vector2 } from "three";
 
-const patterns = [
+const patterns: Pattern[] = [
   SunCycle(),
   Rainbow(),
   GradientPattern({

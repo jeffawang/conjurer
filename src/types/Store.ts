@@ -1,6 +1,5 @@
 import Block from "@/src/types/Block";
 import Pattern from "@/src/types/Pattern";
-import { PatternParams } from "@/src/types/PatternParams";
 import Timer from "@/src/types/Timer";
 import UIStore from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";
@@ -26,14 +25,14 @@ export default class Store {
   timer = new Timer();
   uiStore = new UIStore();
 
-  blocks: Block<PatternParams>[] = [];
-  selectedBlocks: Set<Block<PatternParams>> = new Set();
+  blocks: Block[] = [];
+  selectedBlocks: Set<Block> = new Set();
 
   patterns: Pattern[] = patterns;
   selectedPattern: Pattern = patterns[0];
   draggingPattern: boolean = false;
 
-  _lastComputedCurrentBlock: Block<PatternParams> | null = null;
+  _lastComputedCurrentBlock: Block | null = null;
 
   // returns the block that the global time is inside of, or null if none
   // runs every frame, so we keep this performant with caching + a binary search
@@ -85,7 +84,7 @@ export default class Store {
     this.addBlock(newBlock);
   };
 
-  addBlock = (block: Block<PatternParams>) => {
+  addBlock = (block: Block) => {
     // insert block in sorted order
     const index = this.blocks.findIndex((b) => b.startTime > block.startTime);
     if (index === -1) {
@@ -96,39 +95,36 @@ export default class Store {
     this.blocks.splice(index, 0, block);
   };
 
-  removeBlock = (block: Block<PatternParams>) => {
+  removeBlock = (block: Block) => {
     this.blocks = this.blocks.filter((b) => b !== block);
   };
 
   /**
    * Changes a blocks starting time, and reorders it in the list of blocks
    *
-   * @param {Block<PatternParams>} block
+   * @param {Block} block
    * @param {number} newStartTime
    * @memberof Store
    */
-  changeBlockStartTime = (
-    block: Block<PatternParams>,
-    newStartTime: number
-  ) => {
+  changeBlockStartTime = (block: Block, newStartTime: number) => {
     block.startTime = newStartTime;
     this.reorderBlock(block);
   };
 
-  reorderBlock = (block: Block<PatternParams>) => {
+  reorderBlock = (block: Block) => {
     this.removeBlock(block);
     this.addBlock(block);
   };
 
-  selectBlock = (block: Block<PatternParams>) => {
+  selectBlock = (block: Block) => {
     this.selectedBlocks = new Set([block]);
   };
 
-  addBlockToSelection = (block: Block<PatternParams>) => {
+  addBlockToSelection = (block: Block) => {
     this.selectedBlocks.add(block);
   };
 
-  deselectBlock = (block: Block<PatternParams>) => {
+  deselectBlock = (block: Block) => {
     this.selectedBlocks.delete(block);
   };
 
@@ -270,10 +266,7 @@ export default class Store {
     };
   };
 
-  nearestValidStartTimeDelta = (
-    block: Block<PatternParams>,
-    desiredDeltaTime: number
-  ) => {
+  nearestValidStartTimeDelta = (block: Block, desiredDeltaTime: number) => {
     const desiredStartTime = block.startTime + desiredDeltaTime;
     const desiredEndTime = block.endTime + desiredDeltaTime;
     for (const otherBlock of this.blocks) {
@@ -293,7 +286,7 @@ export default class Store {
     return desiredDeltaTime;
   };
 
-  resizeBlockLeftBound = (block: Block<PatternParams>, delta: number) => {
+  resizeBlockLeftBound = (block: Block, delta: number) => {
     const desiredStartTime = block.startTime + delta;
 
     // do not allow changing start of this block past end of self
@@ -318,7 +311,7 @@ export default class Store {
     block.duration -= delta;
   };
 
-  resizeBlockRightBound = (block: Block<PatternParams>, delta: number) => {
+  resizeBlockRightBound = (block: Block, delta: number) => {
     const desiredEndTime = block.endTime + delta;
 
     // do not allow changing end of block past start of self
