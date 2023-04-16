@@ -5,7 +5,7 @@ import Variation from "@/src/types/Variations/Variation";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
 import { action } from "mobx";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import Block from "@/src/types/Block";
 
 type VariationGraphProps = {
@@ -75,9 +75,18 @@ export default memo(function VariationGraph({
       </LineChart>
       <HStack>
         <IconButton
+          aria-label="Edit"
+          variant="ghost"
+          size="xs"
+          color="gray.400"
+          icon={<FaPencilAlt size={12} />}
+          onClick={action(() => block.removeVariation(uniformName, variation))}
+        />
+        <IconButton
           aria-label="Delete"
           variant="ghost"
           size="xs"
+          color="gray.400"
           icon={<FaTrashAlt size={12} />}
           onClick={action(() => block.removeVariation(uniformName, variation))}
         />

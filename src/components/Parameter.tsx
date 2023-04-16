@@ -1,5 +1,5 @@
 import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
-import { Box, Divider, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
 import { memo } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import Variation from "@/src/types/Variations/Variation";
@@ -58,16 +58,29 @@ export default memo(function Parameter({
   return (
     <>
       <Divider />
-      <HStack
-        width="100%"
+      <Button
+        variant="ghost"
+        size="xs"
+        width="95%"
+        height={4}
         onClick={(e) => handleClick(e, uniformName)}
-        justify="center"
       >
-        <Text lineHeight={1} userSelect={"none"} fontSize={10}>
-          {patternParam.name}
-        </Text>
-        {isSelected ? <BsCaretUp size={10} /> : <BsCaretDown size={10} />}
-      </HStack>
+        <HStack width="100%" justify="center">
+          <Text
+            lineHeight={1}
+            userSelect={"none"}
+            fontSize={10}
+            color={isSelected ? "orange" : "white"}
+          >
+            {patternParam.name}
+          </Text>
+          {isSelected ? (
+            <BsCaretUp size={10} color="orange" />
+          ) : (
+            <BsCaretDown size={10} />
+          )}
+        </HStack>
+      </Button>
 
       {isSelected &&
         (variations.length === 0 ? null : (

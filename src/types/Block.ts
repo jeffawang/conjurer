@@ -71,11 +71,10 @@ export default class Block<T extends ExtraParams = {}> {
     const variations = this.parameterVariations[uniformName];
     if (!variations) return;
 
-    console.log("uniform name", uniformName);
-
     const index = variations.indexOf(variation);
     if (index > -1) {
       variations.splice(index, 1);
+      // create a new array so that mobx can detect the change
       this.parameterVariations[uniformName as keyof T] = [...variations];
     }
   };
