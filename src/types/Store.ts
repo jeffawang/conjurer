@@ -9,9 +9,9 @@ import Rainbow from "@/src/patterns/Rainbow";
 import SunCycle from "@/src/patterns/SunCycle";
 import { patterns } from "@/src/patterns/patterns";
 import { makeAutoObservable, configure, runInAction } from "mobx";
-import Variation from "@/src/types/Variation";
-import FlatVariation from "@/src/types/FlatVariation";
-import LinearVariation from "@/src/types/LinearVariation";
+import Variation from "@/src/types/Variations/Variation";
+import FlatVariation from "@/src/types/Variations/FlatVariation";
+import LinearVariation from "@/src/types/Variations/LinearVariation";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.

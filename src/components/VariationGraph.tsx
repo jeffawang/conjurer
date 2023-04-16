@@ -3,9 +3,9 @@ import { Divider, HStack, Text } from "@chakra-ui/react";
 import { memo, useMemo } from "react";
 import { LineChart, Line, CartesianGrid, Tooltip, YAxis } from "recharts";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
-import Variation from "@/src/types/Variation";
-import FlatVariation from "@/src/types/FlatVariation";
-import LinearVariation from "@/src/types/LinearVariation";
+import Variation from "@/src/types/Variations/Variation";
+import FlatVariation from "@/src/types/Variations/FlatVariation";
+import LinearVariation from "@/src/types/Variations/LinearVariation";
 
 type VariationGraphProps = {
   variation: Variation;

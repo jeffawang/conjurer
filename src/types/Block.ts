@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import Pattern from "./Pattern";
 import { ExtraParams } from "./PatternParams";
 import { clone } from "@/src/utils/object";
-import Variation from "@/src/types/Variation";
+import Variation from "@/src/types/Variations/Variation";
 
 export default class Block<T extends ExtraParams = {}> {
   id: string = Math.random().toString(16).slice(2); // unique id

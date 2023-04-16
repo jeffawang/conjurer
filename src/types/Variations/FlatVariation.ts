@@ -1,4 +1,4 @@
-import Variation from "@/src/types/Variation";
+import Variation from "@/src/types/Variations/Variation";
 
 export default class FlatVariation extends Variation<number> {
   value: number;

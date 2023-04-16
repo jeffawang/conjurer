@@ -1,5 +1,4 @@
 import { ParamType } from "@/src/types/PatternParams";
-import { Texture, Vector2 } from "three";
 
 type VariationType =
   | "flat"

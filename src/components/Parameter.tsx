@@ -2,10 +2,8 @@ import { PatternParam } from "@/src/types/PatternParams";
 import { Divider, HStack, Text } from "@chakra-ui/react";
 import { memo } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
-import Variation from "@/src/types/Variation";
+import Variation from "@/src/types/Variations/Variation";
 import VariationGraph from "@/src/components/VariationGraph";
-import FlatVariation from "@/src/types/FlatVariation";
-import LinearVariation from "@/src/types/LinearVariation";
 
 type ParameterProps = {
   uniformName: string;
