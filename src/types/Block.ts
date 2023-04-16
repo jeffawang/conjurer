@@ -58,8 +58,7 @@ export default class Block<T extends ExtraParams = {}> {
         time < variationTime + variation.duration
       ) {
         this.pattern.paramValues[parameter] = variation.valueAtTime(
-          time - variationTime,
-          this.pattern.paramValues[parameter]
+          time - variationTime
         );
         break;
       }

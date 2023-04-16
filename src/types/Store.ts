@@ -12,6 +12,7 @@ import { makeAutoObservable, configure, runInAction } from "mobx";
 import Variation from "@/src/types/Variations/Variation";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
+import SineVariation from "@/src/types/Variations/SineVariation";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -79,7 +80,7 @@ export default class Store {
       u_speed: [
         new LinearVariation(4, 1, 10),
         new FlatVariation(4, 2),
-        new FlatVariation(2, 10),
+        new SineVariation(3, 2, 2, 0, 0),
       ],
     };
     this.blocks[1].setTiming({ startTime: 15, duration: 7 });

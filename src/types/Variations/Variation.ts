@@ -19,6 +19,6 @@ export default abstract class Variation<T extends ParamType = ParamType> {
     this.duration = duration;
   }
 
-  abstract valueAtTime: (time: number, paramValue: T) => T;
+  abstract valueAtTime: (time: number) => T;
   abstract computeDomain: () => [number, number];
 }

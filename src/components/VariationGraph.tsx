@@ -11,12 +11,14 @@ type VariationGraphProps = {
   variation: Variation;
   width: number;
   domain: [number, number];
+  blockDuration: number;
 };
 
 export default memo(function VariationGraph({
   variation,
   width,
   domain,
+  blockDuration,
 }: VariationGraphProps) {
   const data = useMemo(() => {
     if (variation instanceof FlatVariation) {
@@ -38,8 +40,15 @@ export default memo(function VariationGraph({
         },
       ];
     }
-    return [];
-  }, [variation]);
+    const sampleRate = 50;
+    const data = [];
+    for (let i = 0; i < sampleRate; i++) {
+      data.push({
+        value: variation.valueAtTime((blockDuration * i) / (sampleRate - 1)),
+      });
+    }
+    return data;
+  }, [variation, blockDuration]);
 
   return (
     <>
@@ -74,5 +83,5 @@ const CustomTooltip = ({
     return null;
   }
 
-  return <Text>{`${payload[0].value}`}</Text>;
+  return <Text fontSize={12}>{`${payload[0].value}`}</Text>;
 };

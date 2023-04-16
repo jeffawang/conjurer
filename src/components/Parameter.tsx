@@ -59,6 +59,7 @@ export default memo(function Parameter({
                     : (variation.duration / blockDuration) * width
                 }
                 domain={domain}
+                blockDuration={blockDuration}
               />
             ))}
           </HStack>
