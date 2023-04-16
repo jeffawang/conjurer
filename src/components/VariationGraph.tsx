@@ -40,6 +40,8 @@ export default memo(function VariationGraph({
         },
       ];
     }
+
+    // TODO: do something smarter than hard coding the sample rate here
     const sampleRate = 50;
     const data = [];
     for (let i = 0; i < sampleRate; i++) {

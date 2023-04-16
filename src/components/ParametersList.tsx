@@ -43,8 +43,8 @@ export default observer(function ParametersList({
               key={uniformName}
               uniformName={uniformName}
               patternParam={patternParam}
+              block={block}
               variations={block.parameterVariations[uniformName] ?? []}
-              blockDuration={block.duration}
               width={width}
               isSelected={isSelected}
               handleClick={handleClick}
