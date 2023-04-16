@@ -1,24 +1,27 @@
-import { PatternParam } from "@/src/types/PatternParams";
-import { Divider, HStack, Text } from "@chakra-ui/react";
+import { HStack, IconButton, Text } from "@chakra-ui/react";
 import { memo, useMemo } from "react";
-import { LineChart, Line, CartesianGrid, Tooltip, YAxis } from "recharts";
-import { BsCaretDown, BsCaretUp } from "react-icons/bs";
+import { LineChart, Line, Tooltip, YAxis } from "recharts";
 import Variation from "@/src/types/Variations/Variation";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
+import { action } from "mobx";
+import { FaTrashAlt } from "react-icons/fa";
+import Block from "@/src/types/Block";
 
 type VariationGraphProps = {
+  uniformName: string;
   variation: Variation;
   width: number;
   domain: [number, number];
-  blockDuration: number;
+  block: Block;
 };
 
 export default memo(function VariationGraph({
+  uniformName,
   variation,
   width,
   domain,
-  blockDuration,
+  block,
 }: VariationGraphProps) {
   const data = useMemo(() => {
     if (variation instanceof FlatVariation) {
@@ -46,11 +49,11 @@ export default memo(function VariationGraph({
     const data = [];
     for (let i = 0; i < sampleRate; i++) {
       data.push({
-        value: variation.valueAtTime((blockDuration * i) / (sampleRate - 1)),
+        value: variation.valueAtTime((block.duration * i) / (sampleRate - 1)),
       });
     }
     return data;
-  }, [variation, blockDuration]);
+  }, [variation, block.duration]);
 
   return (
     <>
@@ -70,6 +73,15 @@ export default memo(function VariationGraph({
         <Tooltip content={<CustomTooltip />} />
         <YAxis type="number" domain={domain} hide allowDataOverflow={false} />
       </LineChart>
+      <HStack>
+        <IconButton
+          aria-label="Delete"
+          variant="ghost"
+          size="xs"
+          icon={<FaTrashAlt size={12} />}
+          onClick={action(() => block.removeVariation(uniformName, variation))}
+        />
+      </HStack>
     </>
   );
 });

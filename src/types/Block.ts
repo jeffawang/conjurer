@@ -67,5 +67,18 @@ export default class Block<T extends ExtraParams = {}> {
     }
   };
 
+  removeVariation = (uniformName: string, variation: Variation) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) return;
+
+    console.log("uniform name", uniformName);
+
+    const index = variations.indexOf(variation);
+    if (index > -1) {
+      variations.splice(index, 1);
+      this.parameterVariations[uniformName as keyof T] = [...variations];
+    }
+  };
+
   clone = () => new Block(clone(this.pattern));
 }

@@ -1,5 +1,5 @@
 import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
-import { Box, Divider, HStack, Text } from "@chakra-ui/react";
+import { Box, Divider, HStack, Text, VStack } from "@chakra-ui/react";
 import { memo } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import Variation from "@/src/types/Variations/Variation";
@@ -93,12 +93,13 @@ export default memo(function Parameter({
                       index={index}
                     >
                       {(provided, snapshot) => (
-                        <Box
+                        <VStack
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
                           <VariationGraph
+                            uniformName={uniformName}
                             variation={variation}
                             width={
                               variation.duration < 0
@@ -106,9 +107,9 @@ export default memo(function Parameter({
                                 : (variation.duration / block.duration) * width
                             }
                             domain={domain}
-                            blockDuration={block.duration}
+                            block={block}
                           />
-                        </Box>
+                        </VStack>
                       )}
                     </Draggable>
                   ))}
