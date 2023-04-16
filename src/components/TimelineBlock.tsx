@@ -118,10 +118,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
           >
             {block.pattern.name}
           </Text>
-          <ParametersList
-            block={block}
-            width={uiStore.timeToX(block.duration)}
-          />
+          <ParametersList block={block} />
         </VStack>
       </Card>
     </Draggable>

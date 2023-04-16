@@ -11,6 +11,7 @@ type VariationType =
   | "triangle";
 
 export default class Variation {
+  id: string = Math.random().toString(16).slice(2); // unique id
   type: VariationType;
   duration: number;
 

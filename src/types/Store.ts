@@ -9,6 +9,8 @@ import Rainbow from "@/src/patterns/Rainbow";
 import SunCycle from "@/src/patterns/SunCycle";
 import { patterns } from "@/src/patterns/patterns";
 import { makeAutoObservable, configure, runInAction } from "mobx";
+import Variation from "@/src/types/Variation";
+import FlatVariation from "@/src/types/FlatVariation";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -72,6 +74,9 @@ export default class Store {
     // Temporary hard-coded blocks
     this.blocks.push(new Block(SunCycle()), new Block(Rainbow()));
     this.blocks[0].setTiming({ startTime: 0, duration: 15 });
+    this.blocks[0].parameterVariations = {
+      u_speed: [new FlatVariation(2, 10), new FlatVariation(4, 2)],
+    };
     this.blocks[1].setTiming({ startTime: 15, duration: 7 });
 
     this.initialized = true;
