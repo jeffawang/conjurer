@@ -110,7 +110,12 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         <TimelineBlockBound rightBound onBoundChange={handleRightBoundResize} />
 
         <VStack width="100%" height="100%" justify="center">
-          <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
+          <Text
+            key="patternName"
+            userSelect="none"
+            textOverflow="clip"
+            overflowWrap="anywhere"
+          >
             {block.pattern.name}
           </Text>
           <ParametersList

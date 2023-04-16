@@ -22,6 +22,7 @@ export default class Block<T extends ExtraParams = {}> {
     makeAutoObservable(this, {
       pattern: false,
       updateParameters: false,
+      updateParameter: false,
     });
   }
 
