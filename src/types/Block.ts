@@ -1,17 +1,12 @@
 import { makeAutoObservable } from "mobx";
 import Pattern from "./Pattern";
-import { ExtraParams, PatternParams } from "./PatternParams";
+import { ExtraParams } from "./PatternParams";
 import { clone } from "@/src/utils/object";
 import Variation from "@/src/types/Variation";
-
-type PatternParamsController<PP extends PatternParams> = {
-  [K in keyof PP]?: ({ sp, time }: { sp: PP[K]; time: number }) => void;
-};
 
 export default class Block<T extends ExtraParams = {}> {
   id: string = Math.random().toString(16).slice(2); // unique id
   pattern: Pattern<T>;
-  // spc: PatternParamsController<T>;
   parameterVariations: { [K in keyof T]?: Variation[] } = {};
 
   startTime: number = 0; // global time that block starts playing at in seconds
@@ -21,16 +16,11 @@ export default class Block<T extends ExtraParams = {}> {
     return this.startTime + this.duration;
   }
 
-  constructor(
-    pattern: Pattern<T>
-    // spc: PatternParamsController<T> = {} as PatternParamsController<T>
-  ) {
+  constructor(pattern: Pattern<T>) {
     this.pattern = pattern;
-    // this.spc = spc;
 
     makeAutoObservable(this, {
       pattern: false,
-      // spc: false,
       updateParameters: false,
     });
   }
@@ -52,10 +42,6 @@ export default class Block<T extends ExtraParams = {}> {
     for (const parameter of Object.keys(this.parameterVariations)) {
       this.updateParameter(parameter, time);
     }
-
-    // Object.entries(this.spc).map(([u, f]) => {
-    //   f({ sp: this.pattern.params[u], time, globalTime });
-    // });
   };
 
   updateParameter = (parameter: keyof T, time: number) => {
