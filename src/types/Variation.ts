@@ -10,7 +10,7 @@ type VariationType =
   | "square"
   | "triangle";
 
-export default class Variation {
+export default class Variation<T extends ParamType = ParamType> {
   id: string = Math.random().toString(16).slice(2); // unique id
   type: VariationType;
   duration: number;
@@ -20,7 +20,7 @@ export default class Variation {
     this.duration = duration;
   }
 
-  valueAtTime = (paramValue: ParamType, time: number) => {
+  valueAtTime = (time: number, paramValue: T) => {
     // TODO: actually implement
     if (typeof paramValue === "number") {
       return paramValue;
