@@ -1,4 +1,4 @@
-import { PatternParam } from "@/src/types/PatternParams";
+import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
 import { Box, Divider, HStack, Text } from "@chakra-ui/react";
 import { memo } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
@@ -9,7 +9,7 @@ import {
   Draggable,
   Droppable,
   OnDragEndResponder,
-} from "react-beautiful-dnd";
+} from "@hello-pangea/dnd";
 import { reorder } from "@/src/utils/algorithm";
 import { useStore } from "@/src/types/StoreContext";
 import Block from "@/src/types/Block";
@@ -18,7 +18,7 @@ import { action } from "mobx";
 type ParameterProps = {
   uniformName: string;
   patternParam: PatternParam;
-  block: Block;
+  block: Block<ExtraParams>;
   variations: Variation[];
   width: number;
   isSelected: boolean;
@@ -36,7 +36,7 @@ export default memo(function Parameter({
 }: ParameterProps) {
   const store = useStore();
 
-  const domain: [number, number] = [0, 1];
+  const domain: [number, number] = [0, 20];
   for (const variation of variations) {
     const [min, max] = variation.computeDomain();
     domain[0] = Math.min(domain[0], min);
@@ -49,7 +49,7 @@ export default memo(function Parameter({
       return;
     }
 
-    block.parameterVariations = reorder(
+    block.parameterVariations[uniformName] = reorder(
       variations,
       result.source.index,
       result.destination.index
@@ -73,7 +73,10 @@ export default memo(function Parameter({
         (variations.length === 0 ? null : (
           // TODO: no variations case
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable" direction="horizontal">
+            <Droppable
+              droppableId={block.id + uniformName}
+              direction="horizontal"
+            >
               {(provided, snapshot) => (
                 <HStack
                   ref={provided.innerRef}
@@ -109,6 +112,7 @@ export default memo(function Parameter({
                       )}
                     </Draggable>
                   ))}
+                  {provided.placeholder}
                 </HStack>
               )}
             </Droppable>

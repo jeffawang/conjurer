@@ -1,4 +1,4 @@
-import { Box, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Divider, Heading, Text, VStack } from "@chakra-ui/react";
 import { useMemo } from "react";
 import Block from "../types/Block";
 import BlockView from "@/src/components/BlockView";
@@ -7,6 +7,7 @@ import { LED_COUNTS } from "@/src/utils/size";
 import SelectablePattern from "@/src/components/SelectablePattern";
 import { useStore } from "@/src/types/StoreContext";
 import { observer } from "mobx-react-lite";
+import Keyboard from "@/src/components/Keyboard";
 
 const PATTERN_PREVIEW_DISPLAY_FACTOR = 1.5;
 
@@ -48,6 +49,8 @@ export default observer(function PatternList() {
       <Text userSelect="none" fontSize="xs">
         double click to insert
       </Text>
+      <Divider />
+      <Keyboard />
     </VStack>
   );
 });
