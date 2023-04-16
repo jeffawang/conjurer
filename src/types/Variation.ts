@@ -10,7 +10,7 @@ type VariationType =
   | "square"
   | "triangle";
 
-export default class Variation<T extends ParamType = ParamType> {
+export default abstract class Variation<T extends ParamType = ParamType> {
   id: string = Math.random().toString(16).slice(2); // unique id
   type: VariationType;
   duration: number;
@@ -20,18 +20,6 @@ export default class Variation<T extends ParamType = ParamType> {
     this.duration = duration;
   }
 
-  valueAtTime = (time: number, paramValue: T) => {
-    // TODO: actually implement
-    if (typeof paramValue === "number") {
-      return paramValue;
-    } else if (paramValue instanceof Vector2) {
-      return paramValue;
-      // return new Vector2(0, 0);
-    } else if (paramValue instanceof Texture) {
-      return paramValue;
-      // return new Texture();
-    }
-
-    return 0;
-  };
+  abstract valueAtTime: (time: number, paramValue: T) => T;
+  abstract computeDomain: () => [number, number];
 }

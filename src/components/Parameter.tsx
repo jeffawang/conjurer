@@ -28,13 +28,9 @@ export default memo(function Parameter({
 }: ParameterProps) {
   const domain: [number, number] = [0, 1];
   for (const variation of variations) {
-    if (variation instanceof FlatVariation) {
-      domain[0] = Math.min(domain[0], variation.value);
-      domain[1] = Math.max(domain[1], variation.value);
-    } else if (variation instanceof LinearVariation) {
-      domain[0] = Math.min(domain[0], variation.from);
-      domain[1] = Math.max(domain[1], variation.to);
-    }
+    const [min, max] = variation.computeDomain();
+    domain[0] = Math.min(domain[0], min);
+    domain[1] = Math.max(domain[1], max);
   }
 
   return (
