@@ -31,7 +31,7 @@
     "recharts": "^2.5.0",
     "three": "^0.151.2",
     "use-debounce": "^9.0.4",
-    "wavesurfer.js": "^7.0.0-alpha.30"
+    "wavesurfer.js": "^7.0.0-alpha.31"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
