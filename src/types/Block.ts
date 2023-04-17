@@ -74,9 +74,16 @@ export default class Block<T extends ExtraParams = {}> {
     const index = variations.indexOf(variation);
     if (index > -1) {
       variations.splice(index, 1);
-      // create a new array so that mobx can detect the change
-      this.parameterVariations[uniformName as keyof T] = [...variations];
+      this.triggerVariationReactions(uniformName);
     }
+  };
+
+  triggerVariationReactions = (uniformName: string) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) return;
+
+    // create a new array so that mobx can detect the change
+    this.parameterVariations[uniformName as keyof T] = [...variations];
   };
 
   clone = () => new Block(clone(this.pattern));

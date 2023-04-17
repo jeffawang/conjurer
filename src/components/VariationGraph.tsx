@@ -1,4 +1,5 @@
 import {
+  Box,
   HStack,
   IconButton,
   Popover,
@@ -23,62 +24,54 @@ type VariationGraphProps = {
   block: Block;
 };
 
-export default memo(function VariationGraph({
+export default (function VariationGraph({
   uniformName,
   variation,
   width,
   domain,
   block,
 }: VariationGraphProps) {
-  const data = useMemo(
-    () => variation.computeSampledData(block.duration),
-    [variation, block.duration]
-  );
+  const data = variation.computeSampledData(block.duration);
 
   return (
     <>
-      <LineChart
-        width={width}
-        height={30}
-        data={data}
-        margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
-      >
-        <Line
-          isAnimationActive={false}
-          type="monotone"
-          dataKey="value"
-          stroke="#ff7300"
-          yAxisId={0}
-        />
-        <Tooltip content={<CustomTooltip />} />
-        <YAxis type="number" domain={domain} hide allowDataOverflow={false} />
-      </LineChart>
       <HStack>
-        <Popover placement="bottom">
+        <Popover placement="bottom" isLazy openDelay={0} closeDelay={0}>
           <PopoverTrigger>
-            <IconButton
-              aria-label="Edit"
-              variant="ghost"
-              size="xs"
-              color="gray.400"
-              icon={<FaPencilAlt size={12} />}
-            />
+            <Box>
+              <LineChart
+                width={width}
+                height={30}
+                data={data}
+                margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
+              >
+                <Line
+                  isAnimationActive={false}
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#ff7300"
+                  yAxisId={0}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <YAxis
+                  type="number"
+                  domain={domain}
+                  hide
+                  allowDataOverflow={false}
+                />
+              </LineChart>
+            </Box>
           </PopoverTrigger>
           <Portal>
             <PopoverContent>
-              <VariationControls variation={variation} />
+              <VariationControls
+                variation={variation}
+                uniformName={uniformName}
+                block={block}
+              />
             </PopoverContent>
           </Portal>
         </Popover>
-
-        <IconButton
-          aria-label="Delete"
-          variant="ghost"
-          size="xs"
-          color="gray.400"
-          icon={<FaTrashAlt size={12} />}
-          onClick={action(() => block.removeVariation(uniformName, variation))}
-        />
       </HStack>
     </>
   );
