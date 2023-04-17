@@ -1,10 +1,19 @@
-import { HStack, IconButton, Text } from "@chakra-ui/react";
-import { memo, useMemo } from "react";
+import {
+  HStack,
+  IconButton,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Portal,
+  Text,
+} from "@chakra-ui/react";
+import { memo, useMemo, useState } from "react";
 import { LineChart, Line, Tooltip, YAxis } from "recharts";
 import Variation from "@/src/types/Variations/Variation";
 import { action } from "mobx";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import Block from "@/src/types/Block";
+import VariationControls from "@/src/components/VariationControls";
 
 type VariationGraphProps = {
   uniformName: string;
@@ -45,14 +54,23 @@ export default memo(function VariationGraph({
         <YAxis type="number" domain={domain} hide allowDataOverflow={false} />
       </LineChart>
       <HStack>
-        <IconButton
-          aria-label="Edit"
-          variant="ghost"
-          size="xs"
-          color="gray.400"
-          icon={<FaPencilAlt size={12} />}
-          onClick={action(() => block.removeVariation(uniformName, variation))}
-        />
+        <Popover placement="bottom">
+          <PopoverTrigger>
+            <IconButton
+              aria-label="Edit"
+              variant="ghost"
+              size="xs"
+              color="gray.400"
+              icon={<FaPencilAlt size={12} />}
+            />
+          </PopoverTrigger>
+          <Portal>
+            <PopoverContent>
+              <VariationControls variation={variation} />
+            </PopoverContent>
+          </Portal>
+        </Popover>
+
         <IconButton
           aria-label="Delete"
           variant="ghost"

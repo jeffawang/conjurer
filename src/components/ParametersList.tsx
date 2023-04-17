@@ -1,6 +1,6 @@
 import Block from "@/src/types/Block";
 import { PatternParams } from "@/src/types/PatternParams";
-import { memo, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import Parameter from "@/src/components/Parameter";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
