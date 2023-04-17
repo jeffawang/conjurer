@@ -16,4 +16,15 @@ export default class FlatVariation extends Variation<number> {
   computeDomain = () => {
     return [this.value, this.value] as [number, number];
   };
+
+  computeSampledData = (duration: number) => {
+    return [
+      {
+        value: this.value,
+      },
+      {
+        value: this.value,
+      },
+    ];
+  };
 }

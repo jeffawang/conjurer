@@ -36,7 +36,7 @@ export default memo(function Parameter({
 }: ParameterProps) {
   const store = useStore();
 
-  const domain: [number, number] = [0, 20];
+  const domain: [number, number] = [0, 1];
   for (const variation of variations) {
     const [min, max] = variation.computeDomain();
     domain[0] = Math.min(domain[0], min);

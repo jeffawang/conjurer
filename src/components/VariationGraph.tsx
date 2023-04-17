@@ -2,8 +2,6 @@ import { HStack, IconButton, Text } from "@chakra-ui/react";
 import { memo, useMemo } from "react";
 import { LineChart, Line, Tooltip, YAxis } from "recharts";
 import Variation from "@/src/types/Variations/Variation";
-import FlatVariation from "@/src/types/Variations/FlatVariation";
-import LinearVariation from "@/src/types/Variations/LinearVariation";
 import { action } from "mobx";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import Block from "@/src/types/Block";
@@ -23,37 +21,10 @@ export default memo(function VariationGraph({
   domain,
   block,
 }: VariationGraphProps) {
-  const data = useMemo(() => {
-    if (variation instanceof FlatVariation) {
-      return [
-        {
-          value: variation.value,
-        },
-        {
-          value: variation.value,
-        },
-      ];
-    } else if (variation instanceof LinearVariation) {
-      return [
-        {
-          value: variation.from,
-        },
-        {
-          value: variation.to,
-        },
-      ];
-    }
-
-    // TODO: do something smarter than hard coding the sample rate here
-    const sampleRate = 50;
-    const data = [];
-    for (let i = 0; i < sampleRate; i++) {
-      data.push({
-        value: variation.valueAtTime((block.duration * i) / (sampleRate - 1)),
-      });
-    }
-    return data;
-  }, [variation, block.duration]);
+  const data = useMemo(
+    () => variation.computeSampledData(block.duration),
+    [variation, block.duration]
+  );
 
   return (
     <>

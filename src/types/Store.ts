@@ -78,9 +78,9 @@ export default class Store {
     this.blocks[0].setTiming({ startTime: 0, duration: 15 });
     this.blocks[0].parameterVariations = {
       u_speed: [
-        new LinearVariation(4, 1, 10),
-        new FlatVariation(4, 2),
-        new SineVariation(3, 2, 2, 0, 0),
+        new LinearVariation(4, 0.1, 1),
+        new FlatVariation(4, 1.5),
+        new SineVariation(3, 2, 0.1, 0, 0),
       ],
     };
     this.blocks[1].setTiming({ startTime: 15, duration: 7 });

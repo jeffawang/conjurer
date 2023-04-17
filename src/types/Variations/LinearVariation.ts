@@ -19,4 +19,15 @@ export default class LinearVariation extends Variation<number> {
   computeDomain = () => {
     return [this.from, this.to] as [number, number];
   };
+
+  computeSampledData = (duration: number) => {
+    return [
+      {
+        value: this.from,
+      },
+      {
+        value: this.to,
+      },
+    ];
+  };
 }
