@@ -1,6 +1,5 @@
 import Block from "../types/Block";
 import { ShaderMaterial } from "three";
-import { StandardParams } from "../types/PatternParams";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { observer } from "mobx-react-lite";
@@ -9,7 +8,7 @@ import vert from "@/src/patterns/shaders/default.vert";
 
 type BlockViewProps = {
   autorun?: boolean;
-  block: Block<StandardParams>;
+  block: Block;
 };
 
 export default observer(function BlockView({ autorun, block }: BlockViewProps) {
