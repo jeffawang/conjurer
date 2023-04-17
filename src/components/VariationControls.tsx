@@ -88,6 +88,7 @@ function FlatVariationControls({
         <Text>Value:</Text>
         <NumberInput
           size="md"
+          step={0.1}
           onChange={(valueString) => {
             variation.value = parseFloat(valueString);
             setValue(valueString);
@@ -126,6 +127,7 @@ function LinearVariationControls({
         <Text>From:</Text>
         <NumberInput
           size="md"
+          step={0.1}
           onChange={(valueString) => {
             variation.from = parseFloat(valueString);
             setFrom(valueString);
@@ -144,6 +146,7 @@ function LinearVariationControls({
         <Text>To:</Text>
         <NumberInput
           size="md"
+          step={0.1}
           onChange={(valueString) => {
             variation.to = parseFloat(valueString);
             setTo(valueString);
@@ -184,6 +187,7 @@ function SineVariationControls({
         <Text>Amplitude:</Text>
         <NumberInput
           size="md"
+          step={0.1}
           onChange={(valueString) => {
             variation.amplitude = parseFloat(valueString);
             setAmplitude(valueString);
@@ -202,6 +206,7 @@ function SineVariationControls({
         <Text>Frequency:</Text>
         <NumberInput
           size="md"
+          step={0.1}
           onChange={(valueString) => {
             variation.frequency = parseFloat(valueString);
             setFrequency(valueString);
@@ -220,6 +225,7 @@ function SineVariationControls({
         <Text>Phase:</Text>
         <NumberInput
           size="md"
+          step={0.1}
           onChange={(valueString) => {
             variation.phase = parseFloat(valueString);
             setPhase(valueString);
@@ -238,6 +244,7 @@ function SineVariationControls({
         <Text>Offset:</Text>
         <NumberInput
           size="md"
+          step={0.1}
           onChange={(valueString) => {
             variation.offset = parseFloat(valueString);
             setOffset(valueString);
