@@ -27,7 +27,7 @@ export default memo(function Arrangement() {
         <VStack height={10} bgColor="gray.500" justify="center">
           <TimerReadout />
         </VStack>
-        <VStack height={200} justify="center">
+        <VStack height={250} justify="center">
           <Heading userSelect="none" size="md">
             Layer
           </Heading>

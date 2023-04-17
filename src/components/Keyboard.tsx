@@ -28,6 +28,7 @@ export default observer(function Keyboard() {
         e.preventDefault();
       } else if (e.key === "Escape") store.deselectAllBlocks();
       else if (e.key === "Delete" || e.key === "Backspace")
+        // TODO: triggers when trying to backspace a number in an input field, fix
         store.deleteSelectedBlocks();
       else if (e.key === "d" && (e.ctrlKey || e.metaKey)) {
         store.duplicateBlocks();

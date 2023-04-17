@@ -9,7 +9,7 @@ export default function Layer() {
   return (
     <Box
       position="relative"
-      height={200}
+      height={250}
       width={uiStore.timeToXPixels(MAX_TIME)}
       bgColor="gray.400"
       onClick={store.deselectAllBlocks}

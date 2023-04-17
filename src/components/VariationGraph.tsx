@@ -40,7 +40,7 @@ export default (function VariationGraph({
           >
             <LineChart
               width={width}
-              height={30}
+              height={50}
               data={data}
               margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
             >

@@ -68,6 +68,17 @@ export default class Block<T extends ExtraParams = {}> {
     }
   };
 
+  addVariation = (uniformName: string, variation: Variation) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) {
+      this.parameterVariations[uniformName as keyof T] = [variation];
+    } else {
+      variations.push(variation);
+    }
+
+    this.triggerVariationReactions(uniformName);
+  };
+
   removeVariation = (uniformName: string, variation: Variation) => {
     const variations = this.parameterVariations[uniformName];
     if (!variations) return;
