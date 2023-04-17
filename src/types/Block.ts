@@ -99,10 +99,15 @@ export default class Block<T extends ExtraParams = {}> {
     if (!variations) return;
 
     const index = variations.indexOf(variation);
-    if (index > -1) {
-      variations[index].duration += delta;
-      this.triggerVariationReactions(uniformName);
+    if (index < 0) {
+      console.log("variation not found in block");
+      return;
     }
+
+    if (variation.duration + delta < 1) return;
+
+    variation.duration += delta;
+    this.triggerVariationReactions(uniformName);
   };
 
   triggerVariationReactions = (uniformName: string) => {

@@ -150,7 +150,7 @@ export default memo(function Parameter({
           </DragDropContext>
         ))}
       {isSelected && (
-        <HStack width="100%" justify="start" spacing={0}>
+        <HStack alignSelf="flex-start" justify="start" spacing={0}>
           {variations.map((variation) => (
             <VariationBound
               key={variation.id}
