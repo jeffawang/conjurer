@@ -1,5 +1,6 @@
 import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
 import {
+  Box,
   Button,
   Divider,
   HStack,
@@ -9,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { memo } from "react";
 import { BsArrowUpRight, BsCaretDown, BsCaretUp } from "react-icons/bs";
+import { BiArrowToRight } from "react-icons/bi";
 import { TbWaveSine } from "react-icons/tb";
 import { MdTrendingFlat } from "react-icons/md";
 import Variation from "@/src/types/Variations/Variation";
@@ -26,6 +28,8 @@ import { action } from "mobx";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
 import SineVariation from "@/src/types/Variations/SineVariation";
+import VariationBound from "@/src/components/VariationBound";
+import NewVariationButtons from "@/src/components/NewVariationButtons";
 
 type ParameterProps = {
   uniformName: string;
@@ -96,8 +100,9 @@ export default memo(function Parameter({
       </Button>
 
       {isSelected &&
-        (variations.length === 0 ? null : (
-          // TODO: no variations case
+        (variations.length === 0 ? (
+          <Text fontSize={10}>Click a button below to add a variation!</Text>
+        ) : (
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
               droppableId={block.id + uniformName}
@@ -108,8 +113,7 @@ export default memo(function Parameter({
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   width="100%"
-                  gap={0}
-                  justify={"start"}
+                  justify="start"
                   spacing={0}
                 >
                   {variations.map((variation, index) => (
@@ -146,38 +150,19 @@ export default memo(function Parameter({
           </DragDropContext>
         ))}
       {isSelected && (
-        <HStack>
-          <IconButton
-            size="xs"
-            aria-label="Flat"
-            height={6}
-            icon={<MdTrendingFlat size={17} />}
-            onClick={action(() =>
-              block.addVariation(uniformName, new FlatVariation(2, 1))
-            )}
-          />
-          <IconButton
-            size="xs"
-            aria-label="Linear"
-            height={6}
-            icon={<BsArrowUpRight size={17} />}
-            onClick={action(() =>
-              block.addVariation(uniformName, new LinearVariation(2, 1, 2))
-            )}
-          />
-          <IconButton
-            size="xs"
-            aria-label="Sine"
-            height={6}
-            icon={<TbWaveSine size={17} />}
-            onClick={action(() =>
-              block.addVariation(
-                uniformName,
-                new SineVariation(2, 1, 0.5, 0, 0)
-              )
-            )}
-          />
+        <HStack width="100%" justify="start" spacing={0}>
+          {variations.map((variation) => (
+            <VariationBound
+              key={variation.id}
+              uniformName={uniformName}
+              block={block}
+              variation={variation}
+            />
+          ))}
         </HStack>
+      )}
+      {isSelected && (
+        <NewVariationButtons uniformName={uniformName} block={block} />
       )}
     </>
   );

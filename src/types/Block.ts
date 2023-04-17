@@ -90,6 +90,21 @@ export default class Block<T extends ExtraParams = {}> {
     }
   };
 
+  applyVariationDurationDelta = (
+    uniformName: string,
+    variation: Variation,
+    delta: number
+  ) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) return;
+
+    const index = variations.indexOf(variation);
+    if (index > -1) {
+      variations[index].duration += delta;
+      this.triggerVariationReactions(uniformName);
+    }
+  };
+
   triggerVariationReactions = (uniformName: string) => {
     const variations = this.parameterVariations[uniformName];
     if (!variations) return;
