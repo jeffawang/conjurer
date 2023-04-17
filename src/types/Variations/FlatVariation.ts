@@ -9,13 +9,9 @@ export default class FlatVariation extends Variation<number> {
     this.value = value;
   }
 
-  valueAtTime = () => {
-    return this.value;
-  };
+  valueAtTime = () => this.value;
 
-  computeDomain = () => {
-    return [this.value, this.value] as [number, number];
-  };
+  computeDomain = () => [this.value, this.value] as [number, number];
 
   computeSampledData = (duration: number) => {
     return [

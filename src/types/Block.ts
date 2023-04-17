@@ -49,6 +49,7 @@ export default class Block<T extends ExtraParams = {}> {
     const variations = this.parameterVariations[parameter];
     if (!variations) return;
 
+    // TODO: maybe this should be block.startTime instead of 0
     let variationTime = 0;
     for (const variation of variations) {
       if (

@@ -12,22 +12,17 @@ export default class LinearVariation extends Variation<number> {
     this.to = to;
   }
 
-  valueAtTime = (time: number) => {
-    return lerp(this.from, this.to, time / this.duration);
-  };
+  valueAtTime = (time: number) =>
+    lerp(this.from, this.to, time / this.duration);
 
-  computeDomain = () => {
-    return [this.from, this.to] as [number, number];
-  };
+  computeDomain = () => [this.from, this.to] as [number, number];
 
-  computeSampledData = (duration: number) => {
-    return [
-      {
-        value: this.from,
-      },
-      {
-        value: this.to,
-      },
-    ];
-  };
+  computeSampledData = (duration: number) => [
+    {
+      value: this.from,
+    },
+    {
+      value: this.to,
+    },
+  ];
 }

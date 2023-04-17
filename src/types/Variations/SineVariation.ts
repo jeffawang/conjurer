@@ -23,28 +23,25 @@ export default class SineVariation extends Variation<number> {
     this.offset = offset;
   }
 
-  valueAtTime = (time: number) => {
-    return (
-      Math.sin(time * this.frequency * 2 * Math.PI + this.phase) *
-        this.amplitude +
-      this.offset
-    );
-  };
+  valueAtTime = (time: number) =>
+    Math.sin(time * this.frequency * 2 * Math.PI + this.phase) *
+      this.amplitude +
+    this.offset;
 
-  computeDomain = () => {
-    return [-this.amplitude + this.offset, this.amplitude + this.offset] as [
+  computeDomain = () =>
+    [-this.amplitude + this.offset, this.amplitude + this.offset] as [
       number,
       number
     ];
-  };
 
   computeSampledData = (duration: number) => {
     const samplingFrequency = 8 * this.frequency;
-    const sampleRate = Math.ceil(duration * samplingFrequency);
+    const totalSamples = Math.ceil(duration * samplingFrequency);
+
     const data = [];
-    for (let i = 0; i < sampleRate; i++) {
+    for (let i = 0; i < totalSamples; i++) {
       data.push({
-        value: this.valueAtTime((duration * i) / (sampleRate - 1)),
+        value: this.valueAtTime(duration * (i / (totalSamples - 1))),
       });
     }
     return data;

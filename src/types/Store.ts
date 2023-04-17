@@ -13,6 +13,7 @@ import Variation from "@/src/types/Variations/Variation";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
 import SineVariation from "@/src/types/Variations/SineVariation";
+import Disc from "@/src/patterns/Disc";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -74,13 +75,13 @@ export default class Store {
 
   initialize = () => {
     // Temporary hard-coded blocks
-    this.blocks.push(new Block(SunCycle()), new Block(Rainbow()));
+    this.blocks.push(new Block(Disc()), new Block(SunCycle()));
     this.blocks[0].setTiming({ startTime: 0, duration: 15 });
     this.blocks[0].parameterVariations = {
-      u_speed: [
-        new LinearVariation(4, 0.1, 1),
+      u_radius: [
+        new SineVariation(3, 2, 2, 0, 0),
         new FlatVariation(4, 1.5),
-        new SineVariation(3, 2, 0.1, 0, 0),
+        new LinearVariation(4, 0.1, 1),
       ],
     };
     this.blocks[1].setTiming({ startTime: 15, duration: 7 });

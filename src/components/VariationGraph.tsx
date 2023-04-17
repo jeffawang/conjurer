@@ -31,7 +31,7 @@ export default (function VariationGraph({
   domain,
   block,
 }: VariationGraphProps) {
-  const data = variation.computeSampledData(block.duration);
+  const data = variation.computeSampledData(variation.duration);
 
   return (
     <>
