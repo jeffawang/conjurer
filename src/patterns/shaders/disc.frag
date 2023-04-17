@@ -12,7 +12,7 @@ vec3 color = vec3(0.0588, 1.0, 0.9216);
 void main() {
     vec2 st = v_uv;
 
-    color = mix(color, vec3(0.0), step(u_radius, st.y));
+    color = mix(color, vec3(0.0), smoothstep(u_radius - 0.1, u_radius + 0.1, st.y));
 
     gl_FragColor = vec4(color, 1.0);
 }

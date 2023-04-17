@@ -5,11 +5,9 @@ import UIStore from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";
 import { clone } from "@/src/utils/object";
 import { DEFAULT_BLOCK_DURATION } from "@/src/utils/time";
-import Rainbow from "@/src/patterns/Rainbow";
 import SunCycle from "@/src/patterns/SunCycle";
 import { patterns } from "@/src/patterns/patterns";
 import { makeAutoObservable, configure, runInAction } from "mobx";
-import Variation from "@/src/types/Variations/Variation";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
 import SineVariation from "@/src/types/Variations/SineVariation";
@@ -79,9 +77,10 @@ export default class Store {
     this.blocks[0].setTiming({ startTime: 0, duration: 15 });
     this.blocks[0].parameterVariations = {
       u_radius: [
-        new SineVariation(3, 2, 2, 0, 0),
-        new FlatVariation(4, 1.5),
-        new LinearVariation(4, 0.1, 1),
+        new SineVariation(2, 0.5, 1, 0, -0.1),
+        new SineVariation(2, 0.5, 1, 0, -0.1),
+        new FlatVariation(1, 1),
+        new LinearVariation(8, 0, 1),
       ],
     };
     this.blocks[1].setTiming({ startTime: 15, duration: 7 });

@@ -1,18 +1,13 @@
 import {
   Box,
-  HStack,
-  IconButton,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Portal,
   Text,
 } from "@chakra-ui/react";
-import { memo, useMemo, useState } from "react";
 import { LineChart, Line, Tooltip, YAxis } from "recharts";
 import Variation from "@/src/types/Variations/Variation";
-import { action } from "mobx";
-import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import Block from "@/src/types/Block";
 import VariationControls from "@/src/components/VariationControls";
 
@@ -49,6 +44,7 @@ export default (function VariationGraph({
               margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
             >
               <Line
+                dot={false}
                 isAnimationActive={false}
                 type="monotone"
                 dataKey="value"
@@ -89,6 +85,10 @@ const CustomTooltip = ({
   if (!(active && payload && payload.length)) {
     return null;
   }
+  let value = payload[0].value;
+  if (typeof payload[0].value === "number") {
+    value = payload[0].value.toFixed(2);
+  }
 
-  return <Text fontSize={12}>{`${payload[0].value}`}</Text>;
+  return <Text fontSize={12}>{`${value}`}</Text>;
 };
