@@ -35,44 +35,46 @@ export default (function VariationGraph({
 
   return (
     <>
-      <HStack>
-        <Popover placement="bottom" isLazy openDelay={0} closeDelay={0}>
-          <PopoverTrigger>
-            <Box>
-              <LineChart
-                width={width}
-                height={30}
-                data={data}
-                margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
-              >
-                <Line
-                  isAnimationActive={false}
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#ff7300"
-                  yAxisId={0}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <YAxis
-                  type="number"
-                  domain={domain}
-                  hide
-                  allowDataOverflow={false}
-                />
-              </LineChart>
-            </Box>
-          </PopoverTrigger>
-          <Portal>
-            <PopoverContent>
-              <VariationControls
-                variation={variation}
-                uniformName={uniformName}
-                block={block}
+      <Popover placement="bottom" isLazy openDelay={0} closeDelay={0}>
+        <PopoverTrigger>
+          <Box
+            py={1}
+            bgColor="gray.600"
+            onClick={(e: any) => e.stopPropagation()}
+          >
+            <LineChart
+              width={width}
+              height={30}
+              data={data}
+              margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
+            >
+              <Line
+                isAnimationActive={false}
+                type="monotone"
+                dataKey="value"
+                stroke="#ff7300"
+                yAxisId={0}
               />
-            </PopoverContent>
-          </Portal>
-        </Popover>
-      </HStack>
+              <Tooltip content={<CustomTooltip />} />
+              <YAxis
+                type="number"
+                domain={domain}
+                hide
+                allowDataOverflow={false}
+              />
+            </LineChart>
+          </Box>
+        </PopoverTrigger>
+        <Portal>
+          <PopoverContent>
+            <VariationControls
+              variation={variation}
+              uniformName={uniformName}
+              block={block}
+            />
+          </PopoverContent>
+        </Portal>
+      </Popover>
     </>
   );
 });
