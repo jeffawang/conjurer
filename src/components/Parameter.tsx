@@ -46,6 +46,7 @@ export default memo(function Parameter({
   const onDragEnd: OnDragEndResponder = action((result) => {
     // dropped outside the list
     if (!result.destination) {
+      block.removeVariation(uniformName, variations[result.source.index]);
       return;
     }
 

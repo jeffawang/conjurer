@@ -95,29 +95,23 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         onClick={handleClick}
         role="button"
       >
-        <HStack
-          color={isSelected ? "blue.500" : "gray.300"}
-          className="handle"
-          position="absolute"
-          top={2}
-          justifyContent="center"
-          cursor="move"
-        >
-          <MdDragIndicator size={30} />
-        </HStack>
-
         <TimelineBlockBound leftBound onBoundChange={handleLeftBoundResize} />
         <TimelineBlockBound rightBound onBoundChange={handleRightBoundResize} />
 
-        <VStack width="100%" height="100%" justify="center">
-          <Text
-            key="patternName"
-            userSelect="none"
-            textOverflow="clip"
-            overflowWrap="anywhere"
+        <VStack width="100%" height="100%" pt={4}>
+          <HStack
+            color={isSelected ? "blue.500" : "gray.300"}
+            className="handle"
+            justifyContent="center"
+            cursor="move"
+            spacing={0}
           >
-            {block.pattern.name}
-          </Text>
+            <MdDragIndicator size={30} />
+            <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
+              {block.pattern.name}
+            </Text>
+          </HStack>
+
           <ParametersList block={block} />
         </VStack>
       </Card>

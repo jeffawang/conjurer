@@ -84,6 +84,7 @@ function FlatVariationControls({
 
   return (
     <>
+      <Text>Flat</Text>
       <HStack m={1}>
         <Text>Value:</Text>
         <NumberInput
@@ -123,6 +124,7 @@ function LinearVariationControls({
 
   return (
     <>
+      <Text>Linear</Text>
       <HStack m={1}>
         <Text>From:</Text>
         <NumberInput
@@ -183,6 +185,7 @@ function SineVariationControls({
 
   return (
     <>
+      <Text>Sine</Text>
       <HStack m={1}>
         <Text>Amplitude:</Text>
         <NumberInput

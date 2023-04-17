@@ -36,6 +36,7 @@ export default (function VariationGraph({
             py={1}
             bgColor="gray.600"
             onClick={(e: any) => e.stopPropagation()}
+            _hover={{ bgColor: "gray.500" }}
           >
             <LineChart
               width={width}
