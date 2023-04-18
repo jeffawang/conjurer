@@ -1,6 +1,6 @@
-import { Texture, Vector2 } from "three";
+import { Vector2, Vector4 } from "three";
 
-export type ParamType = number | Vector2 | Texture;
+export type ParamType = number | Vector2 | Vector4;
 
 export type PatternParam<T = ParamType> = {
   name: string;
