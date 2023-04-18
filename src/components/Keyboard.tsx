@@ -27,9 +27,10 @@ export default observer(function Keyboard() {
         store.selectAllBlocks();
         e.preventDefault();
       } else if (e.key === "Escape") store.deselectAllBlocks();
-      else if (e.key === "Delete" || e.key === "Backspace")
-        store.deleteSelectedBlocks();
-      else if (e.key === "d" && (e.ctrlKey || e.metaKey)) {
+      else if (e.key === "Delete" || e.key === "Backspace") {
+        // TODO: triggers when trying to backspace a number in an input field, fix
+        // store.deleteSelectedBlocks();
+      } else if (e.key === "d" && (e.ctrlKey || e.metaKey)) {
         store.duplicateBlocks();
         e.preventDefault();
       } else if (e.key === "+" || e.key === "=") uiStore.zoomIn();
@@ -60,28 +61,28 @@ export default observer(function Keyboard() {
 
   return (
     <VStack justifyContent="center">
-      <Text fontSize={13} userSelect="none">
+      <Text fontSize={9} userSelect="none">
         spacebar: play/pause
       </Text>
-      <Text fontSize={13} userSelect="none">
+      <Text fontSize={9} userSelect="none">
         ←/→: scan backward/forward
       </Text>
-      <Text fontSize={13} userSelect="none">
+      <Text fontSize={9} userSelect="none">
         +/-: zoom in/out
       </Text>
-      <Text fontSize={13} userSelect="none">
+      <Text fontSize={9} userSelect="none">
         cmd+c: copy block(s)
       </Text>
-      <Text fontSize={13} userSelect="none">
+      <Text fontSize={9} userSelect="none">
         cmd+v: paste block(s)
       </Text>
-      <Text fontSize={13} userSelect="none">
+      <Text fontSize={9} userSelect="none">
         cmd+d: duplicate block(s)
       </Text>
-      <Text fontSize={13} userSelect="none">
+      <Text fontSize={9} userSelect="none">
         cmd+a: select all blocks
       </Text>
-      <Text fontSize={13} userSelect="none">
+      <Text fontSize={9} userSelect="none">
         delete: delete selected block(s)
       </Text>
       {/* <Text>cmd+z: undo</Text> */}

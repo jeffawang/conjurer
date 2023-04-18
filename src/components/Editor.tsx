@@ -1,8 +1,7 @@
 import Arrangement from "@/src/components/Arrangement";
-import { Box, Grid, GridItem, Heading, VStack } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import Display from "@/src/components/Display";
 import PatternList from "@/src/components/PatternList";
-import Keyboard from "@/src/components/Keyboard";
 
 export default function Editor() {
   return (
@@ -26,9 +25,7 @@ export default function Editor() {
         <GridItem area="timeline">
           <Arrangement />
         </GridItem>
-        <GridItem area="instructions">
-          <Keyboard />
-        </GridItem>
+        <GridItem area="instructions"></GridItem>
       </Grid>
     </Box>
   );

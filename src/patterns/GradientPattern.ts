@@ -2,7 +2,7 @@ import Pattern from "@/src/types/Pattern";
 import gradient from "./shaders/gradient.frag";
 import { Vector2 } from "three";
 
-type params = {
+type GradientPatternParams = {
   u_blah: {
     name: "Blah";
     value: number;
@@ -13,5 +13,6 @@ type params = {
   };
 };
 
-const GradientPattern = (p: params) => new Pattern("Gradient", gradient, p);
+const GradientPattern = (p: GradientPatternParams) =>
+  new Pattern<GradientPatternParams>("Gradient", gradient, p);
 export default GradientPattern;

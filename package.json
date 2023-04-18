@@ -12,6 +12,7 @@
     "@chakra-ui/react": "^2.5.5",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@hello-pangea/dnd": "^16.2.0",
     "@react-three/drei": "^9.61.4",
     "@react-three/fiber": "^8.12.0",
     "@react-three/postprocessing": "^2.7.1",
@@ -30,7 +31,7 @@
     "recharts": "^2.5.0",
     "three": "^0.151.2",
     "use-debounce": "^9.0.4",
-    "wavesurfer.js": "^7.0.0-alpha.30"
+    "wavesurfer.js": "^7.0.0-alpha.31"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",

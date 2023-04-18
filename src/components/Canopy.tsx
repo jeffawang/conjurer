@@ -20,7 +20,7 @@ export default observer(function Canopy({}: CanopyViewProps) {
       { x: 1, y: 0 },
       { x: 8, y: 0 },
       STRIP_LENGTH,
-      LED_COUNTS.y,
+      LED_COUNTS.y
     );
     const ledPositions = [];
     for (let x = 0; x < LED_COUNTS.x; x++) {
@@ -28,7 +28,7 @@ export default observer(function Canopy({}: CanopyViewProps) {
         ledPositions.push(
           x / (LED_COUNTS.x - 1),
           y / (LED_COUNTS.y - 1),
-          -catenaryCoordinates[y][1],
+          -catenaryCoordinates[y][1]
         );
       }
     }
@@ -37,7 +37,7 @@ export default observer(function Canopy({}: CanopyViewProps) {
     const geometry = new BufferGeometry();
     geometry.setAttribute(
       "position",
-      new BufferAttribute(positionsFloatArray, 3),
+      new BufferAttribute(positionsFloatArray, 3)
     );
     return geometry;
   }, []);
@@ -50,7 +50,10 @@ export default observer(function Canopy({}: CanopyViewProps) {
     const { globalTime } = timer;
 
     if (currentBlock)
-      currentBlock.update(globalTime - currentBlock.startTime, globalTime);
+      currentBlock.updateParameters(
+        globalTime - currentBlock.startTime,
+        globalTime
+      );
   });
 
   return (

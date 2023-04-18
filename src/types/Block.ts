@@ -1,16 +1,13 @@
 import { makeAutoObservable } from "mobx";
 import Pattern from "./Pattern";
-import { PatternParams } from "./PatternParams";
+import { ExtraParams } from "./PatternParams";
 import { clone } from "@/src/utils/object";
+import Variation from "@/src/types/Variations/Variation";
 
-type PatternParamsController<PP extends PatternParams> = {
-  [K in keyof PP]?: ({ sp, time }: { sp: PP[K]; time: number }) => void;
-};
-
-export default class Block<T extends PatternParams> {
+export default class Block<T extends ExtraParams = {}> {
   id: string = Math.random().toString(16).slice(2); // unique id
-  pattern: Pattern;
-  spc: PatternParamsController<T>;
+  pattern: Pattern<T>;
+  parameterVariations: { [K in keyof T]?: Variation[] } = {};
 
   startTime: number = 0; // global time that block starts playing at in seconds
   duration: number = 5; // duration that block plays for in seconds
@@ -19,14 +16,14 @@ export default class Block<T extends PatternParams> {
     return this.startTime + this.duration;
   }
 
-  constructor(
-    pattern: Pattern,
-    spc: PatternParamsController<T> = {} as PatternParamsController<T>,
-  ) {
+  constructor(pattern: Pattern<T>) {
     this.pattern = pattern;
-    this.spc = spc;
 
-    makeAutoObservable(this, { pattern: false, spc: false, update: false });
+    makeAutoObservable(this, {
+      pattern: false,
+      updateParameters: false,
+      updateParameter: false,
+    });
   }
 
   setTiming = ({
@@ -40,11 +37,85 @@ export default class Block<T extends PatternParams> {
     this.duration = duration;
   };
 
-  update = (time: number, globalTime: number) => {
+  updateParameters = (time: number, globalTime: number) => {
     this.pattern.paramValues.u_time = time;
-    Object.entries(this.spc).map(([u, f]) => {
-      f({ sp: this.pattern.params[u], time, globalTime });
-    });
+
+    for (const parameter of Object.keys(this.parameterVariations)) {
+      this.updateParameter(parameter, time);
+    }
+  };
+
+  updateParameter = (parameter: keyof T, time: number) => {
+    const variations = this.parameterVariations[parameter];
+    if (!variations) return;
+
+    // TODO: maybe this should be block.startTime instead of 0
+    let variationTime = 0;
+    for (const variation of variations) {
+      if (
+        // if infinite duration variation, OR
+        variation.duration < 0 ||
+        // this is the variation that is active at this time
+        time < variationTime + variation.duration
+      ) {
+        this.pattern.paramValues[parameter] = variation.valueAtTime(
+          time - variationTime
+        );
+        break;
+      }
+
+      variationTime += variation.duration;
+    }
+  };
+
+  addVariation = (uniformName: string, variation: Variation) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) {
+      this.parameterVariations[uniformName as keyof T] = [variation];
+    } else {
+      variations.push(variation);
+    }
+
+    this.triggerVariationReactions(uniformName);
+  };
+
+  removeVariation = (uniformName: string, variation: Variation) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) return;
+
+    const index = variations.indexOf(variation);
+    if (index > -1) {
+      variations.splice(index, 1);
+      this.triggerVariationReactions(uniformName);
+    }
+  };
+
+  applyVariationDurationDelta = (
+    uniformName: string,
+    variation: Variation,
+    delta: number
+  ) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) return;
+
+    const index = variations.indexOf(variation);
+    if (index < 0) {
+      console.log("variation not found in block");
+      return;
+    }
+
+    if (variation.duration + delta < 1) return;
+
+    variation.duration += delta;
+    this.triggerVariationReactions(uniformName);
+  };
+
+  triggerVariationReactions = (uniformName: string) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) return;
+
+    // create a new array so that mobx can detect the change
+    this.parameterVariations[uniformName as keyof T] = [...variations];
   };
 
   clone = () => new Block(clone(this.pattern));

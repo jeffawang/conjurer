@@ -1,18 +1,18 @@
 import {
+  ExtraParams,
   ParamValues,
   ParamsProxy,
-  PatternParams,
   StandardParams,
 } from "./PatternParams";
 import { LED_COUNTS } from "@/src/utils/size";
 
-export default class Pattern {
+export default class Pattern<T extends ExtraParams = ExtraParams> {
   name: string;
   src: string;
-  params: StandardParams & PatternParams;
-  paramValues: ParamValues<StandardParams & PatternParams>;
+  params: StandardParams & T;
+  paramValues: ParamValues<StandardParams & T>;
 
-  constructor(name: string, src: string, parameters?: PatternParams) {
+  constructor(name: string, src: string, parameters: T = {} as T) {
     this.name = name;
     this.src = src;
 
