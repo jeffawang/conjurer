@@ -1,5 +1,4 @@
 import Block from "@/src/types/Block";
-import { PatternParams } from "@/src/types/PatternParams";
 import { useStore } from "@/src/types/StoreContext";
 import TimelineBlockBound from "@/src/components/TimelineBlockBound";
 import { Card, HStack, Text, VStack } from "@chakra-ui/react";
@@ -13,7 +12,7 @@ import { MdDragIndicator } from "react-icons/md";
 import ParametersList from "@/src/components/ParametersList";
 
 type TimelineBlockProps = {
-  block: Block<PatternParams>;
+  block: Block;
 };
 
 export default observer(function TimelineBlock({ block }: TimelineBlockProps) {

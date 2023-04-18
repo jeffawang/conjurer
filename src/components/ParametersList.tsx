@@ -1,5 +1,5 @@
 import Block from "@/src/types/Block";
-import { PatternParams } from "@/src/types/PatternParams";
+import { ExtraParams } from "@/src/types/PatternParams";
 import { useCallback, useState } from "react";
 import Parameter from "@/src/components/Parameter";
 import { observer } from "mobx-react-lite";
@@ -8,7 +8,7 @@ import { useStore } from "@/src/types/StoreContext";
 const uniformNamesToExclude = ["u_resolution", "u_global_time"];
 
 type ParametersListProps = {
-  block: Block<PatternParams>;
+  block: Block<ExtraParams>;
 };
 
 export default observer(function ParametersList({
