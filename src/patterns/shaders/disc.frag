@@ -2,8 +2,10 @@
 
 uniform vec2 u_resolution;
 uniform float u_time;
+uniform float u_global_time;
 
 uniform float u_radius;
+uniform float u_fuzziness;
 
 varying vec2 v_uv;
 
@@ -12,7 +14,7 @@ vec3 color = vec3(0.0588, 1.0, 0.9216);
 void main() {
     vec2 st = v_uv;
 
-    color = mix(color, vec3(0.0), smoothstep(u_radius - 0.1, u_radius + 0.1, st.y));
+    color = mix(color, vec3(0.0), smoothstep(u_radius - u_fuzziness, u_radius + u_fuzziness, st.y));
 
     gl_FragColor = vec4(color, 1.0);
 }

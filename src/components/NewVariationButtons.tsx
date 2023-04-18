@@ -45,7 +45,10 @@ export default memo(function NewVariationButtons({
         height={6}
         icon={<TbWaveSine size={17} />}
         onClick={action(() =>
-          block.addVariation(uniformName, new SineVariation(2, 1, 0.5, 0, 0))
+          block.addVariation(
+            uniformName,
+            new SineVariation(2, 0.5, 0.5, 0, 0.5)
+          )
         )}
       />
     </HStack>

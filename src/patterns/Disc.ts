@@ -6,6 +6,10 @@ type DiscParams = {
     name: "Radius";
     value: number;
   };
+  u_fuzziness: {
+    name: "Fuzziness";
+    value: number;
+  };
 };
 
 const Disc = () =>
@@ -13,6 +17,10 @@ const Disc = () =>
     u_radius: {
       name: "Radius",
       value: 0.5,
+    },
+    u_fuzziness: {
+      name: "Fuzziness",
+      value: 0.2,
     },
   });
 export default Disc;
