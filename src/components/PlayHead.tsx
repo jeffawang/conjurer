@@ -20,16 +20,16 @@ export default observer(function PlayHead() {
       zIndex={10}
     >
       <FaLongArrowAltDown
-        style={{ position: "absolute", top: "8px", left: "-12px" }}
+        style={{ position: "absolute", top: "14px", left: "-12px" }}
         size={25}
         color="red"
       />
       <Box
         position="absolute"
-        top="35px"
+        top="40px"
         bgColor="red"
         width="1px"
-        height="200px"
+        height="250px"
       />
     </Box>
   );
