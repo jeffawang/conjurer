@@ -102,7 +102,6 @@ function LinearVariationGraph4({
   uniformName,
   variation,
   width,
-  domain,
   block,
 }: LinearVariationGraph4Props) {
   const fromColor = vector4ToColor(variation.from);
@@ -117,25 +116,27 @@ function LinearVariationGraph4({
             onClick={(e: any) => e.stopPropagation()}
             _hover={{ bgColor: "gray.500" }}
           >
-            <BarChart
-              layout="horizontal"
-              width={width}
-              height={50}
-              data={[{ value: 1 }]}
-              margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
-            >
+            <svg width={width} height={50}>
               <defs>
-                <linearGradient id="colorGradient" x1="0" y1="0" x2="1" y2="0">
+                <linearGradient
+                  id={`gradient${variation.id}`}
+                  x1="0"
+                  y1="0"
+                  x2="1"
+                  y2="0"
+                >
                   <stop offset="0%" stopColor={fromColor}></stop>
                   <stop offset="100%" stopColor={toColor}></stop>
                 </linearGradient>
               </defs>
-              <Bar
-                isAnimationActive={false}
-                dataKey="value"
-                fill="url(#colorGradient)"
+              <rect
+                width="100%"
+                height="100%"
+                x="0"
+                y="0"
+                fill={`url(#gradient${variation.id})`}
               />
-            </BarChart>
+            </svg>
           </Box>
         </PopoverTrigger>
         <Portal>

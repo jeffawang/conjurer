@@ -9,6 +9,9 @@ import { action } from "mobx";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
 import SineVariation from "@/src/types/Variations/SineVariation";
+import { Vector4 } from "three";
+import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
+import { DEFAULT_Variation_DURATION } from "@/src/utils/time";
 
 type NewVariationButtonsProps = {
   uniformName: string;
@@ -19,7 +22,26 @@ export default memo(function NewVariationButtons({
   uniformName,
   block,
 }: NewVariationButtonsProps) {
-  return (
+  return block.pattern.paramValues[uniformName] instanceof Vector4 ? (
+    <HStack>
+      <IconButton
+        size="xs"
+        aria-label="Linear4"
+        height={6}
+        icon={<BsArrowUpRight size={17} />}
+        onClick={action(() =>
+          block.addVariation(
+            uniformName,
+            new LinearVariation4(
+              DEFAULT_Variation_DURATION,
+              new Vector4(0, 0, 0, 1), // TODO: start from last color of previous variation
+              new Vector4(1, 1, 1, 1)
+            )
+          )
+        )}
+      />
+    </HStack>
+  ) : (
     <HStack>
       <IconButton
         size="xs"
@@ -27,7 +49,10 @@ export default memo(function NewVariationButtons({
         height={6}
         icon={<MdTrendingFlat size={17} />}
         onClick={action(() =>
-          block.addVariation(uniformName, new FlatVariation(2, 1))
+          block.addVariation(
+            uniformName,
+            new FlatVariation(DEFAULT_Variation_DURATION, 1)
+          )
         )}
       />
       <IconButton
@@ -36,7 +61,10 @@ export default memo(function NewVariationButtons({
         height={6}
         icon={<BsArrowUpRight size={17} />}
         onClick={action(() =>
-          block.addVariation(uniformName, new LinearVariation(2, 1, 2))
+          block.addVariation(
+            uniformName,
+            new LinearVariation(DEFAULT_Variation_DURATION, 1, 2)
+          )
         )}
       />
       <IconButton
@@ -47,7 +75,7 @@ export default memo(function NewVariationButtons({
         onClick={action(() =>
           block.addVariation(
             uniformName,
-            new SineVariation(2, 0.5, 0.5, 0, 0.5)
+            new SineVariation(DEFAULT_Variation_DURATION, 0.5, 0.5, 0, 0.5)
           )
         )}
       />
