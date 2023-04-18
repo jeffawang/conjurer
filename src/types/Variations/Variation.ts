@@ -21,6 +21,6 @@ export default abstract class Variation<T extends ParamType = ParamType> {
   }
 
   abstract valueAtTime: (time: number) => T;
-  abstract computeDomain: () => [T, T];
+  abstract computeDomain: () => [number, number];
   abstract computeSampledData: (duration: number) => { value: number }[];
 }

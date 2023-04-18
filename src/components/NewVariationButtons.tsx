@@ -3,7 +3,7 @@ import { HStack, IconButton } from "@chakra-ui/react";
 import { memo } from "react";
 import { BsArrowUpRight } from "react-icons/bs";
 import { TbWaveSine } from "react-icons/tb";
-import { MdTrendingFlat } from "react-icons/md";
+import { MdTrendingFlat, MdColorLens } from "react-icons/md";
 import Block from "@/src/types/Block";
 import { action } from "mobx";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
@@ -28,14 +28,14 @@ export default memo(function NewVariationButtons({
         size="xs"
         aria-label="Linear4"
         height={6}
-        icon={<BsArrowUpRight size={17} />}
+        icon={<MdColorLens size={17} />}
         onClick={action(() =>
           block.addVariation(
             uniformName,
             new LinearVariation4(
               DEFAULT_Variation_DURATION,
               new Vector4(0, 0, 0, 1), // TODO: start from last color of previous variation
-              new Vector4(1, 1, 1, 1)
+              new Vector4(0.32, 0.1, 0.6, 1)
             )
           )
         )}

@@ -11,7 +11,6 @@ import {
   OnDragEndResponder,
 } from "@hello-pangea/dnd";
 import { reorder } from "@/src/utils/algorithm";
-import { useStore } from "@/src/types/StoreContext";
 import Block from "@/src/types/Block";
 import { action } from "mobx";
 import VariationBound from "@/src/components/VariationBound";
@@ -36,8 +35,6 @@ export default memo(function Parameter({
   isSelected,
   handleClick,
 }: ParameterProps) {
-  const store = useStore();
-
   const domain: [number, number] = [0, 1];
   for (const variation of variations) {
     const [min, max] = variation.computeDomain();
@@ -46,7 +43,7 @@ export default memo(function Parameter({
   }
 
   const onDragEnd: OnDragEndResponder = action((result) => {
-    // dropped outside the list
+    // dropped outside the list, delete
     if (!result.destination) {
       block.removeVariation(uniformName, variations[result.source.index]);
       return;

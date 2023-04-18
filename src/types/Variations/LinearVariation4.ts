@@ -18,7 +18,8 @@ export default class LinearVariation4 extends Variation<Vector4> {
   valueAtTime = (time: number) =>
     this.interpolated.lerpVectors(this.from, this.to, time / this.duration);
 
-  computeDomain = () => [this.from, this.to] as [Vector4, Vector4];
+  // currently meaningless
+  computeDomain = () => [0, 1] as [number, number];
 
   computeSampledData = (duration: number) => [
     {

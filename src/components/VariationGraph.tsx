@@ -12,7 +12,7 @@ import Block from "@/src/types/Block";
 import VariationControls from "@/src/components/VariationControls";
 import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { Vector4 } from "three";
-import { vector4ToColor } from "@/src/utils/color";
+import { vector4ToRgbaString } from "@/src/utils/color";
 
 type VariationGraphProps = {
   uniformName: string;
@@ -104,8 +104,8 @@ function LinearVariationGraph4({
   width,
   block,
 }: LinearVariationGraph4Props) {
-  const fromColor = vector4ToColor(variation.from);
-  const toColor = vector4ToColor(variation.to);
+  const fromColor = vector4ToRgbaString(variation.from);
+  const toColor = vector4ToRgbaString(variation.to);
 
   return (
     <>
@@ -114,7 +114,7 @@ function LinearVariationGraph4({
           <Box
             py={1}
             onClick={(e: any) => e.stopPropagation()}
-            _hover={{ bgColor: "gray.500" }}
+            _hover={{ bgColor: "gray.600" }}
           >
             <svg width={width} height={50}>
               <defs>

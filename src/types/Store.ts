@@ -81,8 +81,8 @@ export default class Store {
       u_color: [
         new LinearVariation4(
           10,
-          new Vector4(1, 1, 0, 0),
-          new Vector4(0, 1, 0, 1)
+          new Vector4(0.0588, 1.0, 0.9216, 1),
+          new Vector4(0, 0.5, 1, 1)
         ),
       ],
       u_radius: [
