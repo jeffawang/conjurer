@@ -1,4 +1,5 @@
 import {
+  Box,
   HStack,
   IconButton,
   NumberDecrementStepper,
@@ -157,7 +158,9 @@ function LinearVariation4Controls({
           color={fromColor}
           onChange={onFromColorChange}
         />
+        <Box width={6} height={6} bgColor={fromColor} />
         <Text>→</Text>
+        <Box width={6} height={6} bgColor={toColor} />
         <HexColorInput
           className="hexColorInput"
           color={toColor}
