@@ -23,13 +23,14 @@ export default memo(function NewVariationButtons({
   block,
 }: NewVariationButtonsProps) {
   return block.pattern.paramValues[uniformName] instanceof Vector4 ? (
-    <HStack>
+    <HStack pb={1}>
       <IconButton
         size="xs"
         aria-label="Linear4"
         height={6}
         icon={<MdColorLens size={17} />}
         onClick={action(() => {
+          // grab the starting color from the previous variation if it exists
           const variationsCount =
             block.parameterVariations[uniformName]?.length ?? 0;
           const lastVariation =
@@ -61,7 +62,7 @@ export default memo(function NewVariationButtons({
       />
     </HStack>
   ) : (
-    <HStack>
+    <HStack pb={1}>
       <IconButton
         size="xs"
         aria-label="Flat"
