@@ -21,7 +21,14 @@ export default memo(function LinearVariationGraph4({
   const fromColor = vector4ToHex(variation.from);
   const toColor = vector4ToHex(variation.to);
   return (
-    <Box py={1} _hover={{ bgColor: "gray.600" }}>
+    <Box
+      py={1}
+      boxSizing="border-box"
+      borderRightWidth={1}
+      borderColor="gray.500"
+      borderStyle="dashed"
+      _hover={{ bgColor: "gray.500" }}
+    >
       <svg width={width} height={50}>
         <defs>
           <linearGradient

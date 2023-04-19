@@ -21,7 +21,15 @@ export default memo(function ScalarVariationGraph({
 }: ScalarVariationGraphProps) {
   const data = variation.computeSampledData(variation.duration);
   return (
-    <Box py={1} bgColor="gray.600" _hover={{ bgColor: "gray.500" }}>
+    <Box
+      py={1}
+      bgColor="gray.600"
+      boxSizing="border-box"
+      borderRightWidth={1}
+      borderColor="gray.500"
+      borderStyle="dashed"
+      _hover={{ bgColor: "gray.500" }}
+    >
       <LineChart
         width={width}
         height={50}
