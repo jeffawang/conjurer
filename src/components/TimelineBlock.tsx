@@ -60,15 +60,6 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
 
   const isSelected = selectedBlocks.has(block);
 
-  const handleLeftBoundResize = useCallback(
-    (delta: number) => store.resizeBlockLeftBound(block, delta),
-    [block, store]
-  );
-  const handleRightBoundResize = useCallback(
-    (delta: number) => store.resizeBlockRightBound(block, delta),
-    [block, store]
-  );
-
   return (
     <Draggable
       nodeRef={dragNodeRef}
@@ -92,8 +83,8 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         borderWidth={3}
         alignItems="center"
       >
-        <TimelineBlockBound leftBound onBoundChange={handleLeftBoundResize} />
-        <TimelineBlockBound rightBound onBoundChange={handleRightBoundResize} />
+        <TimelineBlockBound block={block} leftBound />
+        <TimelineBlockBound block={block} rightBound />
 
         <VStack width="100%" height="100%" pt={4}>
           <HStack
