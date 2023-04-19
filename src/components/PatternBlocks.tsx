@@ -9,18 +9,16 @@ export default observer(function PatternBlocks() {
   const { blocks, uiStore } = useStore();
 
   return (
-    <>
-      <Box
-        position="relative"
-        height={350}
-        width={uiStore.timeToXPixels(MAX_TIME)}
-        bgColor="gray.400"
-        onClick={store.deselectAllBlocks}
-      >
-        {blocks.map((block) => (
-          <TimelineBlock key={block.id} block={block} />
-        ))}
-      </Box>
-    </>
+    <Box
+      position="relative"
+      height="42vh" // TODO: hardcoded for now
+      width={uiStore.timeToXPixels(MAX_TIME)}
+      bgColor="gray.400"
+      onClick={store.deselectAllBlocks}
+    >
+      {blocks.map((block) => (
+        <TimelineBlock key={block.id} block={block} />
+      ))}
+    </Box>
   );
 });

@@ -8,9 +8,11 @@ import { memo } from "react";
 export default memo(function Arrangement() {
   return (
     <Grid
+      height="100%"
       templateAreas={`"timerControls  controls"
                       "left          right"`}
       gridTemplateColumns="150px calc(100vw - 165px - 150px)" // TODO: do better
+      gridTemplateRows="auto 1fr"
       fontWeight="bold"
     >
       <GridItem area="timerControls">
@@ -27,7 +29,7 @@ export default memo(function Arrangement() {
         <VStack height={10} bgColor="gray.500" justify="center">
           <TimerReadout />
         </VStack>
-        <VStack height={350} justify="center">
+        <VStack height="100%" justify="center">
           <Heading userSelect="none" size="md">
             Pattern
           </Heading>

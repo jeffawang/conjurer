@@ -31,7 +31,12 @@ export default observer(function Timeline() {
   });
 
   return (
-    <Box ref={timelineRef} overflowX="scroll" overscrollBehavior="none">
+    <Box
+      ref={timelineRef}
+      height="100%"
+      overflowX="scroll"
+      overscrollBehavior="none"
+    >
       <Box
         ref={rulerBoxRef}
         position="relative"
