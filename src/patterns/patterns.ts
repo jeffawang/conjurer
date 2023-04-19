@@ -1,3 +1,4 @@
+import Clouds from "@/src/patterns/Clouds";
 import Disc from "@/src/patterns/Disc";
 import GradientPattern from "@/src/patterns/GradientPattern";
 import Rainbow from "@/src/patterns/Rainbow";
@@ -6,6 +7,7 @@ import Pattern from "@/src/types/Pattern";
 import { Vector2 } from "three";
 
 const patterns: Pattern[] = [
+  Clouds(),
   SunCycle(),
   Disc(),
   Rainbow(),

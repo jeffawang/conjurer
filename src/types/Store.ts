@@ -76,8 +76,8 @@ export default class Store {
 
   initialize = () => {
     // Temporary hard-coded blocks
-    this.blocks.push(new Block(Clouds()), new Block(SunCycle()));
-    this.blocks[0].setTiming({ startTime: 0, duration: 15 });
+    this.blocks.push(new Block(Clouds()));
+    this.blocks[0].setTiming({ startTime: 0, duration: 45 });
     this.blocks[0].parameterVariations = {
       u_color: [
         new LinearVariation4(
@@ -94,10 +94,9 @@ export default class Store {
       u_speed: [
         new SineVariation(4, 0.5, 1, 0, -0.1),
         new FlatVariation(1, 0.1),
-        new LinearVariation(8, 0.1, 1),
+        new LinearVariation(2, 0.1, 1),
       ],
     };
-    this.blocks[1].setTiming({ startTime: 15, duration: 7 });
 
     this.initialized = true;
   };
