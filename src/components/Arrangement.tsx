@@ -27,9 +27,9 @@ export default memo(function Arrangement() {
         <VStack height={10} bgColor="gray.500" justify="center">
           <TimerReadout />
         </VStack>
-        <VStack height={250} justify="center">
+        <VStack height={350} justify="center">
           <Heading userSelect="none" size="md">
-            Layer
+            Pattern
           </Heading>
         </VStack>
       </GridItem>

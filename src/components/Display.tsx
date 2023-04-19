@@ -31,7 +31,7 @@ export default observer(function Display() {
         </Canvas>
       </Box>
       <Box
-        height="800px"
+        height="55vh"
         borderStyle="solid"
         borderColor="black"
         borderBottomWidth={1}

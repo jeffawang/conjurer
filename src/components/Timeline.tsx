@@ -3,13 +3,13 @@ import { Box } from "@chakra-ui/react";
 import Ruler from "@/src/components/Ruler";
 import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
-import Layer from "@/src/components/Layer";
 import PlayHead from "@/src/components/PlayHead";
 import { useRef } from "react";
 import useWheelZooming from "@/src/hooks/wheelZooming";
 import ShaderWaveform from "@/src/components/ShaderWaveform";
 import WavesurferWaveform from "@/src/components/WavesurferWaveform";
 import { MAX_TIME } from "@/src/utils/time";
+import PatternBlocks from "@/src/components/PatternBlocks";
 
 export default observer(function Timeline() {
   const { timer, uiStore } = useStore();
@@ -52,7 +52,7 @@ export default observer(function Timeline() {
         <Ruler />
         <PlayHead />
       </Box>
-      <Layer />
+      <PatternBlocks />
     </Box>
   );
 });
