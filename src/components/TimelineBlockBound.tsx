@@ -4,7 +4,7 @@ import { Box } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useRef, useState } from "react";
-import Draggable from "react-draggable";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 
 type TimelineBlockProps = {
   block: Block;
@@ -23,7 +23,7 @@ export default observer(function TimelineBlockBound({
   const dragNodeRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const handleDrag = (e: any, data: any) => {
+  const handleDrag = (e: DraggableEvent, data: DraggableData) => {
     setPosition({ x: data.x, y: 0 });
   };
 

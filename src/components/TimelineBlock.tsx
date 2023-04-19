@@ -4,7 +4,12 @@ import TimelineBlockBound from "@/src/components/TimelineBlockBound";
 import { Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import { useCallback, useRef, useState } from "react";
+import {
+  MouseEvent as ReactMouseEvent,
+  useCallback,
+  useRef,
+  useState,
+} from "react";
 import Draggable from "react-draggable";
 import { DraggableData } from "react-draggable";
 import { DraggableEvent } from "react-draggable";
@@ -43,7 +48,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   }, []);
 
   const handleClick = useCallback(
-    (e: any) => {
+    (e: ReactMouseEvent) => {
       if (Math.abs(e.clientX - lastMouseDown.current) > 5) return;
 
       if (selectedBlocks.has(block)) {

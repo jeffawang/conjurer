@@ -13,6 +13,7 @@ import VariationControls from "@/src/components/VariationControls";
 import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { Vector4 } from "three";
 import { vector4ToRgbaString } from "@/src/utils/color";
+import { MouseEvent } from "react";
 
 type VariationGraphProps = {
   uniformName: string;
@@ -49,7 +50,7 @@ export default (function VariationGraph({
           <Box
             py={1}
             bgColor="gray.600"
-            onClick={(e: any) => e.stopPropagation()}
+            onClick={(e: MouseEvent) => e.stopPropagation()}
             _hover={{ bgColor: "gray.500" }}
           >
             <LineChart
@@ -113,7 +114,7 @@ function LinearVariationGraph4({
         <PopoverTrigger>
           <Box
             py={1}
-            onClick={(e: any) => e.stopPropagation()}
+            onClick={(e: MouseEvent) => e.stopPropagation()}
             _hover={{ bgColor: "gray.600" }}
           >
             <svg width={width} height={50}>
