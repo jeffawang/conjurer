@@ -46,4 +46,13 @@ export default class SineVariation extends Variation<number> {
     }
     return data;
   };
+
+  clone = () =>
+    new SineVariation(
+      this.duration,
+      this.amplitude,
+      this.frequency,
+      this.phase,
+      this.offset
+    );
 }

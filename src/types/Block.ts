@@ -3,6 +3,7 @@ import Pattern from "./Pattern";
 import { ExtraParams } from "./PatternParams";
 import { clone } from "@/src/utils/object";
 import Variation from "@/src/types/Variations/Variation";
+import { MINIMUM_VARIATION_DURATION } from "@/src/utils/time";
 
 export default class Block<T extends ExtraParams = {}> {
   id: string = Math.random().toString(16).slice(2); // unique id
@@ -74,9 +75,8 @@ export default class Block<T extends ExtraParams = {}> {
       this.parameterVariations[uniformName as keyof T] = [variation];
     } else {
       variations.push(variation);
+      this.triggerVariationReactions(uniformName);
     }
-
-    this.triggerVariationReactions(uniformName);
   };
 
   removeVariation = (uniformName: string, variation: Variation) => {
@@ -86,6 +86,17 @@ export default class Block<T extends ExtraParams = {}> {
     const index = variations.indexOf(variation);
     if (index > -1) {
       variations.splice(index, 1);
+      this.triggerVariationReactions(uniformName);
+    }
+  };
+
+  duplicateVariation = (uniformName: string, variation: Variation) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) return;
+
+    const index = variations.indexOf(variation);
+    if (index > -1) {
+      variations.splice(index, 0, variation.clone());
       this.triggerVariationReactions(uniformName);
     }
   };
@@ -104,7 +115,7 @@ export default class Block<T extends ExtraParams = {}> {
       return;
     }
 
-    if (variation.duration + delta < 1) return;
+    if (variation.duration + delta < MINIMUM_VARIATION_DURATION) return;
 
     variation.duration += delta;
     this.triggerVariationReactions(uniformName);

@@ -11,7 +11,7 @@ import LinearVariation from "@/src/types/Variations/LinearVariation";
 import SineVariation from "@/src/types/Variations/SineVariation";
 import { Vector4 } from "three";
 import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
-import { DEFAULT_Variation_DURATION } from "@/src/utils/time";
+import { DEFAULT_VARIATION_DURATION } from "@/src/utils/time";
 
 type NewVariationButtonsProps = {
   uniformName: string;
@@ -44,7 +44,7 @@ export default memo(function NewVariationButtons({
               block.addVariation(
                 uniformName,
                 new LinearVariation4(
-                  DEFAULT_Variation_DURATION,
+                  DEFAULT_VARIATION_DURATION,
                   lastVariation.to.clone(),
                   new Vector4(0.32, 0.1, 0.6, 1)
                 )
@@ -55,7 +55,7 @@ export default memo(function NewVariationButtons({
             block.addVariation(
               uniformName,
               new LinearVariation4(
-                DEFAULT_Variation_DURATION,
+                DEFAULT_VARIATION_DURATION,
                 new Vector4(0, 0, 0, 1),
                 new Vector4(0.32, 0.1, 0.6, 1)
               )
@@ -73,7 +73,7 @@ export default memo(function NewVariationButtons({
           onClick={action(() =>
             block.addVariation(
               uniformName,
-              new FlatVariation(DEFAULT_Variation_DURATION, 1)
+              new FlatVariation(DEFAULT_VARIATION_DURATION, 1)
             )
           )}
         />
@@ -85,7 +85,7 @@ export default memo(function NewVariationButtons({
           onClick={action(() =>
             block.addVariation(
               uniformName,
-              new LinearVariation(DEFAULT_Variation_DURATION, 1, 2)
+              new LinearVariation(DEFAULT_VARIATION_DURATION, 1, 2)
             )
           )}
         />
@@ -97,7 +97,7 @@ export default memo(function NewVariationButtons({
           onClick={action(() =>
             block.addVariation(
               uniformName,
-              new SineVariation(DEFAULT_Variation_DURATION, 0.5, 0.5, 0, 0.5)
+              new SineVariation(DEFAULT_VARIATION_DURATION, 0.5, 0.5, 0, 0.5)
             )
           )}
         />

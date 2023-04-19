@@ -11,8 +11,8 @@ export default class LinearVariation4 extends Variation<Vector4> {
   constructor(duration: number, from: Vector4, to: Vector4) {
     super("linear", duration);
 
-    this.from = from;
-    this.to = to;
+    this.from = from.clone();
+    this.to = to.clone();
   }
 
   valueAtTime = (time: number) =>
@@ -29,4 +29,6 @@ export default class LinearVariation4 extends Variation<Vector4> {
       value: this.to.x,
     },
   ];
+
+  clone = () => new LinearVariation4(this.duration, this.from, this.to);
 }

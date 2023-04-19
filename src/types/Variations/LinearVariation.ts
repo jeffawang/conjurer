@@ -25,4 +25,6 @@ export default class LinearVariation extends Variation<number> {
       value: this.to,
     },
   ];
+
+  clone = () => new LinearVariation(this.duration, this.from, this.to);
 }
