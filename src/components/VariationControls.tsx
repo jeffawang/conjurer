@@ -17,6 +17,10 @@ import Block from "@/src/types/Block";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
 import SineVariation from "@/src/types/Variations/SineVariation";
+import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
+import { HexColorPicker } from "react-colorful";
+import { hexToRgb, vector4ToHex } from "@/src/utils/color";
+import { HexColorInput } from "react-colorful";
 
 type VariationControlsProps = {
   uniformName: string;
@@ -47,6 +51,14 @@ export default (function VariationControls(props: VariationControlsProps) {
   } else if (variation instanceof SineVariation) {
     controls = (
       <SineVariationControls
+        uniformName={uniformName}
+        block={block}
+        variation={variation}
+      />
+    );
+  } else if (variation instanceof LinearVariation4) {
+    controls = (
+      <LinearVariation4Controls
         uniformName={uniformName}
         block={block}
         variation={variation}
@@ -103,6 +115,58 @@ function FlatVariationControls({
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
+      </HStack>
+    </>
+  );
+}
+
+type LinearVariation4ControlsProps = {
+  uniformName: string;
+  variation: LinearVariation4;
+  block: Block;
+};
+
+function LinearVariation4Controls({
+  uniformName,
+  variation,
+  block,
+}: LinearVariation4ControlsProps) {
+  const [fromColor, setFromColor] = useState(vector4ToHex(variation.from));
+  const [toColor, setToColor] = useState(vector4ToHex(variation.to));
+
+  const onFromColorChange = (newHex: string) => {
+    setFromColor(newHex);
+    const rgb = hexToRgb(newHex);
+    variation.from.set(rgb.r / 255, rgb.g / 255, rgb.b / 255, 1);
+    block.triggerVariationReactions(uniformName);
+  };
+
+  const onToColorChange = (newHex: string) => {
+    setToColor(newHex);
+    const rgb = hexToRgb(newHex);
+    variation.to.set(rgb.r / 255, rgb.g / 255, rgb.b / 255, 1);
+    block.triggerVariationReactions(uniformName);
+  };
+
+  return (
+    <>
+      <Text>Color Variation</Text>
+      <HStack width="100%" justify="space-around">
+        <HexColorInput
+          className="hexColorInput"
+          color={fromColor}
+          onChange={onFromColorChange}
+        />
+        <Text>→</Text>
+        <HexColorInput
+          className="hexColorInput"
+          color={toColor}
+          onChange={onToColorChange}
+        />
+      </HStack>
+      <HStack m={1} className="colorPickerContainer">
+        <HexColorPicker color={fromColor} onChange={onFromColorChange} />
+        <HexColorPicker color={toColor} onChange={onToColorChange} />
       </HStack>
     </>
   );

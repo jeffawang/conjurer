@@ -6,10 +6,13 @@ import {
   Portal,
   Text,
 } from "@chakra-ui/react";
-import { LineChart, Line, Tooltip, YAxis } from "recharts";
+import { LineChart, Line, Tooltip, YAxis, BarChart, Bar } from "recharts";
 import Variation from "@/src/types/Variations/Variation";
 import Block from "@/src/types/Block";
 import VariationControls from "@/src/components/VariationControls";
+import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
+import { Vector4 } from "three";
+import { vector4ToRgbaString } from "@/src/utils/color";
 
 type VariationGraphProps = {
   uniformName: string;
@@ -26,6 +29,17 @@ export default (function VariationGraph({
   domain,
   block,
 }: VariationGraphProps) {
+  if (variation instanceof LinearVariation4)
+    return (
+      <LinearVariationGraph4
+        uniformName={uniformName}
+        variation={variation}
+        width={width}
+        domain={domain}
+        block={block}
+      />
+    );
+
   const data = variation.computeSampledData(variation.duration);
 
   return (
@@ -75,6 +89,69 @@ export default (function VariationGraph({
     </>
   );
 });
+
+type LinearVariationGraph4Props = {
+  uniformName: string;
+  variation: LinearVariation4;
+  width: number;
+  domain: [number, number];
+  block: Block;
+};
+
+function LinearVariationGraph4({
+  uniformName,
+  variation,
+  width,
+  block,
+}: LinearVariationGraph4Props) {
+  const fromColor = vector4ToRgbaString(variation.from);
+  const toColor = vector4ToRgbaString(variation.to);
+
+  return (
+    <>
+      <Popover placement="bottom" isLazy openDelay={0} closeDelay={0}>
+        <PopoverTrigger>
+          <Box
+            py={1}
+            onClick={(e: any) => e.stopPropagation()}
+            _hover={{ bgColor: "gray.600" }}
+          >
+            <svg width={width} height={50}>
+              <defs>
+                <linearGradient
+                  id={`gradient${variation.id}`}
+                  x1="0"
+                  y1="0"
+                  x2="1"
+                  y2="0"
+                >
+                  <stop offset="0%" stopColor={fromColor}></stop>
+                  <stop offset="100%" stopColor={toColor}></stop>
+                </linearGradient>
+              </defs>
+              <rect
+                width="100%"
+                height="100%"
+                x="0"
+                y="0"
+                fill={`url(#gradient${variation.id})`}
+              />
+            </svg>
+          </Box>
+        </PopoverTrigger>
+        <Portal>
+          <PopoverContent>
+            <VariationControls
+              variation={variation}
+              uniformName={uniformName}
+              block={block}
+            />
+          </PopoverContent>
+        </Portal>
+      </Popover>
+    </>
+  );
+}
 
 const CustomTooltip = ({
   active,

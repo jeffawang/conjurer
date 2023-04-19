@@ -10,7 +10,7 @@ export default observer(function Ruler() {
   const width = MAX_TIME * pixelsPerSecond;
 
   return (
-    <svg width={`${width}`} height="40">
+    <svg width={width} height="40">
       <defs>
         <pattern
           id="mix-editor-grid-pattern"
