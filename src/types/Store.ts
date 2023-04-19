@@ -14,6 +14,7 @@ import SineVariation from "@/src/types/Variations/SineVariation";
 import Disc from "@/src/patterns/Disc";
 import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { Vector4 } from "three";
+import Clouds from "@/src/patterns/Clouds";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -75,21 +76,25 @@ export default class Store {
 
   initialize = () => {
     // Temporary hard-coded blocks
-    this.blocks.push(new Block(Disc()), new Block(SunCycle()));
+    this.blocks.push(new Block(Clouds()), new Block(SunCycle()));
     this.blocks[0].setTiming({ startTime: 0, duration: 15 });
     this.blocks[0].parameterVariations = {
       u_color: [
         new LinearVariation4(
-          10,
+          5,
           new Vector4(0.0588, 1.0, 0.9216, 1),
           new Vector4(0, 0.5, 1, 1)
         ),
+        new LinearVariation4(
+          10,
+          new Vector4(0, 0.5, 1, 1),
+          new Vector4(0.4588, 0.2, 0.7216, 1)
+        ),
       ],
-      u_radius: [
-        new SineVariation(2, 0.5, 1, 0, -0.1),
-        new SineVariation(2, 0.5, 1, 0, -0.1),
-        new FlatVariation(1, 1),
-        new LinearVariation(8, 0, 1),
+      u_speed: [
+        new SineVariation(4, 0.5, 1, 0, -0.1),
+        new FlatVariation(1, 0.1),
+        new LinearVariation(8, 0.1, 1),
       ],
     };
     this.blocks[1].setTiming({ startTime: 15, duration: 7 });

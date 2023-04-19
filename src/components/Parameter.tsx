@@ -31,7 +31,7 @@ export default memo(function Parameter({
   variations,
   width,
 }: ParameterProps) {
-  const [isExpanded, setExpanded] = useState(true);
+  const [isExpanded, setExpanded] = useState(false);
 
   const domain: [number, number] = [0, 1];
   for (const variation of variations) {
