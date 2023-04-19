@@ -60,7 +60,7 @@ export default observer(function WaveSurferWaveform() {
 
   const zoomDebounced = useDebouncedCallback(
     (pixelsPerSecond: number) => wavesurferRef.current?.zoom(pixelsPerSecond),
-    250
+    5
   );
 
   useEffect(() => {

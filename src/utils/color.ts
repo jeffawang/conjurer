@@ -9,9 +9,15 @@ export const vector4ToRgbaString = (v: Vector4) => {
 };
 
 export const vector4ToHex = (v: Vector4) => {
-  const r = Math.floor(v.x * 255).toString(16);
-  const g = Math.floor(v.y * 255).toString(16);
-  const b = Math.floor(v.z * 255).toString(16);
+  const r = Math.floor(v.x * 255)
+    .toString(16)
+    .padStart(2, "0");
+  const g = Math.floor(v.y * 255)
+    .toString(16)
+    .padStart(2, "0");
+  const b = Math.floor(v.z * 255)
+    .toString(16)
+    .padStart(2, "0");
   return `#${r}${g}${b}`;
 };
 

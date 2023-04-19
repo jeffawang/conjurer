@@ -1,6 +1,6 @@
 import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
 import { Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
-import { memo } from "react";
+import { MouseEvent, memo } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import Variation from "@/src/types/Variations/Variation";
 import VariationGraph from "@/src/components/VariationGraph";
@@ -23,7 +23,7 @@ type ParameterProps = {
   variations: Variation[];
   width: number;
   isSelected: boolean;
-  handleClick: (e: any, uniformName: string) => void;
+  handleClick: (e: MouseEvent, uniformName: string) => void;
 };
 
 export default memo(function Parameter({
@@ -63,7 +63,7 @@ export default memo(function Parameter({
         size="xs"
         width="95%"
         height={4}
-        onClick={(e) => handleClick(e, uniformName)}
+        onClick={(e: MouseEvent) => handleClick(e, uniformName)}
       >
         <HStack width="100%" justify="center">
           <Text

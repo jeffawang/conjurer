@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { IconButton } from "@chakra-ui/react";
 import { RiZoomInLine, RiZoomOutLine } from "react-icons/ri";
-import { BsSoundwave } from "react-icons/bs";
+import { BsSoundwave, BsGearFill } from "react-icons/bs";
+import { AiOutlineLineChart } from "react-icons/ai";
 import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
 
@@ -23,10 +24,24 @@ export default observer(function TimerControls() {
         onClick={action(() => uiStore.zoomOut())}
       />
       <IconButton
-        aria-label="Zoom out"
+        aria-label="Toggle waveform style"
         height={6}
         icon={<BsSoundwave size={17} />}
         onClick={action(() => uiStore.toggleWavesurfer())}
+      />
+      <IconButton
+        aria-label="Toggle performance"
+        height={6}
+        icon={<AiOutlineLineChart size={17} />}
+        onClick={action(() => uiStore.togglePerformance())}
+      />
+      <IconButton
+        aria-label="Settings"
+        height={6}
+        icon={<BsGearFill size={17} />}
+        onClick={action(() => {
+          // TODO
+        })}
       />
     </>
   );

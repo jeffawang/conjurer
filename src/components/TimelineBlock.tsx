@@ -4,7 +4,12 @@ import TimelineBlockBound from "@/src/components/TimelineBlockBound";
 import { Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import { useCallback, useRef, useState } from "react";
+import {
+  MouseEvent as ReactMouseEvent,
+  useCallback,
+  useRef,
+  useState,
+} from "react";
 import Draggable from "react-draggable";
 import { DraggableData } from "react-draggable";
 import { DraggableEvent } from "react-draggable";
@@ -43,7 +48,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   }, []);
 
   const handleClick = useCallback(
-    (e: any) => {
+    (e: ReactMouseEvent) => {
       if (Math.abs(e.clientX - lastMouseDown.current) > 5) return;
 
       if (selectedBlocks.has(block)) {
@@ -59,15 +64,6 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   );
 
   const isSelected = selectedBlocks.has(block);
-
-  const handleLeftBoundResize = useCallback(
-    (delta: number) => store.resizeBlockLeftBound(block, delta),
-    [block, store]
-  );
-  const handleRightBoundResize = useCallback(
-    (delta: number) => store.resizeBlockRightBound(block, delta),
-    [block, store]
-  );
 
   return (
     <Draggable
@@ -91,26 +87,26 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         borderColor={isSelected ? "blue.500" : "gray.300"}
         borderWidth={3}
         alignItems="center"
-        onClick={handleClick}
-        role="button"
       >
-        <TimelineBlockBound leftBound onBoundChange={handleLeftBoundResize} />
-        <TimelineBlockBound rightBound onBoundChange={handleRightBoundResize} />
+        <TimelineBlockBound block={block} leftBound />
+        <TimelineBlockBound block={block} rightBound />
 
         <VStack width="100%" height="100%" pt={4}>
           <HStack
+            width="100%"
             color={isSelected ? "blue.500" : "gray.300"}
             className="handle"
             justifyContent="center"
             cursor="move"
             spacing={0}
+            onClick={handleClick}
+            role="button"
           >
             <MdDragIndicator size={30} />
             <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
               {block.pattern.name}
             </Text>
           </HStack>
-
           <ParametersList block={block} />
         </VStack>
       </Card>

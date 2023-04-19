@@ -3,7 +3,7 @@ import { Box, HStack } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { BiArrowToRight } from "react-icons/bi";
 import Variation from "@/src/types/Variations/Variation";
-import Draggable from "react-draggable";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { useStore } from "@/src/types/StoreContext";
 import Block from "@/src/types/Block";
 import { action } from "mobx";
@@ -24,7 +24,7 @@ export default observer(function VariationBound({
 
   const dragNodeRef = useRef(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const handleDrag = (e: any, data: any) => {
+  const handleDrag = (e: DraggableEvent, data: DraggableData) => {
     setPosition({ x: data.x, y: 0 });
   };
   const handleStop = action(() => {

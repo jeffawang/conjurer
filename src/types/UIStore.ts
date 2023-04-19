@@ -13,6 +13,7 @@ const MIN_PIXELS_PER_SECOND = 4;
 export default class UIStore {
   pixelsPerSecond = INITIAL_PIXELS_PER_SECOND; // this controls the zoom of the timeline
   usingWavesurfer = true;
+  showingPerformance = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -42,5 +43,9 @@ export default class UIStore {
 
   toggleWavesurfer = () => {
     this.usingWavesurfer = !this.usingWavesurfer;
+  };
+
+  togglePerformance = () => {
+    this.showingPerformance = !this.showingPerformance;
   };
 }

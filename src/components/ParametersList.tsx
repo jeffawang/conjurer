@@ -1,6 +1,6 @@
 import Block from "@/src/types/Block";
 import { ExtraParams } from "@/src/types/PatternParams";
-import { useCallback, useState } from "react";
+import { MouseEvent, useCallback, useState } from "react";
 import Parameter from "@/src/components/Parameter";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
@@ -22,7 +22,7 @@ export default observer(function ParametersList({
   const width = uiStore.timeToX(block.duration);
 
   const handleClick = useCallback(
-    (e: any, uniformName: string) => {
+    (e: MouseEvent, uniformName: string) => {
       setSelectedUniformName(
         uniformName === selectedUniformName ? null : uniformName
       );
