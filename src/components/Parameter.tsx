@@ -31,7 +31,7 @@ export default memo(function Parameter({
   variations,
   width,
 }: ParameterProps) {
-  const [isExpanded, setExpanded] = useState(false);
+  const [isExpanded, setExpanded] = useState(true);
 
   const domain: [number, number] = [0, 1];
   for (const variation of variations) {
@@ -82,9 +82,12 @@ export default memo(function Parameter({
 
       {isExpanded &&
         (variations.length === 0 ? (
-          <Text py={2} fontSize={10}>
-            Click a button below to add a variation!
-          </Text>
+          <HStack>
+            <Text py={2} fontSize={10}>
+              Click to add a variation:
+            </Text>
+            <NewVariationButtons uniformName={uniformName} block={block} />
+          </HStack>
         ) : (
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
@@ -127,13 +130,17 @@ export default memo(function Parameter({
                     </Draggable>
                   ))}
                   {provided.placeholder}
+                  <NewVariationButtons
+                    uniformName={uniformName}
+                    block={block}
+                  />
                 </HStack>
               )}
             </Droppable>
           </DragDropContext>
         ))}
       {isExpanded && (
-        <HStack alignSelf="flex-start" justify="start" spacing={0}>
+        <HStack alignSelf="flex-start" justify="start" spacing={0} pb={2}>
           {variations.map((variation) => (
             <VariationBound
               key={variation.id}
@@ -143,9 +150,6 @@ export default memo(function Parameter({
             />
           ))}
         </HStack>
-      )}
-      {isExpanded && (
-        <NewVariationButtons uniformName={uniformName} block={block} />
       )}
     </>
   );

@@ -40,6 +40,7 @@ export default observer(function Keyboard() {
 
     const handleCopy = (e: ClipboardEvent) => {
       if (!e.clipboardData) return;
+      // TODO: this interferes with the browser's default copy behavior in input fields
       // store.copyBlocksToClipboard(e.clipboardData);
       // e.preventDefault();
     };
