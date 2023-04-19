@@ -1,6 +1,6 @@
 import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
 import { Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import Variation from "@/src/types/Variations/Variation";
 import VariationGraph from "@/src/components/VariationGraph/VariationGraph";
@@ -32,6 +32,9 @@ export default memo(function Parameter({
   width,
 }: ParameterProps) {
   const [isExpanded, setExpanded] = useState(false);
+
+  // only expand once we are on the client, otherwise strange errors
+  useEffect(() => setExpanded(true), [setExpanded]);
 
   const domain: [number, number] = [0, 1];
   for (const variation of variations) {

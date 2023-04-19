@@ -90,11 +90,21 @@ export default class Store {
           new Vector4(0, 0.5, 1, 1),
           new Vector4(0.4588, 0.2, 0.7216, 1)
         ),
+        new LinearVariation4(
+          10,
+          new Vector4(0.4588, 0.2, 0.7216, 1),
+          new Vector4(0.9, 0.5, 0.2, 1)
+        ),
       ],
       u_speed: [
         new SineVariation(4, 0.5, 1, 0, -0.1),
-        new FlatVariation(1, 0.1),
+        new FlatVariation(1.5, 0.1),
         new LinearVariation(2, 0.1, 1),
+        new LinearVariation(30, 1, 1),
+      ],
+      u_scale: [
+        new LinearVariation(5.5, 0.5, 1),
+        new LinearVariation(5, 1, 0.5),
       ],
     };
 
