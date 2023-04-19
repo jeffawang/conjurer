@@ -1,9 +1,9 @@
 #define PI 3.14159265359
-uniform vec2 u_resolution;
+
 varying vec2 v_uv;
 
 void main() {
-    gl_PointSize = 5.0;
+    gl_PointSize = 4.0;
     float apexRadius = 1.0; // ft
     float canopyRadius = 8.0; // ft
 

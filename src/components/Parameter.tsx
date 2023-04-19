@@ -3,7 +3,7 @@ import { Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
 import { MouseEvent, memo } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import Variation from "@/src/types/Variations/Variation";
-import VariationGraph from "@/src/components/VariationGraph";
+import VariationGraph from "@/src/components/VariationGraph/VariationGraph";
 import {
   DragDropContext,
   Draggable,

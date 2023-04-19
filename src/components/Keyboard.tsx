@@ -40,15 +40,15 @@ export default observer(function Keyboard() {
 
     const handleCopy = (e: ClipboardEvent) => {
       if (!e.clipboardData) return;
-      store.copyBlocksToClipboard(e.clipboardData);
-      e.preventDefault();
+      // store.copyBlocksToClipboard(e.clipboardData);
+      // e.preventDefault();
     };
     window.addEventListener("copy", handleCopy);
 
     const handlePaste = (e: ClipboardEvent) => {
       if (!e.clipboardData) return;
-      store.pasteBlocksFromClipboard(e.clipboardData);
-      e.preventDefault();
+      // store.pasteBlocksFromClipboard(e.clipboardData);
+      // e.preventDefault();
     };
     window.addEventListener("paste", handlePaste);
 

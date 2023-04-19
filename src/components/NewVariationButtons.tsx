@@ -29,16 +29,35 @@ export default memo(function NewVariationButtons({
         aria-label="Linear4"
         height={6}
         icon={<MdColorLens size={17} />}
-        onClick={action(() =>
+        onClick={action(() => {
+          const variationsCount =
+            block.parameterVariations[uniformName]?.length ?? 0;
+          const lastVariation =
+            block.parameterVariations[uniformName]?.[variationsCount - 1];
+          if (
+            variationsCount > 0 &&
+            lastVariation instanceof LinearVariation4
+          ) {
+            block.addVariation(
+              uniformName,
+              new LinearVariation4(
+                DEFAULT_Variation_DURATION,
+                lastVariation.to.clone(),
+                new Vector4(0.32, 0.1, 0.6, 1)
+              )
+            );
+            return;
+          }
+
           block.addVariation(
             uniformName,
             new LinearVariation4(
               DEFAULT_Variation_DURATION,
-              new Vector4(0, 0, 0, 1), // TODO: start from last color of previous variation
+              new Vector4(0, 0, 0, 1),
               new Vector4(0.32, 0.1, 0.6, 1)
             )
-          )
-        )}
+          );
+        })}
       />
     </HStack>
   ) : (
