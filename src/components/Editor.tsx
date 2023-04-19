@@ -8,10 +8,9 @@ export default function Editor() {
     <Box w="100vw" h="100vh">
       <Grid
         templateAreas={`"patterns display"
-                        "patterns timeline"
-                        "patterns instructions"`}
+                        "patterns arrangement"`}
         gridTemplateColumns="165px calc(100vw - 165px)"
-        gridTemplateRows="auto auto 1fr"
+        gridTemplateRows="50vh 50vh"
         height="100vh"
         fontWeight="bold"
       >
@@ -22,10 +21,9 @@ export default function Editor() {
         <GridItem area="display">
           <Display />
         </GridItem>
-        <GridItem area="timeline">
+        <GridItem area="arrangement">
           <Arrangement />
         </GridItem>
-        <GridItem area="instructions"></GridItem>
       </Grid>
     </Box>
   );

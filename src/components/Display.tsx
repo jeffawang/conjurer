@@ -12,7 +12,7 @@ const BLOCK_DISPLAY_FACTOR = 3;
 export default observer(function Display() {
   const { currentBlock } = useStore();
   return (
-    <Box position="relative">
+    <Box position="relative" height="100%">
       <VStack position="absolute" width="100%" marginY="2" zIndex={1}>
         <Heading>Conjurer</Heading>
       </VStack>
@@ -31,7 +31,7 @@ export default observer(function Display() {
         </Canvas>
       </Box>
       <Box
-        height="800px"
+        height="100%"
         borderStyle="solid"
         borderColor="black"
         borderBottomWidth={1}

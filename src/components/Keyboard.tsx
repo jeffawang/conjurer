@@ -40,15 +40,16 @@ export default observer(function Keyboard() {
 
     const handleCopy = (e: ClipboardEvent) => {
       if (!e.clipboardData) return;
-      store.copyBlocksToClipboard(e.clipboardData);
-      e.preventDefault();
+      // TODO: this interferes with the browser's default copy behavior in input fields
+      // store.copyBlocksToClipboard(e.clipboardData);
+      // e.preventDefault();
     };
     window.addEventListener("copy", handleCopy);
 
     const handlePaste = (e: ClipboardEvent) => {
       if (!e.clipboardData) return;
-      store.pasteBlocksFromClipboard(e.clipboardData);
-      e.preventDefault();
+      // store.pasteBlocksFromClipboard(e.clipboardData);
+      // e.preventDefault();
     };
     window.addEventListener("paste", handlePaste);
 

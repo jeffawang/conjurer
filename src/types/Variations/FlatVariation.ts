@@ -23,4 +23,6 @@ export default class FlatVariation extends Variation<number> {
       },
     ];
   };
+
+  clone = () => new FlatVariation(this.duration, this.value);
 }

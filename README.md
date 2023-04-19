@@ -44,7 +44,7 @@ yarn dev
   - Similar to patterns, except that effects operate on patterns
   - Turns out this is very difficult
 - Parameter variations
-  - Functions that can be applied to pattern/effect parameters (shader uniforms)
+  - Changes over time applied to pattern/effect parameters (shader uniforms)
   - Add more types of parameter variations, like [some of these easing functions](https://easings.net/)
 - Websocket API
   - Build websocket API to send frame data to Unity app

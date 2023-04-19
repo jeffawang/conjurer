@@ -1,9 +1,9 @@
 import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
 import { Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
-import { MouseEvent, memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import Variation from "@/src/types/Variations/Variation";
-import VariationGraph from "@/src/components/VariationGraph";
+import VariationGraph from "@/src/components/VariationGraph/VariationGraph";
 import {
   DragDropContext,
   Draggable,
@@ -22,8 +22,6 @@ type ParameterProps = {
   block: Block<ExtraParams>;
   variations: Variation[];
   width: number;
-  isSelected: boolean;
-  handleClick: (e: MouseEvent, uniformName: string) => void;
 };
 
 export default memo(function Parameter({
@@ -32,9 +30,12 @@ export default memo(function Parameter({
   block,
   variations,
   width,
-  isSelected,
-  handleClick,
 }: ParameterProps) {
+  const [isExpanded, setExpanded] = useState(false);
+
+  // only expand once we are on the client, otherwise strange errors
+  useEffect(() => setExpanded(true), [setExpanded]);
+
   const domain: [number, number] = [0, 1];
   for (const variation of variations) {
     const [min, max] = variation.computeDomain();
@@ -57,24 +58,24 @@ export default memo(function Parameter({
   });
   return (
     <>
-      <Divider />
+      <Divider borderWidth={1} borderColor="gray.500" />
       <Button
         variant="ghost"
-        size="xs"
-        width="95%"
-        height={4}
-        onClick={(e: MouseEvent) => handleClick(e, uniformName)}
+        width="100%"
+        height={5}
+        borderRadius={0}
+        onClick={() => setExpanded(!isExpanded)}
       >
         <HStack width="100%" justify="center">
           <Text
             lineHeight={1}
             userSelect={"none"}
             fontSize={10}
-            color={isSelected ? "orange" : "white"}
+            color={isExpanded ? "orange" : "white"}
           >
             {patternParam.name}
           </Text>
-          {isSelected ? (
+          {isExpanded ? (
             <BsCaretUp size={10} color="orange" />
           ) : (
             <BsCaretDown size={10} />
@@ -82,9 +83,14 @@ export default memo(function Parameter({
         </HStack>
       </Button>
 
-      {isSelected &&
+      {isExpanded &&
         (variations.length === 0 ? (
-          <Text fontSize={10}>Click a button below to add a variation!</Text>
+          <HStack>
+            <Text py={2} fontSize={10}>
+              Click to add a variation:
+            </Text>
+            <NewVariationButtons uniformName={uniformName} block={block} />
+          </HStack>
         ) : (
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
@@ -127,13 +133,17 @@ export default memo(function Parameter({
                     </Draggable>
                   ))}
                   {provided.placeholder}
+                  <NewVariationButtons
+                    uniformName={uniformName}
+                    block={block}
+                  />
                 </HStack>
               )}
             </Droppable>
           </DragDropContext>
         ))}
-      {isSelected && (
-        <HStack alignSelf="flex-start" justify="start" spacing={0}>
+      {isExpanded && (
+        <HStack alignSelf="flex-start" justify="start" spacing={0} pb={2}>
           {variations.map((variation) => (
             <VariationBound
               key={variation.id}
@@ -143,9 +153,6 @@ export default memo(function Parameter({
             />
           ))}
         </HStack>
-      )}
-      {isSelected && (
-        <NewVariationButtons uniformName={uniformName} block={block} />
       )}
     </>
   );

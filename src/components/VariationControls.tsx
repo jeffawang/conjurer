@@ -14,6 +14,7 @@ import { useState } from "react";
 import Variation from "@/src/types/Variations/Variation";
 import { action } from "mobx";
 import { FaTrashAlt } from "react-icons/fa";
+import { BiDuplicate } from "react-icons/bi";
 import Block from "@/src/types/Block";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
@@ -70,14 +71,26 @@ export default (function VariationControls(props: VariationControlsProps) {
   return (
     <VStack m={1}>
       {controls}
-      <IconButton
-        aria-label="Delete"
-        variant="ghost"
-        size="xs"
-        color="gray.400"
-        icon={<FaTrashAlt size={12} />}
-        onClick={action(() => block.removeVariation(uniformName, variation))}
-      />
+      <HStack>
+        <IconButton
+          aria-label="Duplicate"
+          variant="ghost"
+          size="xs"
+          color="gray.400"
+          icon={<BiDuplicate size={17} />}
+          onClick={action(() =>
+            block.duplicateVariation(uniformName, variation)
+          )}
+        />
+        <IconButton
+          aria-label="Delete"
+          variant="ghost"
+          size="xs"
+          color="gray.400"
+          icon={<FaTrashAlt size={15} />}
+          onClick={action(() => block.removeVariation(uniformName, variation))}
+        />
+      </HStack>
     </VStack>
   );
 });
