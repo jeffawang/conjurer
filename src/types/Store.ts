@@ -359,4 +359,11 @@ export default class Store {
 
     block.duration += delta;
   };
+
+  serialize = () => {
+    console.log({
+      audioStore: this.audioStore.serialize(),
+      blocks: this.blocks.map((b) => b.serialize()),
+    });
+  };
 }

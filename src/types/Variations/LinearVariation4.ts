@@ -31,4 +31,11 @@ export default class LinearVariation4 extends Variation<Vector4> {
   ];
 
   clone = () => new LinearVariation4(this.duration, this.from, this.to);
+
+  serialize = () => ({
+    type: this.type,
+    duration: this.duration,
+    from: this.from.toArray(),
+    to: this.to.toArray(),
+  });
 }

@@ -148,4 +148,22 @@ export default class Block<T extends ExtraParams = {}> {
   };
 
   clone = () => new Block(clone(this.pattern));
+
+  serializeParameterVariations = () => {
+    const serialized: { [K in keyof T]?: any[] } = {};
+    for (const parameter of Object.keys(this.parameterVariations)) {
+      serialized[parameter as keyof T] = this.parameterVariations[
+        parameter as keyof T
+      ]?.map((variation) => variation.serialize());
+    }
+    return serialized;
+  };
+
+  serialize = () => ({
+    id: this.id,
+    pattern: this.pattern.name,
+    parameterVariations: this.serializeParameterVariations(),
+    startTime: this.startTime,
+    duration: this.duration,
+  });
 }

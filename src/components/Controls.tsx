@@ -6,6 +6,7 @@ import { IconButton, Select } from "@chakra-ui/react";
 import { RiZoomInLine, RiZoomOutLine } from "react-icons/ri";
 import { BsSoundwave, BsGearFill } from "react-icons/bs";
 import { AiOutlineLineChart } from "react-icons/ai";
+import { FiSave } from "react-icons/fi";
 import { useStore } from "@/src/types/StoreContext";
 import { action, runInAction } from "mobx";
 import {
@@ -94,6 +95,12 @@ export default observer(function Controls() {
           </option>
         ))}
       </Select>
+      <IconButton
+        aria-label="Save"
+        height={6}
+        icon={<FiSave size={17} />}
+        onClick={store.serialize}
+      />
     </>
   );
 });

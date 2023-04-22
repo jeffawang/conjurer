@@ -24,4 +24,5 @@ export default abstract class Variation<T extends ParamType = ParamType> {
   abstract computeDomain: () => [number, number];
   abstract computeSampledData: (duration: number) => { value: number }[];
   abstract clone: () => Variation<T>;
+  abstract serialize: () => any;
 }
