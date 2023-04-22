@@ -34,4 +34,7 @@ export default class LinearVariation extends Variation<number> {
     from: this.from,
     to: this.to,
   });
+
+  static deserialize = (data: any) =>
+    new LinearVariation(data.duration, data.from, data.to);
 }

@@ -6,6 +6,7 @@ import { IconButton, Select } from "@chakra-ui/react";
 import { RiZoomInLine, RiZoomOutLine } from "react-icons/ri";
 import { BsSoundwave, BsGearFill } from "react-icons/bs";
 import { AiOutlineLineChart } from "react-icons/ai";
+import { FaFolderOpen } from "react-icons/fa";
 import { FiSave } from "react-icons/fi";
 import { useStore } from "@/src/types/StoreContext";
 import { action, runInAction } from "mobx";
@@ -99,7 +100,13 @@ export default observer(function Controls() {
         aria-label="Save"
         height={6}
         icon={<FiSave size={17} />}
-        onClick={store.serialize}
+        onClick={store.saveToLocalStorage}
+      />
+      <IconButton
+        aria-label="Open"
+        height={6}
+        icon={<FaFolderOpen size={17} />}
+        onClick={store.loadFromLocalStorage}
       />
     </>
   );

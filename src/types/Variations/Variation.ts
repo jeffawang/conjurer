@@ -1,14 +1,11 @@
 import { ParamType } from "@/src/types/PatternParams";
 
 // TODO: implement more variation types
-type VariationType =
-  | "flat"
-  | "linear"
-  | "random"
-  | "sine"
-  | "saw"
-  | "square"
-  | "triangle";
+type VariationType = "flat" | "linear" | "sine" | "linear4";
+// | "random"
+// | "saw"
+// | "square"
+// | "triangle";
 
 export default abstract class Variation<T extends ParamType = ParamType> {
   id: string = Math.random().toString(16).slice(2); // unique id
@@ -25,4 +22,5 @@ export default abstract class Variation<T extends ParamType = ParamType> {
   abstract computeSampledData: (duration: number) => { value: number }[];
   abstract clone: () => Variation<T>;
   abstract serialize: () => any;
+  static deserialize: (data: any) => Variation;
 }

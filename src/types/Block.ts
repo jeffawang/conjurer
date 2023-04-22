@@ -4,6 +4,8 @@ import { ExtraParams } from "./PatternParams";
 import { clone } from "@/src/utils/object";
 import Variation from "@/src/types/Variations/Variation";
 import { MINIMUM_VARIATION_DURATION } from "@/src/utils/time";
+import { patternMap } from "@/src/patterns/patterns";
+import { deserializeVariation } from "@/src/types/Variations/variations";
 
 export default class Block<T extends ExtraParams = {}> {
   id: string = Math.random().toString(16).slice(2); // unique id
@@ -160,10 +162,25 @@ export default class Block<T extends ExtraParams = {}> {
   };
 
   serialize = () => ({
-    id: this.id,
     pattern: this.pattern.name,
     parameterVariations: this.serializeParameterVariations(),
     startTime: this.startTime,
     duration: this.duration,
   });
+
+  static deserialize = (data: any) => {
+    const block = new Block<ExtraParams>(clone(patternMap[data.pattern]));
+    block.setTiming({
+      startTime: data.startTime,
+      duration: data.duration,
+    });
+
+    for (const parameter of Object.keys(data.parameterVariations)) {
+      block.parameterVariations[parameter] = data.parameterVariations[
+        parameter
+      ]?.map((variationData: any) => deserializeVariation(variationData));
+    }
+
+    return block;
+  };
 }

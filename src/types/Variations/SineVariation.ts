@@ -62,4 +62,13 @@ export default class SineVariation extends Variation<number> {
     phase: this.phase,
     offset: this.offset,
   });
+
+  static deserialize = (data: any) =>
+    new SineVariation(
+      data.duration,
+      data.amplitude,
+      data.frequency,
+      data.phase,
+      data.offset
+    );
 }

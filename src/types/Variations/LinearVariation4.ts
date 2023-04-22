@@ -9,7 +9,7 @@ export default class LinearVariation4 extends Variation<Vector4> {
   interpolated = new Vector4();
 
   constructor(duration: number, from: Vector4, to: Vector4) {
-    super("linear", duration);
+    super("linear4", duration);
 
     this.from = from.clone();
     this.to = to.clone();
@@ -38,4 +38,11 @@ export default class LinearVariation4 extends Variation<Vector4> {
     from: this.from.toArray(),
     to: this.to.toArray(),
   });
+
+  static deserialize = (data: any) =>
+    new LinearVariation4(
+      data.duration,
+      new Vector4(...data.from),
+      new Vector4(...data.to)
+    );
 }

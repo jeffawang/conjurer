@@ -360,10 +360,24 @@ export default class Store {
     block.duration += delta;
   };
 
-  serialize = () => {
-    console.log({
-      audioStore: this.audioStore.serialize(),
-      blocks: this.blocks.map((b) => b.serialize()),
-    });
+  saveToLocalStorage = () => {
+    localStorage.setItem("arrangement", JSON.stringify(this.serialize()));
+  };
+
+  serialize = () => ({
+    audioStore: this.audioStore.serialize(),
+    blocks: this.blocks.map((b) => b.serialize()),
+  });
+
+  loadFromLocalStorage = () => {
+    const arrangement = localStorage.getItem("arrangement");
+    if (arrangement) {
+      this.deserialize(JSON.parse(arrangement));
+    }
+  };
+
+  deserialize = (data: any) => {
+    this.audioStore.deserialize(data.audioStore);
+    this.blocks = data.blocks.map((b: any) => Block.deserialize(b));
   };
 }

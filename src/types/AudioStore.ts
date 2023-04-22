@@ -12,4 +12,8 @@ export default class AudioStore {
   serialize = () => ({
     selectedAudioFile: this.selectedAudioFile,
   });
+
+  deserialize = (data: any) => {
+    this.selectedAudioFile = data.selectedAudioFile;
+  };
 }

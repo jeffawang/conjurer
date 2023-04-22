@@ -31,4 +31,7 @@ export default class FlatVariation extends Variation<number> {
     duration: this.duration,
     value: this.value,
   });
+
+  static deserialize = (data: any) =>
+    new FlatVariation(data.duration, data.value);
 }
