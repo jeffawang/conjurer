@@ -110,15 +110,33 @@ export default class Block<T extends ExtraParams = {}> {
     if (!variations) return;
 
     const index = variations.indexOf(variation);
-    if (index < 0) {
-      console.log("variation not found in block");
-      return;
-    }
+    if (index < 0) return;
 
     if (variation.duration + delta < MINIMUM_VARIATION_DURATION) return;
 
     variation.duration += delta;
     this.triggerVariationReactions(uniformName);
+  };
+
+  applyMaxVariationDurationDelta = (
+    uniformName: string,
+    variation: Variation
+  ) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) return;
+
+    const index = variations.indexOf(variation);
+    if (index < 0) return;
+
+    const totalVariationDuration = variations.reduce(
+      (total, variation) => total + variation.duration,
+      0
+    );
+
+    if (totalVariationDuration < this.duration) {
+      variation.duration += this.duration - totalVariationDuration;
+      this.triggerVariationReactions(uniformName);
+    }
   };
 
   triggerVariationReactions = (uniformName: string) => {

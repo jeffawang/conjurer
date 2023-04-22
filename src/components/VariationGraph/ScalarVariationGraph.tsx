@@ -31,7 +31,7 @@ export default memo(function ScalarVariationGraph({
       _hover={{ bgColor: "gray.500" }}
     >
       <LineChart
-        width={width}
+        width={width - 1} // -1 to account for border
         height={50}
         data={data}
         margin={{ top: 0, left: 0, right: 0, bottom: 0 }}

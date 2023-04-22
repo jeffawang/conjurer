@@ -28,12 +28,15 @@ export default observer(function VariationBound({
     setPosition({ x: data.x, y: 0 });
   };
   const handleStop = action(() => {
-    // onBoundChange(uiStore.xToTime(position.x));
     block.applyVariationDurationDelta(
       uniformName,
       variation,
       store.uiStore.xToTime(position.x)
     );
+    setPosition({ x: 0, y: 0 });
+  });
+  const handleDoubleClick = action(() => {
+    block.applyMaxVariationDurationDelta(uniformName, variation);
     setPosition({ x: 0, y: 0 });
   });
 
@@ -58,6 +61,7 @@ export default observer(function VariationBound({
           cursor="col-resize"
           borderRadius="5px"
           borderStyle="solid"
+          onDoubleClick={handleDoubleClick}
         >
           <BiArrowToRight size={17} />
         </Box>
