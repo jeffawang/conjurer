@@ -32,8 +32,8 @@ yarn dev
 (in no particular order)
 
 - Audio
-  - Store audio files in S3
-  - Allow selecting any audio file that is hosted in the S3 bucket
+  - ~~Store audio files in S3~~
+  - ~~Allow selecting any audio file that is hosted in the S3 bucket~~
   - Provide an uploading interface?
 - Persisting experiences
   - Persist to local storage, auto save every X minutes
