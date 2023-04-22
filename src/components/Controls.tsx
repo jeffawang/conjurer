@@ -44,7 +44,7 @@ export default observer(function Controls() {
         });
       })
     );
-  });
+  }, [store]);
 
   return (
     <>
