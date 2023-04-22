@@ -5,20 +5,17 @@ import UIStore from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";
 import { clone } from "@/src/utils/object";
 import { DEFAULT_BLOCK_DURATION } from "@/src/utils/time";
-import SunCycle from "@/src/patterns/SunCycle";
 import { patterns } from "@/src/patterns/patterns";
 import { makeAutoObservable, configure, runInAction } from "mobx";
 import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
 import SineVariation from "@/src/types/Variations/SineVariation";
-import Disc from "@/src/patterns/Disc";
 import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { Vector4 } from "three";
 import Clouds from "@/src/patterns/Clouds";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
-
 configure({
   enforceActions: "always",
   computedRequiresReaction: true,
@@ -37,6 +34,10 @@ export default class Store {
   patterns: Pattern[] = patterns;
   selectedPattern: Pattern = patterns[0];
   draggingPattern: boolean = false;
+
+  audioInitialized = false;
+  availableAudioFiles: string[] = [];
+  selectedAudioFile: string = "cloudkicker-explorebecurious.mp3";
 
   _lastComputedCurrentBlock: Block | null = null;
 
