@@ -107,6 +107,7 @@ export default class Store {
       ],
     };
 
+    // set up an autosave interval
     setInterval(() => {
       if (!this.timer.playing) this.saveToLocalStorage("autosave");
     }, 60 * 1000);
@@ -373,8 +374,8 @@ export default class Store {
     blocks: this.blocks.map((b) => b.serialize()),
   });
 
-  loadFromLocalStorage = () => {
-    const arrangement = localStorage.getItem("arrangement");
+  loadFromLocalStorage = (key: string) => {
+    const arrangement = localStorage.getItem(key);
     if (arrangement) {
       this.deserialize(JSON.parse(arrangement));
     }

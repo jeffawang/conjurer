@@ -28,6 +28,7 @@ export default memo(function NewVariationButtons({
         <IconButton
           size="xs"
           aria-label="Linear4"
+          title="Linear color change"
           height={6}
           icon={<MdColorLens size={17} />}
           onClick={action(() => {
@@ -68,6 +69,7 @@ export default memo(function NewVariationButtons({
         <IconButton
           size="xs"
           aria-label="Flat"
+          title="Flat"
           height={6}
           icon={<MdTrendingFlat size={17} />}
           onClick={action(() =>
@@ -80,6 +82,7 @@ export default memo(function NewVariationButtons({
         <IconButton
           size="xs"
           aria-label="Linear"
+          title="Linear"
           height={6}
           icon={<BsArrowUpRight size={17} />}
           onClick={action(() =>
@@ -92,6 +95,7 @@ export default memo(function NewVariationButtons({
         <IconButton
           size="xs"
           aria-label="Sine"
+          title="Sine"
           height={6}
           icon={<TbWaveSine size={17} />}
           onClick={action(() =>

@@ -12,12 +12,14 @@ export default observer(function TimerControls() {
     <>
       <IconButton
         aria-label="Backward"
+        title="Backward"
         height={6}
         icon={<FaStepBackward size={10} />}
         onClick={action(() => timer.setTime(0))}
       />
       <IconButton
         aria-label="Play"
+        title="Play"
         color={timer.playing ? "orange" : "green"}
         height={6}
         icon={timer.playing ? <FaPause size={10} /> : <FaPlay size={10} />}
@@ -25,6 +27,7 @@ export default observer(function TimerControls() {
       />
       <IconButton
         aria-label="Forward"
+        title="Forward"
         height={6}
         icon={<FaStepForward size={10} />}
         onClick={action(() => {

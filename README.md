@@ -38,7 +38,6 @@ yarn dev
 - Persisting experiences
   - ~~Persist to local storage, auto save every X minutes~~
   - Persist arrangement to a backend (maybe just S3?)
-  - Allow sharing via base64 encoded strings
 - Effects
   - Shaders that accept a texture and apply an effect, outputting a new texture that can be rendered to the screen or fed into another effect
   - Similar to patterns, except that effects operate on patterns
