@@ -6,6 +6,11 @@ import { useRef, useEffect } from "react";
 import { clamp } from "three/src/math/MathUtils";
 import { useDebouncedCallback } from "use-debounce";
 import type WaveSurfer from "wavesurfer.js";
+import {
+  AUDIO_BUCKET_NAME,
+  AUDIO_BUCKET_PREFIX,
+  AUDIO_BUCKET_REGION,
+} from "@/src/utils/audio";
 
 export default observer(function WaveSurferWaveform() {
   const initialized = useRef(false);
@@ -13,12 +18,9 @@ export default observer(function WaveSurferWaveform() {
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const waveformRef = useRef(null);
 
-  const { timer, uiStore } = useStore();
+  const { selectedAudioFile, timer, uiStore } = useStore();
 
   useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-
     const create = async () => {
       // Cannot be run on the server, so we need to use dynamic import
       const WaveSurfer = (await import("wavesurfer.js")).default;
@@ -41,14 +43,28 @@ export default observer(function WaveSurferWaveform() {
         minPxPerSec: INITIAL_PIXELS_PER_SECOND,
       };
       wavesurferRef.current = WaveSurfer.create(options);
-      await wavesurferRef.current.load("/cloudkicker-explorebecurious.mp3");
+      await wavesurferRef.current.load(
+        `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${selectedAudioFile}`
+      );
       ready.current = true;
     };
 
-    create();
+    const changeAudioFile = async () => {
+      if (initialized.current) {
+        await wavesurferRef.current?.load(
+          `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${selectedAudioFile}`
+        );
+        wavesurferRef.current?.seekTo(0);
+      }
+    };
 
-    return () => wavesurferRef.current?.destroy();
-  }, []);
+    if (initialized.current) {
+      changeAudioFile();
+    } else {
+      initialized.current = true;
+      create();
+    }
+  }, [selectedAudioFile]);
 
   useEffect(() => {
     if (timer.playing) {
