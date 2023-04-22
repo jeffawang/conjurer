@@ -16,12 +16,12 @@ import {
 
 export default observer(function Controls() {
   const store = useStore();
-  const { uiStore } = store;
+  const { uiStore, audioStore } = store;
 
   useEffect(() => {
-    if (store.audioInitialized) return;
+    if (audioStore.audioInitialized) return;
     runInAction(() => {
-      store.audioInitialized = true;
+      audioStore.audioInitialized = true;
     });
 
     // get list of objects from s3 bucket using aws sdk
@@ -40,11 +40,11 @@ export default observer(function Controls() {
       action((data) => {
         data.Contents?.forEach((object) => {
           const audioFile = object.Key?.split("/")[1];
-          if (audioFile) store.availableAudioFiles.push(audioFile);
+          if (audioFile) audioStore.availableAudioFiles.push(audioFile);
         });
       })
     );
-  }, [store]);
+  }, [audioStore]);
 
   return (
     <>
@@ -83,12 +83,12 @@ export default observer(function Controls() {
       <Select
         size="xs"
         width={60}
-        value={store.selectedAudioFile}
+        value={audioStore.selectedAudioFile}
         onChange={action((e) => {
-          store.selectedAudioFile = e.target.value;
+          audioStore.selectedAudioFile = e.target.value;
         })}
       >
-        {store.availableAudioFiles.map((audioFile) => (
+        {audioStore.availableAudioFiles.map((audioFile) => (
           <option key={audioFile} value={audioFile}>
             {audioFile}
           </option>

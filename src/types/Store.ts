@@ -13,6 +13,7 @@ import SineVariation from "@/src/types/Variations/SineVariation";
 import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { Vector4 } from "three";
 import Clouds from "@/src/patterns/Clouds";
+import AudioStore from "@/src/types/AudioStore";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -27,6 +28,7 @@ export default class Store {
   initialized = false;
   timer = new Timer();
   uiStore = new UIStore();
+  audioStore = new AudioStore();
 
   blocks: Block[] = [];
   selectedBlocks: Set<Block> = new Set();
@@ -34,10 +36,6 @@ export default class Store {
   patterns: Pattern[] = patterns;
   selectedPattern: Pattern = patterns[0];
   draggingPattern: boolean = false;
-
-  audioInitialized = false;
-  availableAudioFiles: string[] = [];
-  selectedAudioFile: string = "cloudkicker-explorebecurious.mp3";
 
   _lastComputedCurrentBlock: Block | null = null;
 
