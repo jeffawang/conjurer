@@ -13,6 +13,7 @@ import SineVariation from "@/src/types/Variations/SineVariation";
 import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { Vector4 } from "three";
 import Clouds from "@/src/patterns/Clouds";
+import AudioStore from "@/src/types/AudioStore";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -27,6 +28,7 @@ export default class Store {
   initialized = false;
   timer = new Timer();
   uiStore = new UIStore();
+  audioStore = new AudioStore();
 
   blocks: Block[] = [];
   selectedBlocks: Set<Block> = new Set();
@@ -34,10 +36,6 @@ export default class Store {
   patterns: Pattern[] = patterns;
   selectedPattern: Pattern = patterns[0];
   draggingPattern: boolean = false;
-
-  audioInitialized = false;
-  availableAudioFiles: string[] = [];
-  selectedAudioFile: string = "cloudkicker-explorebecurious.mp3";
 
   _lastComputedCurrentBlock: Block | null = null;
 
@@ -108,6 +106,11 @@ export default class Store {
         new LinearVariation(5, 1, 0.5),
       ],
     };
+
+    // set up an autosave interval
+    setInterval(() => {
+      if (!this.timer.playing) this.saveToLocalStorage("autosave");
+    }, 60 * 1000);
 
     this.initialized = true;
   };
@@ -360,5 +363,26 @@ export default class Store {
     }
 
     block.duration += delta;
+  };
+
+  saveToLocalStorage = (key: string) => {
+    localStorage.setItem(key, JSON.stringify(this.serialize()));
+  };
+
+  serialize = () => ({
+    audioStore: this.audioStore.serialize(),
+    blocks: this.blocks.map((b) => b.serialize()),
+  });
+
+  loadFromLocalStorage = (key: string) => {
+    const arrangement = localStorage.getItem(key);
+    if (arrangement) {
+      this.deserialize(JSON.parse(arrangement));
+    }
+  };
+
+  deserialize = (data: any) => {
+    this.audioStore.deserialize(data.audioStore);
+    this.blocks = data.blocks.map((b: any) => Block.deserialize(b));
   };
 }

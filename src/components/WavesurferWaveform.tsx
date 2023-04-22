@@ -18,7 +18,7 @@ export default observer(function WaveSurferWaveform() {
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const waveformRef = useRef(null);
 
-  const { selectedAudioFile, timer, uiStore } = useStore();
+  const { audioStore, timer, uiStore } = useStore();
 
   useEffect(() => {
     const create = async () => {
@@ -44,7 +44,7 @@ export default observer(function WaveSurferWaveform() {
       };
       wavesurferRef.current = WaveSurfer.create(options);
       await wavesurferRef.current.load(
-        `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${selectedAudioFile}`
+        `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
       );
       ready.current = true;
     };
@@ -52,7 +52,7 @@ export default observer(function WaveSurferWaveform() {
     const changeAudioFile = async () => {
       if (initialized.current) {
         await wavesurferRef.current?.load(
-          `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${selectedAudioFile}`
+          `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
         );
         wavesurferRef.current?.seekTo(0);
       }
@@ -64,7 +64,7 @@ export default observer(function WaveSurferWaveform() {
       initialized.current = true;
       create();
     }
-  }, [selectedAudioFile]);
+  }, [audioStore.selectedAudioFile]);
 
   useEffect(() => {
     if (timer.playing) {

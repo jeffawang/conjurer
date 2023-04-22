@@ -25,4 +25,13 @@ export default class FlatVariation extends Variation<number> {
   };
 
   clone = () => new FlatVariation(this.duration, this.value);
+
+  serialize = () => ({
+    type: this.type,
+    duration: this.duration,
+    value: this.value,
+  });
+
+  static deserialize = (data: any) =>
+    new FlatVariation(data.duration, data.value);
 }

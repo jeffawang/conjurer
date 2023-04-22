@@ -4,6 +4,8 @@ import { ExtraParams } from "./PatternParams";
 import { clone } from "@/src/utils/object";
 import Variation from "@/src/types/Variations/Variation";
 import { MINIMUM_VARIATION_DURATION } from "@/src/utils/time";
+import { patternMap } from "@/src/patterns/patterns";
+import { deserializeVariation } from "@/src/types/Variations/variations";
 
 export default class Block<T extends ExtraParams = {}> {
   id: string = Math.random().toString(16).slice(2); // unique id
@@ -110,15 +112,33 @@ export default class Block<T extends ExtraParams = {}> {
     if (!variations) return;
 
     const index = variations.indexOf(variation);
-    if (index < 0) {
-      console.log("variation not found in block");
-      return;
-    }
+    if (index < 0) return;
 
     if (variation.duration + delta < MINIMUM_VARIATION_DURATION) return;
 
     variation.duration += delta;
     this.triggerVariationReactions(uniformName);
+  };
+
+  applyMaxVariationDurationDelta = (
+    uniformName: string,
+    variation: Variation
+  ) => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) return;
+
+    const index = variations.indexOf(variation);
+    if (index < 0) return;
+
+    const totalVariationDuration = variations.reduce(
+      (total, variation) => total + variation.duration,
+      0
+    );
+
+    if (totalVariationDuration < this.duration) {
+      variation.duration += this.duration - totalVariationDuration;
+      this.triggerVariationReactions(uniformName);
+    }
   };
 
   triggerVariationReactions = (uniformName: string) => {
@@ -130,4 +150,37 @@ export default class Block<T extends ExtraParams = {}> {
   };
 
   clone = () => new Block(clone(this.pattern));
+
+  serializeParameterVariations = () => {
+    const serialized: { [K in keyof T]?: any[] } = {};
+    for (const parameter of Object.keys(this.parameterVariations)) {
+      serialized[parameter as keyof T] = this.parameterVariations[
+        parameter as keyof T
+      ]?.map((variation) => variation.serialize());
+    }
+    return serialized;
+  };
+
+  serialize = () => ({
+    pattern: this.pattern.name,
+    parameterVariations: this.serializeParameterVariations(),
+    startTime: this.startTime,
+    duration: this.duration,
+  });
+
+  static deserialize = (data: any) => {
+    const block = new Block<ExtraParams>(clone(patternMap[data.pattern]));
+    block.setTiming({
+      startTime: data.startTime,
+      duration: data.duration,
+    });
+
+    for (const parameter of Object.keys(data.parameterVariations)) {
+      block.parameterVariations[parameter] = data.parameterVariations[
+        parameter
+      ]?.map((variationData: any) => deserializeVariation(variationData));
+    }
+
+    return block;
+  };
 }

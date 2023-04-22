@@ -23,4 +23,9 @@ const patterns: Pattern[] = [
   }),
 ];
 
-export { patterns };
+const patternMap: { [key: string]: Pattern } = {};
+for (const pattern of patterns) {
+  patternMap[pattern.name] = pattern;
+}
+
+export { patterns, patternMap };

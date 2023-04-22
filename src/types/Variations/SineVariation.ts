@@ -1,7 +1,6 @@
 import Variation from "@/src/types/Variations/Variation";
 
 export default class SineVariation extends Variation<number> {
-  duration: number;
   amplitude: number;
   frequency: number;
   phase: number;
@@ -16,7 +15,6 @@ export default class SineVariation extends Variation<number> {
   ) {
     super("sine", duration);
 
-    this.duration = duration;
     this.amplitude = amplitude;
     this.frequency = frequency;
     this.phase = phase;
@@ -54,5 +52,23 @@ export default class SineVariation extends Variation<number> {
       this.frequency,
       this.phase,
       this.offset
+    );
+
+  serialize = () => ({
+    type: this.type,
+    duration: this.duration,
+    amplitude: this.amplitude,
+    frequency: this.frequency,
+    phase: this.phase,
+    offset: this.offset,
+  });
+
+  static deserialize = (data: any) =>
+    new SineVariation(
+      data.duration,
+      data.amplitude,
+      data.frequency,
+      data.phase,
+      data.offset
     );
 }
