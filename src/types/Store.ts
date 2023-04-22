@@ -107,6 +107,10 @@ export default class Store {
       ],
     };
 
+    setInterval(() => {
+      if (!this.timer.playing) this.saveToLocalStorage("autosave");
+    }, 60 * 1000);
+
     this.initialized = true;
   };
 
@@ -360,8 +364,8 @@ export default class Store {
     block.duration += delta;
   };
 
-  saveToLocalStorage = () => {
-    localStorage.setItem("arrangement", JSON.stringify(this.serialize()));
+  saveToLocalStorage = (key: string) => {
+    localStorage.setItem(key, JSON.stringify(this.serialize()));
   };
 
   serialize = () => ({

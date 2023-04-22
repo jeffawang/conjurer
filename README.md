@@ -36,7 +36,7 @@ yarn dev
   - ~~Allow selecting any audio file that is hosted in the S3 bucket~~
   - Provide an uploading interface?
 - Persisting experiences
-  - Persist to local storage, auto save every X minutes
+  - ~~Persist to local storage, auto save every X minutes~~
   - Persist arrangement to a backend (maybe just S3?)
   - Allow sharing via base64 encoded strings
 - Effects

@@ -100,7 +100,7 @@ export default observer(function Controls() {
         aria-label="Save"
         height={6}
         icon={<FiSave size={17} />}
-        onClick={store.saveToLocalStorage}
+        onClick={() => store.saveToLocalStorage("arrangement")}
       />
       <IconButton
         aria-label="Open"
