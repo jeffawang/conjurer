@@ -155,7 +155,7 @@ void main() {
     float nw = sin(t * 2.0 * PI) * multiplier;
 
     // TODO: u_time, u_speed need to be applied differently. when input to surface becomes to high, doesn't work anymore
-    float surf = surface(vec4(nx, ny, nz, nw) + u_time * 0.0005 * u_speed);
+    float surf = surface(vec4(nx, ny, nz, nw) + u_time * 0.005 * u_speed);
 
     gl_FragColor = u_color * vec4(vec3(surf), 1.0);
 }
