@@ -6,6 +6,7 @@ import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { useStore } from "@/src/types/StoreContext";
 import Block from "@/src/types/Block";
 import { action } from "mobx";
+import { VARIATION_BOUND_WIDTH } from "@/src/utils/layout";
 
 type ParameterProps = {
   uniformName: string;
@@ -51,7 +52,7 @@ export default memo(function VariationBound({
         width="2px"
         height="60px"
         boxSizing="border-box"
-        borderRightWidth={2}
+        borderRightWidth={VARIATION_BOUND_WIDTH}
         borderColor="gray.500"
         borderStyle="solid"
         cursor="col-resize"

@@ -3,6 +3,7 @@ import Block from "@/src/types/Block";
 import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { memo } from "react";
 import { vector4ToHex } from "@/src/utils/color";
+import { VARIATION_BOUND_WIDTH } from "@/src/utils/layout";
 
 type LinearVariationGraph4Props = {
   uniformName: string;
@@ -23,7 +24,7 @@ export default memo(function LinearVariationGraph4({
   return (
     <Box py={1} _hover={{ bgColor: "gray.500" }}>
       <svg
-        width={width - 2} // -2 to account for border
+        width={width - VARIATION_BOUND_WIDTH} // to account for border
         height={60}
       >
         <defs>

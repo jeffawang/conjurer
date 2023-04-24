@@ -3,6 +3,7 @@ import { LineChart, Line, Tooltip, YAxis } from "recharts";
 import Variation from "@/src/types/Variations/Variation";
 import Block from "@/src/types/Block";
 import { memo } from "react";
+import { VARIATION_BOUND_WIDTH } from "@/src/utils/layout";
 
 type ScalarVariationGraphProps = {
   uniformName: string;
@@ -23,7 +24,7 @@ export default memo(function ScalarVariationGraph({
   return (
     <Box py={1} bgColor="gray.600" _hover={{ bgColor: "gray.500" }}>
       <LineChart
-        width={width - 2} // -2 to account for border
+        width={width - VARIATION_BOUND_WIDTH} //to account for border
         height={50}
         data={data}
         margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
