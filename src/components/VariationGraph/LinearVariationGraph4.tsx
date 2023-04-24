@@ -29,7 +29,7 @@ export default memo(function LinearVariationGraph4({
       borderStyle="dashed"
       _hover={{ bgColor: "gray.500" }}
     >
-      <svg width={width} height={50}>
+      <svg width={width - 1} height={50}>
         <defs>
           <linearGradient
             id={`gradient${variation.id}`}
