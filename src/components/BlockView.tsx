@@ -17,7 +17,7 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
   const effectMesh = useRef<THREE.Mesh>(null);
 
   const renderTarget = useMemo(() => new WebGLRenderTarget(512, 512), []);
-  const effectUniforms = useRef({ u_texA: { value: renderTarget.texture } });
+  const effectUniforms = useRef({ u_tex: { value: renderTarget.texture } });
 
   const { timer } = useStore();
   useFrame(({ clock, gl, camera }) => {

@@ -22,7 +22,7 @@ export default observer(function Canopy({}: CanopyViewProps) {
   const patternMesh = useRef<THREE.Mesh>(null);
 
   const effectMesh = useRef<THREE.Mesh>(null);
-  const effectUniforms = useRef({ u_texA: { value: renderTarget.texture } });
+  const effectUniforms = useRef({ u_tex: { value: renderTarget.texture } });
 
   const canopyMesh = useRef<THREE.Points>(null);
   const canopyUniforms = useRef({ u_tex: { value: renderTarget2.texture } });
