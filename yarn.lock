@@ -5386,10 +5386,10 @@ victory-vendor@^36.6.8:
     d3-time "^3.0.0"
     d3-timer "^3.0.1"
 
-wavesurfer.js@^7.0.0-alpha.31:
-  version "7.0.0-alpha.36"
-  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-7.0.0-alpha.36.tgz#37e261bd825e87a1b43b957e0b5cbc0dc4a529fc"
-  integrity sha512-fKTax96NBZKg4M+9QduG74MQeZoceoDLSIINZzmHs01K3lHRlA0a33MvFl/ezTsIc66vp+jXhybC9Laz0RlOzg==
+wavesurfer.js@^7.0.0-alpha.37:
+  version "7.0.0-alpha.37"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-7.0.0-alpha.37.tgz#8f831de3176e6c93d562308df04a9c3a0938d798"
+  integrity sha512-qLdxQTrJ2OY4ZQU/IQSbR8UqivDEkKi2fvO0BUVGvdJx1JeBAn7RcTZFRbmYxCZXbGRelVrK/PymqosKMyOiiA==
 
 webgl-constants@^1.1.1:
   version "1.1.1"
