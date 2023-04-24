@@ -18,6 +18,7 @@ export default observer(function PlayHead() {
       willChange="transform"
       overflowY="visible"
       zIndex={10}
+      pointerEvents="none"
     >
       <FaLongArrowAltDown
         style={{ position: "absolute", top: "14px", left: "-12px" }}

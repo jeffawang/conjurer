@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   HStack,
   IconButton,
   NumberDecrementStepper,
@@ -72,24 +73,28 @@ export default (function VariationControls(props: VariationControlsProps) {
     <VStack m={1}>
       {controls}
       <HStack>
-        <IconButton
+        <Button
           aria-label="Duplicate"
           variant="ghost"
           size="xs"
           color="gray.400"
-          icon={<BiDuplicate size={17} />}
+          leftIcon={<BiDuplicate size={17} />}
           onClick={action(() =>
             block.duplicateVariation(uniformName, variation)
           )}
-        />
-        <IconButton
+        >
+          Duplicate
+        </Button>
+        <Button
           aria-label="Delete"
           variant="ghost"
           size="xs"
           color="gray.400"
-          icon={<FaTrashAlt size={15} />}
+          leftIcon={<FaTrashAlt size={15} />}
           onClick={action(() => block.removeVariation(uniformName, variation))}
-        />
+        >
+          Delete
+        </Button>
       </HStack>
     </VStack>
   );

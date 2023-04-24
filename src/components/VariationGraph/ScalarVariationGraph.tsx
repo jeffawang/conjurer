@@ -3,6 +3,7 @@ import { LineChart, Line, Tooltip, YAxis } from "recharts";
 import Variation from "@/src/types/Variations/Variation";
 import Block from "@/src/types/Block";
 import { memo } from "react";
+import { VARIATION_BOUND_WIDTH } from "@/src/utils/layout";
 
 type ScalarVariationGraphProps = {
   uniformName: string;
@@ -21,17 +22,9 @@ export default memo(function ScalarVariationGraph({
 }: ScalarVariationGraphProps) {
   const data = variation.computeSampledData(variation.duration);
   return (
-    <Box
-      py={1}
-      bgColor="gray.600"
-      boxSizing="border-box"
-      borderRightWidth={1}
-      borderColor="gray.500"
-      borderStyle="dashed"
-      _hover={{ bgColor: "gray.500" }}
-    >
+    <Box py={1} bgColor="gray.600" _hover={{ bgColor: "gray.500" }}>
       <LineChart
-        width={width - 1} // -1 to account for border
+        width={width - VARIATION_BOUND_WIDTH}
         height={50}
         data={data}
         margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
@@ -44,7 +37,7 @@ export default memo(function ScalarVariationGraph({
           stroke="#ff7300"
           yAxisId={0}
         />
-        <Tooltip content={<ScalarValueTooltip />} />
+        <Tooltip isAnimationActive={false} content={<ScalarValueTooltip />} />
         <YAxis type="number" domain={domain} hide allowDataOverflow={false} />
       </LineChart>
     </Box>
