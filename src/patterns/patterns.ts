@@ -8,11 +8,9 @@ import Pattern from "@/src/types/Pattern";
 import { Vector2 } from "three";
 
 const patterns: Pattern[] = [
-  Clouds(),
+  Rainbow(),
   SunCycle(),
   Disc(),
-  Rainbow(),
-  LogSpirals(),
   GradientPattern({
     u_blah: {
       name: "Blah",
@@ -23,6 +21,7 @@ const patterns: Pattern[] = [
       value: new Vector2(),
     },
   }),
+  Clouds(),
 ];
 
 const patternMap: { [key: string]: Pattern } = {};
