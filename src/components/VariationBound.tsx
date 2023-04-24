@@ -1,13 +1,11 @@
 import { ExtraParams } from "@/src/types/PatternParams";
-import { Box, HStack } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { memo, useRef, useState } from "react";
-import { BiArrowToRight } from "react-icons/bi";
 import Variation from "@/src/types/Variations/Variation";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { useStore } from "@/src/types/StoreContext";
 import Block from "@/src/types/Block";
 import { action } from "mobx";
-import { observer } from "mobx-react-lite";
 
 type ParameterProps = {
   uniformName: string;

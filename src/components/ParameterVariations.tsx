@@ -1,7 +1,5 @@
-import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
-import { Box, Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
-import { memo, useEffect, useState } from "react";
-import { BsCaretDown, BsCaretUp } from "react-icons/bs";
+import { ExtraParams } from "@/src/types/PatternParams";
+import { HStack, VStack } from "@chakra-ui/react";
 import Variation from "@/src/types/Variations/Variation";
 import VariationGraph from "@/src/components/VariationGraph/VariationGraph";
 import {
@@ -17,6 +15,7 @@ import VariationBound from "@/src/components/VariationBound";
 import NewVariationButtons from "@/src/components/NewVariationButtons";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
+import { Fragment } from "react";
 
 type ParameterVariationsProps = {
   uniformName: string;
@@ -64,12 +63,8 @@ export default observer(function ParameterVariations({
             spacing={0}
           >
             {variations.map((variation, index) => (
-              <>
-                <Draggable
-                  key={variation.id}
-                  draggableId={variation.id}
-                  index={index}
-                >
+              <Fragment key={variation.id}>
+                <Draggable draggableId={variation.id} index={index}>
                   {(provided, snapshot) => (
                     <VStack
                       ref={provided.innerRef}
@@ -91,12 +86,11 @@ export default observer(function ParameterVariations({
                   )}
                 </Draggable>
                 <VariationBound
-                  key={variation.id + "bound"}
                   uniformName={uniformName}
                   block={block}
                   variation={variation}
                 />
-              </>
+              </Fragment>
             ))}
             {provided.placeholder}
             <NewVariationButtons uniformName={uniformName} block={block} />

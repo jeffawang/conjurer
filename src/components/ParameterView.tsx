@@ -1,5 +1,5 @@
 import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
-import { Box, Button, Divider, HStack, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import Block from "@/src/types/Block";
@@ -25,20 +25,23 @@ export default observer(function ParameterView({
   useEffect(() => setExpanded(true), [setExpanded]);
 
   return (
-    <>
-      <Divider borderWidth={1} borderColor="gray.500" />
+    <Box width="100%" mb={isExpanded ? 2 : 0}>
       <Button
         variant="ghost"
         width="100%"
-        height={5}
+        height={7}
+        p={0}
+        borderTopWidth={1}
+        borderColor="gray.500"
+        borderStyle="solid"
         borderRadius={0}
         onClick={() => setExpanded(!isExpanded)}
       >
         <HStack width="100%" justify="center">
           <Text
             lineHeight={1}
-            userSelect={"none"}
-            fontSize={10}
+            userSelect="none"
+            fontSize={14}
             color={isExpanded ? "orange" : "white"}
           >
             {patternParam.name}
@@ -66,7 +69,6 @@ export default observer(function ParameterView({
             variations={variations}
           />
         ))}
-      <Box height={2} />
-    </>
+    </Box>
   );
 });
