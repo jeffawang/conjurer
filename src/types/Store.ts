@@ -366,7 +366,8 @@ export default class Store {
   };
 
   saveToLocalStorage = (key: string) => {
-    localStorage.setItem(key, JSON.stringify(this.serialize()));
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(key, JSON.stringify(this.serialize()));
   };
 
   serialize = () => ({
@@ -375,7 +376,8 @@ export default class Store {
   });
 
   loadFromLocalStorage = (key: string) => {
-    const arrangement = localStorage.getItem(key);
+    if (typeof window === "undefined") return;
+    const arrangement = window.localStorage.getItem(key);
     if (arrangement) {
       this.deserialize(JSON.parse(arrangement));
     }
