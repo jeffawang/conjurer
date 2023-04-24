@@ -47,7 +47,14 @@ export default (function VariationGraph({
     );
 
   return (
-    <Popover placement="bottom" isLazy openDelay={0} closeDelay={0}>
+    <Popover
+      placement="bottom"
+      isLazy
+      returnFocusOnClose={false}
+      // closeOnBlur={false}
+      openDelay={0}
+      closeDelay={0}
+    >
       <PopoverTrigger>
         <Box>{variationGraph}</Box>
       </PopoverTrigger>

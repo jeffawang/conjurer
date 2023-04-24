@@ -23,10 +23,7 @@ export default memo(function LinearVariationGraph4({
   const toColor = vector4ToHex(variation.to);
   return (
     <Box py={1} _hover={{ bgColor: "gray.500" }}>
-      <svg
-        width={width - VARIATION_BOUND_WIDTH} // to account for border
-        height={60}
-      >
+      <svg width={width - VARIATION_BOUND_WIDTH} height={60}>
         <defs>
           <linearGradient
             id={`gradient${variation.id}`}
