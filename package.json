@@ -37,7 +37,7 @@
     "wavesurfer.js": "^7.0.0-alpha.31"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11",
+    "@types/node": "^18.16.0",
     "@types/react": "^18.0.32",
     "@types/three": "^0.150.1",
     "@types/typescript": "^2.0.0",
