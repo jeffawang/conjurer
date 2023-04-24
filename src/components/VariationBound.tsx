@@ -1,6 +1,6 @@
 import { ExtraParams } from "@/src/types/PatternParams";
 import { Box, HStack } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import { BiArrowToRight } from "react-icons/bi";
 import Variation from "@/src/types/Variations/Variation";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
@@ -15,7 +15,7 @@ type ParameterProps = {
   variation: Variation;
 };
 
-export default observer(function VariationBound({
+export default memo(function VariationBound({
   uniformName,
   block,
   variation,
@@ -41,31 +41,25 @@ export default observer(function VariationBound({
   });
 
   return (
-    <HStack
-      width={store.uiStore.timeToXPixels(
-        variation.duration < 0 ? block.duration : variation.duration
-      )}
-      height={2}
-      justify="flex-end"
+    <Draggable
+      nodeRef={dragNodeRef}
+      axis="x"
+      onDrag={handleDrag}
+      onStop={handleStop}
+      position={position}
     >
-      <Draggable
-        nodeRef={dragNodeRef}
-        axis="x"
-        onDrag={handleDrag}
-        onStop={handleStop}
-        position={position}
-      >
-        <Box
-          ref={dragNodeRef}
-          position="absolute"
-          cursor="col-resize"
-          borderRadius="5px"
-          borderStyle="solid"
-          onDoubleClick={handleDoubleClick}
-        >
-          <BiArrowToRight size={17} />
-        </Box>
-      </Draggable>
-    </HStack>
+      <Box
+        ref={dragNodeRef}
+        width="2px"
+        height="60px"
+        boxSizing="border-box"
+        borderRightWidth={2}
+        borderColor="gray.500"
+        borderStyle="solid"
+        cursor="col-resize"
+        borderRadius="5px"
+        onDoubleClick={handleDoubleClick}
+      />
+    </Draggable>
   );
 });
