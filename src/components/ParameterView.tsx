@@ -1,5 +1,5 @@
 import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
-import { Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
 import { memo, useEffect, useState } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import Variation from "@/src/types/Variations/Variation";
@@ -24,7 +24,7 @@ type ParameterProps = {
   width: number;
 };
 
-export default memo(function Parameter({
+export default memo(function ParameterView({
   uniformName,
   patternParam,
   block,
@@ -106,31 +106,35 @@ export default memo(function Parameter({
                   spacing={0}
                 >
                   {variations.map((variation, index) => (
-                    <Draggable
-                      key={variation.id}
-                      draggableId={variation.id}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <VStack
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <VariationGraph
-                            uniformName={uniformName}
-                            variation={variation}
-                            width={
-                              variation.duration < 0
-                                ? width
-                                : (variation.duration / block.duration) * width
-                            }
-                            domain={domain}
-                            block={block}
-                          />
-                        </VStack>
-                      )}
-                    </Draggable>
+                    <>
+                      <Draggable
+                        key={variation.id}
+                        draggableId={variation.id}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <VStack
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <VariationGraph
+                              uniformName={uniformName}
+                              variation={variation}
+                              width={
+                                variation.duration < 0
+                                  ? width
+                                  : (variation.duration / block.duration) *
+                                    width
+                              }
+                              domain={domain}
+                              block={block}
+                            />
+                          </VStack>
+                        )}
+                      </Draggable>
+                      {/* <Box width={1} /> */}
+                    </>
                   ))}
                   {provided.placeholder}
                   <NewVariationButtons

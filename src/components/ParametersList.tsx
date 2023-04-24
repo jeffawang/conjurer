@@ -1,6 +1,6 @@
 import Block from "@/src/types/Block";
 import { ExtraParams } from "@/src/types/PatternParams";
-import Parameter from "@/src/components/Parameter";
+import ParameterView from "@/src/components/ParameterView";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import { VStack } from "@chakra-ui/react";
@@ -21,7 +21,7 @@ export default observer(function ParametersList({
     <VStack spacing={0} width="100%">
       {Object.entries(block.pattern.params).map(([uniformName, patternParam]) =>
         uniformNamesToExclude.includes(uniformName) ? null : (
-          <Parameter
+          <ParameterView
             key={uniformName}
             uniformName={uniformName}
             patternParam={patternParam}
