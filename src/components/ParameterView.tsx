@@ -56,7 +56,7 @@ export default observer(function ParameterView({
 
       {isExpanded &&
         (variations.length === 0 ? (
-          <HStack>
+          <HStack width="100%" justify="center">
             <Text py={2} fontSize={10}>
               Click to add a variation:
             </Text>
