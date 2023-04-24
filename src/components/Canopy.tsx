@@ -1,9 +1,4 @@
-import {
-  BufferAttribute,
-  BufferGeometry,
-  ShaderMaterial,
-  WebGLRenderTarget,
-} from "three";
+import { BufferAttribute, BufferGeometry, WebGLRenderTarget } from "three";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
@@ -11,6 +6,7 @@ import { useStore } from "@/src/types/StoreContext";
 import vert from "@/src/patterns/shaders/default.vert";
 import canopyVert from "@/src/patterns/shaders/canopy.vert";
 import black from "@/src/patterns/shaders/black.frag";
+import redTint from "@/src/patterns/shaders/redTint.frag";
 import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
 import { LED_COUNTS, STRIP_LENGTH } from "@/src/utils/size";
 import catenary from "@/src/utils/catenary";
@@ -20,15 +16,16 @@ type CanopyViewProps = {};
 export default observer(function Canopy({}: CanopyViewProps) {
   const { currentBlock } = useStore();
 
-  const patternMesh = useRef<THREE.Mesh>(null);
-  // const effectMesh = useRef<THREE.Mesh>(null);
-  const canopyMesh = useRef<THREE.Points>(null);
-
   const renderTarget = useMemo(() => new WebGLRenderTarget(512, 512), []);
-  // const effectUniforms = useRef({ u_texA: { value: renderTarget.texture } });
+  const renderTarget2 = useMemo(() => new WebGLRenderTarget(512, 512), []);
 
-  const shaderMaterial = useRef<ShaderMaterial>(null);
-  const canopyUniforms = useRef({ u_tex: { value: renderTarget.texture } });
+  const patternMesh = useRef<THREE.Mesh>(null);
+
+  const effectMesh = useRef<THREE.Mesh>(null);
+  const effectUniforms = useRef({ u_texA: { value: renderTarget.texture } });
+
+  const canopyMesh = useRef<THREE.Points>(null);
+  const canopyUniforms = useRef({ u_tex: { value: renderTarget2.texture } });
 
   const bufferGeometry = useMemo(() => {
     // TODO: fix this horrible hack
@@ -78,11 +75,18 @@ export default observer(function Canopy({}: CanopyViewProps) {
   }, 1);
 
   useFrame(({ gl, camera }) => {
+    if (!effectMesh.current) return;
+
+    gl.setRenderTarget(renderTarget2);
+    gl.render(effectMesh.current, camera);
+  }, 2);
+
+  useFrame(({ gl, camera }) => {
     if (!canopyMesh.current) return;
 
     gl.setRenderTarget(null);
     gl.render(canopyMesh.current, camera);
-  }, 1);
+  }, 3);
 
   return (
     <>
@@ -95,18 +99,17 @@ export default observer(function Canopy({}: CanopyViewProps) {
           vertexShader={vert}
         />
       </mesh>
-      {/* <mesh ref={effectMesh}>
+      <mesh ref={effectMesh}>
         <planeGeometry args={[2, 2]} />
         <shaderMaterial
           uniforms={effectUniforms.current}
           fragmentShader={redTint}
           vertexShader={vert}
         />
-      </mesh> */}
+      </mesh>
       <points ref={canopyMesh}>
         <primitive attach="geometry" object={bufferGeometry} />
         <shaderMaterial
-          ref={shaderMaterial}
           uniforms={canopyUniforms.current}
           fragmentShader={fromTexture}
           vertexShader={canopyVert}
