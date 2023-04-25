@@ -109,6 +109,13 @@ export default observer(function Controls() {
           // TODO
         })}
       /> */}
+      <IconButton
+        aria-label="Toggle Canopy"
+        title="Toggle Canopy"
+        height={6}
+        icon={<BsGearFill size={17} />}
+        onClick={action(() => uiStore.toggleCanopyDisplay())}
+      />
       <Select
         size="xs"
         width={60}

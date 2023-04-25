@@ -7,6 +7,7 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { Perf } from "r3f-perf";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
+import BlockView from "@/src/components/BlockView";
 
 export default observer(function CanopyCanvas() {
   const { uiStore } = useStore();
@@ -22,7 +23,7 @@ export default observer(function CanopyCanvas() {
       {uiStore.showingPerformance && <Perf />}
       <OrbitControls camera={cameraRef.current} />
 
-      <Canopy />
+      {uiStore.displayingCanopy ? <Canopy /> : <BlockView />}
       <EffectComposer>
         {/* EffectComposer upon initializing causes the warning: WebGL context was lost. */}
         <Bloom

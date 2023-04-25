@@ -16,7 +16,7 @@ export default observer(function Display() {
       <VStack position="absolute" width="100%" marginY="2" zIndex={1}>
         <Heading>Conjurer</Heading>
       </VStack>
-      <Box
+      {/* <Box
         position="absolute"
         bottom={0}
         left={0}
@@ -25,11 +25,9 @@ export default observer(function Display() {
         zIndex={1}
       >
         <Canvas>
-          {currentBlock && (
-            <BlockView key={currentBlock.pattern.name} block={currentBlock} />
-          )}
+
         </Canvas>
-      </Box>
+      </Box> */}
       <Box
         height="100%"
         borderStyle="solid"

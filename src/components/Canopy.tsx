@@ -9,6 +9,7 @@ import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
 import { LED_COUNTS, STRIP_LENGTH } from "@/src/utils/size";
 import catenary from "@/src/utils/catenary";
 import RenderNode from "@/src/components/RenderNode";
+import BlockView from "@/src/components/BlockView";
 
 type CanopyViewProps = {};
 
@@ -17,7 +18,12 @@ export default observer(function Canopy({}: CanopyViewProps) {
   const renderTargetB = useMemo(() => new WebGLRenderTarget(512, 512), []);
 
   const canopyMesh = useRef<THREE.Points>(null);
-  const canopyUniforms = useRef({ u_tex: { value: renderTargetB.texture } });
+  const canopyUniforms = useMemo(
+    () => ({
+      u_texture: { value: renderTargetB.texture },
+    }),
+    [renderTargetB]
+  );
 
   const bufferGeometry = useMemo(() => {
     // TODO: fix this horrible hack
@@ -51,16 +57,17 @@ export default observer(function Canopy({}: CanopyViewProps) {
 
   // initial pass: update parameters (uniforms)
   useFrame(({ gl, camera }) => {
+    if (!currentBlock) return;
+
     // mobx linting will complain about these lines if observableRequiresReaction is enabled, but
     // it's fine. We don't want this function to react to changes in these variables - it runs every
     // frame already.
     const { globalTime } = timer;
 
-    if (currentBlock)
-      currentBlock.updateParameters(
-        globalTime - currentBlock.startTime,
-        globalTime
-      );
+    currentBlock.updateParameters(
+      globalTime - currentBlock.startTime,
+      globalTime
+    );
   }, 0);
 
   // final render: render the canopy
@@ -70,7 +77,7 @@ export default observer(function Canopy({}: CanopyViewProps) {
     gl.setRenderTarget(null);
     gl.render(canopyMesh.current, camera);
   }, 100);
-
+  console.log("rendering canopy");
   return (
     <>
       <RenderNode
@@ -90,7 +97,7 @@ export default observer(function Canopy({}: CanopyViewProps) {
       <points ref={canopyMesh}>
         <primitive attach="geometry" object={bufferGeometry} />
         <shaderMaterial
-          uniforms={canopyUniforms.current}
+          uniforms={canopyUniforms}
           fragmentShader={fromTexture}
           vertexShader={canopyVert}
         />
