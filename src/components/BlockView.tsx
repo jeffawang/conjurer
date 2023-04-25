@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import vert from "@/src/patterns/shaders/default.vert";
 import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
+import colorTint from "@/src/effects/shaders/colorTint.frag";
 import RenderNode from "@/src/components/RenderNode";
 
 type BlockViewProps = {
@@ -56,6 +57,7 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
       />
       <RenderNode
         priority={2}
+        fragmentShader={colorTint}
         renderTargetIn={renderTargetA}
         renderTargetOut={renderTargetB}
       />

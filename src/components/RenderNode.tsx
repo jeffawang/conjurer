@@ -1,13 +1,12 @@
-import { WebGLRenderTarget } from "three";
+import { Vector4, WebGLRenderTarget } from "three";
 import { useFrame } from "@react-three/fiber";
 import { memo, useRef } from "react";
 import vert from "@/src/patterns/shaders/default.vert";
-import redTint from "@/src/patterns/shaders/redTint.frag";
 
 type RenderNodeProps = {
   shaderMaterialKey?: string;
   uniforms?: any;
-  fragmentShader?: string;
+  fragmentShader: string;
   priority: number;
   renderTargetIn: WebGLRenderTarget;
   renderTargetOut: WebGLRenderTarget;
@@ -22,7 +21,11 @@ export default memo(function RenderNode({
   renderTargetOut,
 }: RenderNodeProps) {
   const mesh = useRef<THREE.Mesh>(null);
-  const effectUniforms = useRef({ u_tex: { value: renderTargetIn.texture } });
+  const effectUniforms = useRef({
+    u_color: { value: new Vector4(0, 1, 1, 1) },
+    u_intensity: { value: 0.3 },
+    u_tex: { value: renderTargetIn.texture },
+  });
 
   useFrame(({ gl, camera }) => {
     if (!mesh.current) return;
@@ -37,7 +40,7 @@ export default memo(function RenderNode({
       <shaderMaterial
         key={shaderMaterialKey}
         uniforms={uniforms ?? effectUniforms.current}
-        fragmentShader={fragmentShader ?? redTint}
+        fragmentShader={fragmentShader}
         vertexShader={vert}
       />
     </mesh>

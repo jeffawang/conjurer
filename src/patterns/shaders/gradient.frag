@@ -1,4 +1,3 @@
-uniform vec2 u_resolution;
 uniform float u_time;
 uniform float u_blueness;
 varying vec2 v_uv;

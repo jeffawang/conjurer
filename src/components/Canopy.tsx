@@ -9,6 +9,7 @@ import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
 import { LED_COUNTS, STRIP_LENGTH } from "@/src/utils/size";
 import catenary from "@/src/utils/catenary";
 import RenderNode from "@/src/components/RenderNode";
+import colorTint from "@/src/effects/shaders/colorTint.frag";
 
 type CanopyViewProps = {};
 
@@ -82,6 +83,7 @@ export default observer(function Canopy({}: CanopyViewProps) {
         renderTargetOut={renderTargetA}
       />
       <RenderNode
+        fragmentShader={colorTint}
         priority={2}
         renderTargetIn={renderTargetA}
         renderTargetOut={renderTargetB}

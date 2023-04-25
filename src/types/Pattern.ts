@@ -4,7 +4,6 @@ import {
   ParamsProxy,
   StandardParams,
 } from "./PatternParams";
-import { LED_COUNTS } from "@/src/utils/size";
 
 export default class Pattern<T extends ExtraParams = ExtraParams> {
   name: string;
@@ -25,9 +24,9 @@ export default class Pattern<T extends ExtraParams = ExtraParams> {
         name: "Global Time",
         value: 0,
       },
-      u_resolution: {
-        name: "Resolution",
-        value: LED_COUNTS.clone(),
+      u_texture: {
+        name: "Input Texture",
+        value: null,
       },
       ...parameters,
     };
