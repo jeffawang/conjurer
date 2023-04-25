@@ -3,7 +3,6 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
-import vert from "@/src/patterns/shaders/default.vert";
 import canopyVert from "@/src/patterns/shaders/canopy.vert";
 import black from "@/src/patterns/shaders/black.frag";
 import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
@@ -14,12 +13,8 @@ import RenderNode from "@/src/components/RenderNode";
 type CanopyViewProps = {};
 
 export default observer(function Canopy({}: CanopyViewProps) {
-  const { currentBlock } = useStore();
-
   const renderTargetA = useMemo(() => new WebGLRenderTarget(512, 512), []);
   const renderTargetB = useMemo(() => new WebGLRenderTarget(512, 512), []);
-
-  const patternMesh = useRef<THREE.Mesh>(null);
 
   const canopyMesh = useRef<THREE.Points>(null);
   const canopyUniforms = useRef({ u_tex: { value: renderTargetB.texture } });
@@ -52,7 +47,9 @@ export default observer(function Canopy({}: CanopyViewProps) {
     return geometry;
   }, []);
 
-  const { timer } = useStore();
+  const { currentBlock, timer } = useStore();
+
+  // initial pass: update parameters (uniforms)
   useFrame(({ gl, camera }) => {
     // mobx linting will complain about these lines if observableRequiresReaction is enabled, but
     // it's fine. We don't want this function to react to changes in these variables - it runs every
@@ -64,11 +61,6 @@ export default observer(function Canopy({}: CanopyViewProps) {
         globalTime - currentBlock.startTime,
         globalTime
       );
-
-    if (!patternMesh.current) return;
-
-    gl.setRenderTarget(renderTargetA);
-    gl.render(patternMesh.current, camera);
   }, 0);
 
   // final render: render the canopy
@@ -81,16 +73,14 @@ export default observer(function Canopy({}: CanopyViewProps) {
 
   return (
     <>
-      <mesh ref={patternMesh}>
-        <planeGeometry args={[2, 2]} />
-        <shaderMaterial
-          key={currentBlock?.id}
-          uniforms={currentBlock?.pattern.params}
-          fragmentShader={currentBlock ? currentBlock.pattern.src : black}
-          vertexShader={vert}
-        />
-      </mesh>
-
+      <RenderNode
+        shaderMaterialKey={currentBlock?.id}
+        uniforms={currentBlock?.pattern.params}
+        fragmentShader={currentBlock ? currentBlock.pattern.src : black}
+        priority={1}
+        renderTargetIn={renderTargetB}
+        renderTargetOut={renderTargetA}
+      />
       <RenderNode
         priority={2}
         renderTargetIn={renderTargetA}

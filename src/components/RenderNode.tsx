@@ -5,32 +5,39 @@ import vert from "@/src/patterns/shaders/default.vert";
 import redTint from "@/src/patterns/shaders/redTint.frag";
 
 type RenderNodeProps = {
+  shaderMaterialKey?: string;
+  uniforms?: any;
+  fragmentShader?: string;
   priority: number;
   renderTargetIn: WebGLRenderTarget;
   renderTargetOut: WebGLRenderTarget;
 };
 
 export default memo(function RenderNode({
+  shaderMaterialKey,
+  uniforms,
+  fragmentShader,
   priority,
   renderTargetIn,
   renderTargetOut,
 }: RenderNodeProps) {
-  const effectMesh = useRef<THREE.Mesh>(null);
+  const mesh = useRef<THREE.Mesh>(null);
   const effectUniforms = useRef({ u_tex: { value: renderTargetIn.texture } });
 
   useFrame(({ gl, camera }) => {
-    if (!effectMesh.current) return;
+    if (!mesh.current) return;
 
     gl.setRenderTarget(renderTargetOut);
-    gl.render(effectMesh.current, camera);
+    gl.render(mesh.current, camera);
   }, priority);
 
   return (
-    <mesh ref={effectMesh}>
+    <mesh ref={mesh}>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
-        uniforms={effectUniforms.current}
-        fragmentShader={redTint}
+        key={shaderMaterialKey}
+        uniforms={uniforms ?? effectUniforms.current}
+        fragmentShader={fragmentShader ?? redTint}
         vertexShader={vert}
       />
     </mesh>

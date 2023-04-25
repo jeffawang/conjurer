@@ -17,12 +17,12 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
   const renderTargetA = useMemo(() => new WebGLRenderTarget(512, 512), []);
   const renderTargetB = useMemo(() => new WebGLRenderTarget(512, 512), []);
 
-  const patternMesh = useRef<THREE.Mesh>(null);
-
   const outputMesh = useRef<THREE.Mesh>(null);
   const outputUniforms = useRef({ u_tex: { value: renderTargetB.texture } });
 
   const { timer } = useStore();
+
+  // initial pass: update parameters (uniforms)
   useFrame(({ clock, gl, camera }) => {
     // mobx linting will complain about these lines if observableRequiresReaction is enabled, but
     // it's fine. We don't want this function to react to changes in these variables - it runs every
@@ -35,11 +35,6 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
     } else {
       block.updateParameters(globalTime - startTime, globalTime);
     }
-
-    if (!patternMesh.current) return;
-
-    gl.setRenderTarget(renderTargetA);
-    gl.render(patternMesh.current, camera);
   }, 0);
 
   // final render: render to screen
@@ -52,14 +47,13 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
 
   return (
     <>
-      <mesh ref={patternMesh}>
-        <planeGeometry args={[2, 2]} />
-        <shaderMaterial
-          uniforms={block.pattern.params}
-          fragmentShader={block.pattern.src}
-          vertexShader={vert}
-        />
-      </mesh>
+      <RenderNode
+        uniforms={block.pattern.params}
+        fragmentShader={block.pattern.src}
+        priority={1}
+        renderTargetIn={renderTargetB}
+        renderTargetOut={renderTargetA}
+      />
       <RenderNode
         priority={2}
         renderTargetIn={renderTargetA}
