@@ -12,6 +12,8 @@ export default class Block<T extends ExtraParams = {}> {
   pattern: Pattern<T>;
   parameterVariations: { [K in keyof T]?: Variation[] } = {};
 
+  blockEffect: Block | null = null;
+
   startTime: number = 0; // global time that block starts playing at in seconds
   duration: number = 5; // duration that block plays for in seconds
 

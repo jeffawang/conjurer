@@ -14,6 +14,7 @@ import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { Vector4 } from "three";
 import Clouds from "@/src/patterns/Clouds";
 import AudioStore from "@/src/types/AudioStore";
+import ColorTint from "@/src/effects/ColorTint";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -106,6 +107,9 @@ export default class Store {
         new LinearVariation(5, 1, 0.5),
       ],
     };
+
+    // Temporary hard-coded effects
+    this.blocks[0].blockEffect = new Block(ColorTint());
 
     // set up an autosave interval
     setInterval(() => {
