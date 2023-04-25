@@ -77,7 +77,7 @@ export default observer(function Canopy({}: CanopyViewProps) {
     gl.setRenderTarget(null);
     gl.render(canopyMesh.current, camera);
   }, 100);
-  console.log("rendering canopy");
+
   return (
     <>
       <RenderNode

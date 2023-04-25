@@ -47,7 +47,7 @@ export default observer(function BlockView({ autorun }: BlockViewProps) {
     gl.setRenderTarget(null);
     gl.render(outputMesh.current, camera);
   }, 101);
-  console.log("rendering currentBlock view");
+
   return (
     <>
       <RenderNode

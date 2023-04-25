@@ -30,6 +30,7 @@ export default observer(function PatternList() {
         height={`${LED_COUNTS.y * PATTERN_PREVIEW_DISPLAY_FACTOR}px`}
       >
         <Canvas>
+          {/* TODO: add this back, accounting for refactor */}
           {/* <BlockView key={selectedPattern.name} autorun block={block} /> */}
         </Canvas>
       </Box>

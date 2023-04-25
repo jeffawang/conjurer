@@ -20,18 +20,23 @@ export default observer(function CanopyCanvas() {
         makeDefault
         position={new Vector3(0, 0, 20)}
       />
-      {uiStore.showingPerformance && <Perf />}
       <OrbitControls camera={cameraRef.current} />
-
-      {uiStore.displayingCanopy ? <Canopy /> : <BlockView />}
-      <EffectComposer>
-        {/* EffectComposer upon initializing causes the warning: WebGL context was lost. */}
-        <Bloom
-          // TODO: maybe play with these values more
-          intensity={0.1}
-          luminanceThreshold={0.01}
-        />
-      </EffectComposer>
+      {uiStore.showingPerformance && <Perf />}
+      {uiStore.displayingCanopy ? (
+        <>
+          <Canopy />
+          <EffectComposer>
+            {/* EffectComposer upon initializing causes the warning: WebGL context was lost. */}
+            <Bloom
+              // TODO: maybe play with these values more
+              intensity={0.1}
+              luminanceThreshold={0.01}
+            />
+          </EffectComposer>
+        </>
+      ) : (
+        <BlockView />
+      )}
     </Canvas>
   );
 });
