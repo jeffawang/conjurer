@@ -10,7 +10,7 @@ import { useStore } from "@/src/types/StoreContext";
 import RenderPipeline from "@/src/components/RenderPipeline";
 import CartesianView from "@/src/components/CartesianView";
 
-export default observer(function CanopyCanvas() {
+export default observer(function DisplayCanvas() {
   const { uiStore } = useStore();
 
   const cameraRef = useRef<PerspectiveCameraThree>();

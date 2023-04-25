@@ -1,5 +1,5 @@
 import { Box, Heading, VStack } from "@chakra-ui/react";
-import CanopyCanvas from "@/src/components/CanopyCanvas";
+import DisplayCanvas from "@/src/components/DisplayCanvas";
 import DisplayControls from "@/src/components/DisplayControls";
 import { memo } from "react";
 
@@ -16,7 +16,7 @@ export default memo(function Display() {
         borderColor="black"
         borderBottomWidth={1}
       >
-        <CanopyCanvas />
+        <DisplayCanvas />
       </Box>
     </Box>
   );
