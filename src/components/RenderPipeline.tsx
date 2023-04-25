@@ -5,30 +5,40 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import black from "@/src/patterns/shaders/black.frag";
 import RenderNode from "@/src/components/RenderNode";
+import Block from "@/src/types/Block";
 
 type RenderPipelineProps = {
+  autorun?: boolean;
+  block?: Block;
   Output: FunctionComponent<{ renderTarget: WebGLRenderTarget }>;
 };
 
 export default observer(function RenderPipeline({
+  autorun,
+  block,
   Output,
 }: RenderPipelineProps) {
   const renderTargetA = useMemo(() => new WebGLRenderTarget(512, 512), []);
   const renderTargetB = useMemo(() => new WebGLRenderTarget(512, 512), []);
 
   const { currentBlock, timer } = useStore();
+  const targetBlock = block ?? currentBlock;
 
   // initial pass: update parameters (uniforms)
-  useFrame(({ gl, camera }) => {
-    if (!currentBlock) return;
+  useFrame(({ clock }) => {
+    if (!targetBlock) return;
 
     // mobx linting will complain about these lines if observableRequiresReaction is enabled, but
     // it's fine. We don't want this function to react to changes in these variables - it runs every
     // frame already.
     const { globalTime } = timer;
-    const { startTime } = currentBlock;
+    const { startTime } = targetBlock;
 
-    currentBlock.updateParameters(globalTime - startTime, globalTime);
+    if (autorun) {
+      targetBlock.updateParameters(clock.elapsedTime, clock.elapsedTime);
+    } else {
+      targetBlock.updateParameters(globalTime - startTime, globalTime);
+    }
   }, 0);
 
   // TODO: make this handle an arbitrary number of effects
@@ -36,19 +46,19 @@ export default observer(function RenderPipeline({
     <>
       <RenderNode
         priority={1}
-        shaderMaterialKey={currentBlock?.id}
-        uniforms={currentBlock?.pattern.params}
-        fragmentShader={currentBlock?.pattern.src ?? black}
+        shaderMaterialKey={targetBlock?.id}
+        uniforms={targetBlock?.pattern.params}
+        fragmentShader={targetBlock?.pattern.src ?? black}
         renderTargetOut={renderTargetA}
       />
       <RenderNode
         priority={2}
-        uniforms={currentBlock?.blockEffect?.pattern.params}
-        fragmentShader={currentBlock?.blockEffect?.pattern.src}
+        uniforms={targetBlock?.blockEffect?.pattern.params}
+        fragmentShader={targetBlock?.blockEffect?.pattern.src}
         renderTargetIn={renderTargetA}
         renderTargetOut={renderTargetB}
       />
-      {/* TODO: use children instead of this janky Output prop  */}
+      {/* TODO: use children instead of this janky Output prop */}
       <Output renderTarget={renderTargetB} />
     </>
   );
