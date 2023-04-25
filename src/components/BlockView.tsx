@@ -5,8 +5,8 @@ import { useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import vert from "@/src/patterns/shaders/default.vert";
-import redTint from "@/src/patterns/shaders/redTint.frag";
 import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
+import RenderNode from "@/src/components/RenderNode";
 
 type BlockViewProps = {
   autorun?: boolean;
@@ -14,16 +14,13 @@ type BlockViewProps = {
 };
 
 export default observer(function BlockView({ autorun, block }: BlockViewProps) {
-  const renderTarget = useMemo(() => new WebGLRenderTarget(512, 512), []);
-  const renderTarget2 = useMemo(() => new WebGLRenderTarget(512, 512), []);
+  const renderTargetA = useMemo(() => new WebGLRenderTarget(512, 512), []);
+  const renderTargetB = useMemo(() => new WebGLRenderTarget(512, 512), []);
 
   const patternMesh = useRef<THREE.Mesh>(null);
 
-  const effectMesh = useRef<THREE.Mesh>(null);
-  const effectUniforms = useRef({ u_tex: { value: renderTarget.texture } });
-
   const outputMesh = useRef<THREE.Mesh>(null);
-  const outputUniforms = useRef({ u_tex: { value: renderTarget2.texture } });
+  const outputUniforms = useRef({ u_tex: { value: renderTargetB.texture } });
 
   const { timer } = useStore();
   useFrame(({ clock, gl, camera }) => {
@@ -41,23 +38,17 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
 
     if (!patternMesh.current) return;
 
-    gl.setRenderTarget(renderTarget);
+    gl.setRenderTarget(renderTargetA);
     gl.render(patternMesh.current, camera);
-  }, 1);
+  }, 0);
 
-  useFrame(({ gl, camera }) => {
-    if (!effectMesh.current) return;
-
-    gl.setRenderTarget(renderTarget2);
-    gl.render(effectMesh.current, camera);
-  }, 2);
-
+  // final render: render to screen
   useFrame(({ gl, camera }) => {
     if (!outputMesh.current) return;
 
     gl.setRenderTarget(null);
     gl.render(outputMesh.current, camera);
-  }, 3);
+  }, 100);
 
   return (
     <>
@@ -69,14 +60,11 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
           vertexShader={vert}
         />
       </mesh>
-      <mesh ref={effectMesh}>
-        <planeGeometry args={[2, 2]} />
-        <shaderMaterial
-          uniforms={effectUniforms.current}
-          fragmentShader={redTint}
-          vertexShader={vert}
-        />
-      </mesh>
+      <RenderNode
+        priority={2}
+        renderTargetIn={renderTargetA}
+        renderTargetOut={renderTargetB}
+      />
       <mesh ref={outputMesh}>
         <planeGeometry args={[2, 2]} />
         <shaderMaterial
