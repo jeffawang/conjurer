@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import vert from "@/src/patterns/shaders/default.vert";
 import redTint from "@/src/patterns/shaders/redTint.frag";
+import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
 
 type BlockViewProps = {
   autorun?: boolean;
@@ -13,11 +14,16 @@ type BlockViewProps = {
 };
 
 export default observer(function BlockView({ autorun, block }: BlockViewProps) {
-  const patternMesh = useRef<THREE.Mesh>(null);
-  const effectMesh = useRef<THREE.Mesh>(null);
-
   const renderTarget = useMemo(() => new WebGLRenderTarget(512, 512), []);
+  const renderTarget2 = useMemo(() => new WebGLRenderTarget(512, 512), []);
+
+  const patternMesh = useRef<THREE.Mesh>(null);
+
+  const effectMesh = useRef<THREE.Mesh>(null);
   const effectUniforms = useRef({ u_tex: { value: renderTarget.texture } });
+
+  const outputMesh = useRef<THREE.Mesh>(null);
+  const outputUniforms = useRef({ u_tex: { value: renderTarget2.texture } });
 
   const { timer } = useStore();
   useFrame(({ clock, gl, camera }) => {
@@ -42,9 +48,16 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
   useFrame(({ gl, camera }) => {
     if (!effectMesh.current) return;
 
-    gl.setRenderTarget(null);
+    gl.setRenderTarget(renderTarget2);
     gl.render(effectMesh.current, camera);
   }, 2);
+
+  useFrame(({ gl, camera }) => {
+    if (!outputMesh.current) return;
+
+    gl.setRenderTarget(null);
+    gl.render(outputMesh.current, camera);
+  }, 3);
 
   return (
     <>
@@ -61,6 +74,14 @@ export default observer(function BlockView({ autorun, block }: BlockViewProps) {
         <shaderMaterial
           uniforms={effectUniforms.current}
           fragmentShader={redTint}
+          vertexShader={vert}
+        />
+      </mesh>
+      <mesh ref={outputMesh}>
+        <planeGeometry args={[2, 2]} />
+        <shaderMaterial
+          uniforms={outputUniforms.current}
+          fragmentShader={fromTexture}
           vertexShader={vert}
         />
       </mesh>
