@@ -54,9 +54,6 @@ vec3 RGBtoHSV(in vec3 RGB)
 
 vec4 colorLine(float dist, float radius, float theta, int spiralIdx)
 {
-
-    // interesting banding behavior
-
     float primaryOsc = (sin( (tau * (u_time*u_globalTimeFactor) ) / u_primaryOscPeriod ));
     float scalingFactorPulse = 1.6 + 0.15 * primaryOsc;
     //float radialScalingFactor = exp(theta/scalingFactorPulse);
@@ -83,7 +80,6 @@ vec4 colorLine(float dist, float radius, float theta, int spiralIdx)
         intensity /= float(u_colorIterations)/float(4);
         float hue = mix(colorRange.x, colorRange.y, float(spiralIdx) / float(u_spiralCount));
         vec3 clr = HSVtoRGB(vec3(hue, 1.0-(float(i)/float(u_colorIterations)), intensity));
-        //color += vec4(float(spiralIdx)*intensity, (1.0-float(spiralIdx))*intensity, intensity, 1.0);
         color += vec4(clr, 1.0);
     }
     
