@@ -69,7 +69,7 @@ const LogSpirals = () =>
     },
     u_repetitionsPerSpiralTurn: {
         name: "repetitionsPerSpiralTurn",
-        value: 25,
+        value: 14,
     },
     u_primaryOscPeriod: {
         name: "primaryOscPeriod",
@@ -81,15 +81,15 @@ const LogSpirals = () =>
     },
     u_colorRangeStart: {
         name: "colorRangeStart",
-        value: 0.2,
+        value: 0.55,
     },
     u_colorRangeWidth: {
         name: "colorRangeWidth",
-        value: 0.4,
+        value: 0.35,
     },
     u_waveOffset: {
         name: "waveOffset",
-        value: 0.012,
+        value: 0.0172,
     },
     u_baseAmplitude: {
         name: "baseAmplitude",
@@ -105,11 +105,11 @@ const LogSpirals = () =>
     },
     u_colorIterations: {
         name: "colorIterations",
-        value: 40,
+        value: 32,
     },
     u_spiralCount: {
         name: "spiralCount",
-        value: 3,
+        value: 4,
     },
   });
 export default LogSpirals;
