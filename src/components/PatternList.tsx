@@ -1,7 +1,6 @@
 import { Box, Divider, Heading, Text, VStack } from "@chakra-ui/react";
 import { useMemo } from "react";
 import Block from "../types/Block";
-import BlockView from "@/src/components/BlockView";
 import { Canvas } from "@react-three/fiber";
 import { LED_COUNTS } from "@/src/utils/size";
 import SelectablePattern from "@/src/components/SelectablePattern";

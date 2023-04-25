@@ -1,30 +1,25 @@
 import { WebGLRenderTarget } from "three";
 import { useFrame } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
+import { FunctionComponent, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
-import vert from "@/src/patterns/shaders/default.vert";
-import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
-import RenderNode from "@/src/components/RenderNode";
 import black from "@/src/patterns/shaders/black.frag";
+import RenderNode from "@/src/components/RenderNode";
 
-type BlockViewProps = {
-  autorun?: boolean;
+type RenderPipelineProps = {
+  Output: FunctionComponent<{ renderTarget: WebGLRenderTarget }>;
 };
 
-export default observer(function BlockView({ autorun }: BlockViewProps) {
+export default observer(function RenderPipeline({
+  Output,
+}: RenderPipelineProps) {
   const renderTargetA = useMemo(() => new WebGLRenderTarget(512, 512), []);
   const renderTargetB = useMemo(() => new WebGLRenderTarget(512, 512), []);
 
-  const outputMesh = useRef<THREE.Mesh>(null);
-  const outputUniforms = useRef({
-    u_texture: { value: renderTargetB.texture },
-  });
-
-  const { timer, currentBlock } = useStore();
+  const { currentBlock, timer } = useStore();
 
   // initial pass: update parameters (uniforms)
-  useFrame(({ clock, gl, camera }) => {
+  useFrame(({ gl, camera }) => {
     if (!currentBlock) return;
 
     // mobx linting will complain about these lines if observableRequiresReaction is enabled, but
@@ -33,21 +28,10 @@ export default observer(function BlockView({ autorun }: BlockViewProps) {
     const { globalTime } = timer;
     const { startTime } = currentBlock;
 
-    if (autorun) {
-      currentBlock.updateParameters(clock.elapsedTime, clock.elapsedTime);
-    } else {
-      currentBlock.updateParameters(globalTime - startTime, globalTime);
-    }
+    currentBlock.updateParameters(globalTime - startTime, globalTime);
   }, 0);
 
-  // final render: render to screen
-  useFrame(({ gl, camera }) => {
-    if (!outputMesh.current || !currentBlock) return;
-
-    gl.setRenderTarget(null);
-    gl.render(outputMesh.current, camera);
-  }, 101);
-
+  // TODO: make this handle an arbitrary number of effects
   return (
     <>
       <RenderNode
@@ -64,14 +48,8 @@ export default observer(function BlockView({ autorun }: BlockViewProps) {
         renderTargetIn={renderTargetA}
         renderTargetOut={renderTargetB}
       />
-      <mesh ref={outputMesh}>
-        <planeGeometry args={[2, 2]} />
-        <shaderMaterial
-          uniforms={outputUniforms.current}
-          fragmentShader={fromTexture}
-          vertexShader={vert}
-        />
-      </mesh>
+      {/* TODO: use children instead of this janky Output prop  */}
+      <Output renderTarget={renderTargetB} />
     </>
   );
 });

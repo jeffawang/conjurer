@@ -7,7 +7,8 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { Perf } from "r3f-perf";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
-import BlockView from "@/src/components/BlockView";
+import RenderPipeline from "@/src/components/RenderPipeline";
+import CartesianView from "@/src/components/CartesianView";
 
 export default observer(function CanopyCanvas() {
   const { uiStore } = useStore();
@@ -22,21 +23,21 @@ export default observer(function CanopyCanvas() {
       />
       <OrbitControls camera={cameraRef.current} />
       {uiStore.showingPerformance && <Perf />}
-      {uiStore.displayingCanopy ? (
-        <>
-          <Canopy />
-          <EffectComposer>
-            {/* EffectComposer upon initializing causes the warning: WebGL context was lost. */}
-            <Bloom
-              // TODO: maybe play with these values more
-              intensity={0.1}
-              luminanceThreshold={0.01}
-            />
-          </EffectComposer>
-        </>
-      ) : (
-        <BlockView />
+
+      {uiStore.displayingCanopy && (
+        <EffectComposer>
+          {/* EffectComposer upon initializing causes the warning: WebGL context was lost. */}
+          <Bloom
+            // TODO: play with these values more
+            intensity={0.1}
+            luminanceThreshold={0.01}
+          />
+        </EffectComposer>
       )}
+
+      <RenderPipeline
+        Output={uiStore.displayingCanopy ? Canopy : CartesianView}
+      />
     </Canvas>
   );
 });
