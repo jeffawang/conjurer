@@ -5,7 +5,6 @@ import { observer } from "mobx-react-lite";
 import { IconButton, Select, Text } from "@chakra-ui/react";
 import { RiZoomInLine, RiZoomOutLine } from "react-icons/ri";
 import { BsSoundwave, BsGearFill } from "react-icons/bs";
-import { AiOutlineLineChart } from "react-icons/ai";
 import { BiTimer } from "react-icons/bi";
 import { FaFolderOpen } from "react-icons/fa";
 import { FiSave } from "react-icons/fi";
@@ -93,13 +92,7 @@ export default observer(function Controls() {
         icon={<BsSoundwave size={17} />}
         onClick={action(() => uiStore.toggleWavesurfer())}
       />
-      <IconButton
-        aria-label="Toggle performance"
-        title="Toggle performance"
-        height={6}
-        icon={<AiOutlineLineChart size={17} />}
-        onClick={action(() => uiStore.togglePerformance())}
-      />
+
       {/* <IconButton
         aria-label="Settings"
         title="Settings"
@@ -109,13 +102,7 @@ export default observer(function Controls() {
           // TODO
         })}
       /> */}
-      <IconButton
-        aria-label="Toggle Canopy"
-        title="Toggle Canopy"
-        height={6}
-        icon={<BsGearFill size={17} />}
-        onClick={action(() => uiStore.toggleCanopyDisplay())}
-      />
+
       <Select
         size="xs"
         width={60}
