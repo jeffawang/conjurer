@@ -9,7 +9,6 @@ import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
 import { LED_COUNTS, STRIP_LENGTH } from "@/src/utils/size";
 import catenary from "@/src/utils/catenary";
 import RenderNode from "@/src/components/RenderNode";
-import colorTint from "@/src/effects/shaders/colorTint.frag";
 
 type CanopyViewProps = {};
 
@@ -66,7 +65,7 @@ export default observer(function Canopy({}: CanopyViewProps) {
 
   // final render: render the canopy
   useFrame(({ gl, camera }) => {
-    if (!canopyMesh.current) return;
+    if (!canopyMesh.current || !currentBlock) return;
 
     gl.setRenderTarget(null);
     gl.render(canopyMesh.current, camera);
@@ -75,16 +74,16 @@ export default observer(function Canopy({}: CanopyViewProps) {
   return (
     <>
       <RenderNode
+        priority={1}
         shaderMaterialKey={currentBlock?.id}
         uniforms={currentBlock?.pattern.params}
-        fragmentShader={currentBlock ? currentBlock.pattern.src : black}
-        priority={1}
-        renderTargetIn={renderTargetB}
+        fragmentShader={currentBlock?.pattern.src ?? black}
         renderTargetOut={renderTargetA}
       />
       <RenderNode
-        fragmentShader={colorTint}
         priority={2}
+        uniforms={currentBlock?.blockEffect?.pattern.params}
+        fragmentShader={currentBlock?.blockEffect?.pattern.src}
         renderTargetIn={renderTargetA}
         renderTargetOut={renderTargetB}
       />

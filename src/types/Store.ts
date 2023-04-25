@@ -42,7 +42,7 @@ export default class Store {
 
   // returns the block that the global time is inside of, or null if none
   // runs every frame, so we keep this performant with caching + a binary search
-  get currentBlock() {
+  get currentBlock(): Block | null {
     if (
       this._lastComputedCurrentBlock &&
       this._lastComputedCurrentBlock.startTime <= this.timer.globalTime &&
