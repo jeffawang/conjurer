@@ -3,6 +3,7 @@ import Disc from "@/src/patterns/Disc";
 import GradientPattern from "@/src/patterns/GradientPattern";
 import Rainbow from "@/src/patterns/Rainbow";
 import SunCycle from "@/src/patterns/SunCycle";
+import LogSpirals from "./LogSpirals";
 import Pattern from "@/src/types/Pattern";
 import { Vector2 } from "three";
 
@@ -11,6 +12,7 @@ const patterns: Pattern[] = [
   SunCycle(),
   Disc(),
   Rainbow(),
+  LogSpirals(),
   GradientPattern({
     u_blah: {
       name: "Blah",
