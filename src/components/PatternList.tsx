@@ -9,6 +9,7 @@ import { observer } from "mobx-react-lite";
 import Keyboard from "@/src/components/Keyboard";
 import CartesianView from "@/src/components/CartesianView";
 import RenderPipeline from "@/src/components/RenderPipeline";
+import { effects } from "@/src/effects/effects";
 
 const PATTERN_PREVIEW_DISPLAY_FACTOR = 1.5;
 
@@ -37,6 +38,10 @@ export default observer(function PatternList() {
         </Canvas>
       </Box>
 
+      <Text userSelect="none" fontSize="xs">
+        double click to insert
+      </Text>
+
       <VStack>
         {patterns.map((p) => (
           <SelectablePattern
@@ -46,13 +51,20 @@ export default observer(function PatternList() {
           />
         ))}
       </VStack>
+
       <Text userSelect="none" fontSize="xs">
-        click to preview
+        Effects
       </Text>
-      <Text userSelect="none" fontSize="xs">
-        double click to insert
-      </Text>
-      <Divider />
+
+      <VStack>
+        {effects.map((effect) => (
+          <SelectablePattern
+            key={effect.name}
+            pattern={effect}
+            selected={effect === selectedPattern}
+          />
+        ))}
+      </VStack>
       <Keyboard />
     </VStack>
   );
