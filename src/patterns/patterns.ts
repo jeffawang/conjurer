@@ -7,10 +7,10 @@ import LogSpirals from "./LogSpirals";
 import Pattern from "@/src/types/Pattern";
 
 const patterns: Pattern[] = [
-  Rainbow(),
+  LogSpirals(),
   SunCycle(),
   Disc(),
-  LogSpirals(),
+  Rainbow(),
   BlahPattern(),
   Clouds(),
 ];
