@@ -31,7 +31,9 @@ export default observer(function PatternList() {
         height={`${LED_COUNTS.y * PATTERN_PREVIEW_DISPLAY_FACTOR}px`}
       >
         <Canvas>
-          <RenderPipeline Output={CartesianView} block={block} autorun />
+          <RenderPipeline block={block} autorun>
+            {(renderTarget) => <CartesianView renderTarget={renderTarget} />}
+          </RenderPipeline>
         </Canvas>
       </Box>
 

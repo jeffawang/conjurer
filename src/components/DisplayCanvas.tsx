@@ -35,9 +35,15 @@ export default observer(function DisplayCanvas() {
         </EffectComposer>
       )}
 
-      <RenderPipeline
-        Output={uiStore.displayingCanopy ? Canopy : CartesianView}
-      />
+      <RenderPipeline>
+        {(renderTarget) =>
+          uiStore.displayingCanopy ? (
+            <Canopy renderTarget={renderTarget} />
+          ) : (
+            <CartesianView renderTarget={renderTarget} />
+          )
+        }
+      </RenderPipeline>
     </Canvas>
   );
 });

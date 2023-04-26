@@ -1,6 +1,6 @@
 import { WebGLRenderTarget } from "three";
 import { useFrame } from "@react-three/fiber";
-import { FunctionComponent, useMemo } from "react";
+import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import black from "@/src/patterns/shaders/black.frag";
@@ -10,13 +10,13 @@ import Block from "@/src/types/Block";
 type RenderPipelineProps = {
   autorun?: boolean;
   block?: Block;
-  Output: FunctionComponent<{ renderTarget: WebGLRenderTarget }>;
+  children: (renderTarget: WebGLRenderTarget) => JSX.Element;
 };
 
 export default observer(function RenderPipeline({
   autorun,
   block,
-  Output,
+  children,
 }: RenderPipelineProps) {
   const renderTargetA = useMemo(() => new WebGLRenderTarget(512, 512), []);
   const renderTargetB = useMemo(() => new WebGLRenderTarget(512, 512), []);
@@ -66,8 +66,7 @@ export default observer(function RenderPipeline({
           />
         );
       })}
-      {/* TODO: use children instead of this janky Output prop */}
-      <Output renderTarget={renderTargetB} />
+      {children(renderTargetB)}
     </>
   );
 });
