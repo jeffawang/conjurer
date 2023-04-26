@@ -41,7 +41,8 @@ export default observer(function RenderPipeline({
     }
   }, 0);
 
-  // TODO: make this handle an arbitrary number of effects
+  const numberEffects = targetBlock?.blockEffects.length ?? 0;
+  const evenNumberOfEffects = numberEffects % 2 === 0;
   return (
     <>
       <RenderNode
@@ -49,15 +50,22 @@ export default observer(function RenderPipeline({
         shaderMaterialKey={targetBlock?.id}
         uniforms={targetBlock?.pattern.params}
         fragmentShader={targetBlock?.pattern.src ?? black}
-        renderTargetOut={renderTargetA}
+        renderTargetOut={evenNumberOfEffects ? renderTargetB : renderTargetA}
       />
-      <RenderNode
-        priority={2}
-        uniforms={targetBlock?.blockEffects[0].pattern.params}
-        fragmentShader={targetBlock?.blockEffects[0].pattern.src}
-        renderTargetIn={renderTargetA}
-        renderTargetOut={renderTargetB}
-      />
+      {targetBlock?.blockEffects.map((effect, i) => {
+        const isEven = i % 2 === 0;
+        const swap = isEven && evenNumberOfEffects;
+        return (
+          <RenderNode
+            key={effect.id}
+            priority={i + 2}
+            uniforms={effect.pattern.params}
+            fragmentShader={effect.pattern.src}
+            renderTargetIn={swap ? renderTargetB : renderTargetA}
+            renderTargetOut={swap ? renderTargetA : renderTargetB}
+          />
+        );
+      })}
       {/* TODO: use children instead of this janky Output prop */}
       <Output renderTarget={renderTargetB} />
     </>

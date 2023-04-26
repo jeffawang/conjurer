@@ -9,20 +9,13 @@ import { observer } from "mobx-react-lite";
 import Keyboard from "@/src/components/Keyboard";
 import CartesianView from "@/src/components/CartesianView";
 import RenderPipeline from "@/src/components/RenderPipeline";
-import ColorTint from "@/src/effects/ColorTint";
-import { runInAction } from "mobx";
 
 const PATTERN_PREVIEW_DISPLAY_FACTOR = 1.5;
 
 export default observer(function PatternList() {
   const store = useStore();
   const { patterns, selectedPattern } = store;
-  const block = useMemo(() => {
-    const b = new Block(selectedPattern);
-    // TODO: this is a hack to get the block effect to show up in the preview
-    runInAction(() => b.blockEffects.push(new Block(ColorTint())));
-    return b;
-  }, [selectedPattern]);
+  const block = useMemo(() => new Block(selectedPattern), [selectedPattern]);
 
   return (
     <VStack mt={6}>
