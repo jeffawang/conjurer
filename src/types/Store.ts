@@ -109,7 +109,7 @@ export default class Store {
     };
 
     // Temporary hard-coded effects
-    this.blocks[0].blockEffect = new Block(ColorTint());
+    this.blocks[0].blockEffects.push(new Block(ColorTint()));
 
     // set up an autosave interval
     setInterval(() => {

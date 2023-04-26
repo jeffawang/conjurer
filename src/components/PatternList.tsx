@@ -20,9 +20,7 @@ export default observer(function PatternList() {
   const block = useMemo(() => {
     const b = new Block(selectedPattern);
     // TODO: this is a hack to get the block effect to show up in the preview
-    runInAction(() => {
-      b.blockEffect = new Block(ColorTint());
-    });
+    runInAction(() => b.blockEffects.push(new Block(ColorTint())));
     return b;
   }, [selectedPattern]);
 

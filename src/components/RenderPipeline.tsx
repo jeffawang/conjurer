@@ -53,8 +53,8 @@ export default observer(function RenderPipeline({
       />
       <RenderNode
         priority={2}
-        uniforms={targetBlock?.blockEffect?.pattern.params}
-        fragmentShader={targetBlock?.blockEffect?.pattern.src}
+        uniforms={targetBlock?.blockEffects[0].pattern.params}
+        fragmentShader={targetBlock?.blockEffects[0].pattern.src}
         renderTargetIn={renderTargetA}
         renderTargetOut={renderTargetB}
       />
