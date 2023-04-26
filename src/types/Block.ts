@@ -58,7 +58,6 @@ export default class Block<T extends ExtraParams = {}> {
     const variations = this.parameterVariations[parameter];
     if (!variations) return;
 
-    // TODO: maybe this should be block.startTime instead of 0
     let variationTime = 0;
     for (const variation of variations) {
       if (
@@ -70,11 +69,19 @@ export default class Block<T extends ExtraParams = {}> {
         this.pattern.paramValues[parameter] = variation.valueAtTime(
           time - variationTime
         );
-        break;
+        return;
       }
 
       variationTime += variation.duration;
     }
+
+    if (variations.length === 0) return;
+
+    // if the current time is beyond the end of the last variation, use the last variation's last value
+    const lastVariation = variations[variations.length - 1];
+    this.pattern.paramValues[parameter] = lastVariation.valueAtTime(
+      lastVariation.duration
+    );
   };
 
   addVariation = (uniformName: string, variation: Variation) => {
