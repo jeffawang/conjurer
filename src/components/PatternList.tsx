@@ -10,6 +10,7 @@ import Keyboard from "@/src/components/Keyboard";
 import CartesianView from "@/src/components/CartesianView";
 import RenderPipeline from "@/src/components/RenderPipeline";
 import { effects } from "@/src/effects/effects";
+import { action } from "mobx";
 
 const PATTERN_PREVIEW_DISPLAY_FACTOR = 1.5;
 
@@ -48,6 +49,7 @@ export default observer(function PatternList() {
             key={p.name}
             pattern={p}
             selected={p === selectedPattern}
+            onInsert={action(() => store.insertCloneOfPattern(p))}
           />
         ))}
       </VStack>
@@ -62,6 +64,7 @@ export default observer(function PatternList() {
             key={effect.name}
             pattern={effect}
             selected={effect === selectedPattern}
+            onInsert={action(() => store.insertCloneOfEffect(effect))}
           />
         ))}
       </VStack>

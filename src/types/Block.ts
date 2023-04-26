@@ -162,6 +162,13 @@ export default class Block<T extends ExtraParams = {}> {
     this.parameterVariations[uniformName as keyof T] = [...variations];
   };
 
+  removeBlockEffect = (block: Block) => {
+    const index = this.blockEffects.indexOf(block);
+    if (index > -1) {
+      this.blockEffects.splice(index, 1);
+    }
+  };
+
   clone = () => new Block(clone(this.pattern));
 
   serializeParameterVariations = () => {
