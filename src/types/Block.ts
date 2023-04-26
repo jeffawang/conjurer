@@ -48,6 +48,10 @@ export default class Block<T extends ExtraParams = {}> {
     for (const parameter of Object.keys(this.parameterVariations)) {
       this.updateParameter(parameter, time);
     }
+
+    for (const effect of this.blockEffects) {
+      effect.updateParameters(time, globalTime);
+    }
   };
 
   updateParameter = (parameter: keyof T, time: number) => {

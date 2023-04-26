@@ -7,7 +7,6 @@ import { observer } from "mobx-react-lite";
 import {
   MouseEvent as ReactMouseEvent,
   useCallback,
-  useEffect,
   useRef,
   useState,
 } from "react";
@@ -101,7 +100,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
           width="100%"
           color={isSelected ? "blue.500" : "gray.300"}
           className="handle"
-          justifyContent="center"
+          justify="center"
           cursor="move"
           spacing={0}
           onClick={handleClick}
@@ -113,6 +112,14 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
           </Text>
         </HStack>
         <ParametersList block={block} />
+        {block.blockEffects.map((blockEffect) => (
+          <VStack key={blockEffect.id} width="100%">
+            <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
+              {blockEffect.pattern.name + " Effect"}
+            </Text>
+            <ParametersList block={blockEffect} />
+          </VStack>
+        ))}
       </Card>
     </Draggable>
   );
