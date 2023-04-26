@@ -9,5 +9,3 @@ for (const effect of effects) {
 }
 
 export { effects, effectMap };
-
-// TODO: this file currently unused

@@ -8,11 +8,13 @@ import { action } from "mobx";
 type SelectablePatternProps = {
   pattern: Pattern;
   selected: boolean;
+  onInsert: () => void;
 };
 
 export default memo(function SelectablePattern({
   pattern,
   selected,
+  onInsert,
 }: SelectablePatternProps) {
   const store = useStore();
   const dragNodeRef = useRef(null);
@@ -33,7 +35,6 @@ export default memo(function SelectablePattern({
   const handleSelect = action(() => {
     store.selectedPattern = pattern;
   });
-  const handleInsert = action(() => store.insertCloneOfPattern(pattern));
 
   return (
     <Draggable
@@ -51,7 +52,7 @@ export default memo(function SelectablePattern({
         zIndex={2}
         alignItems="center"
         cursor="move"
-        onDoubleClick={handleInsert}
+        onDoubleClick={onInsert}
         role="button"
       >
         <VStack width="150px" height={10} justify="center">

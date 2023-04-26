@@ -51,6 +51,7 @@ export default observer(function TimelineBlockBound({
         position="absolute"
         left={leftBound ? 0 : "auto"}
         right={rightBound ? 0 : "auto"}
+        zIndex={2}
         width="5px"
         height="100%"
         cursor="col-resize"

@@ -16,6 +16,7 @@ import { DraggableData } from "react-draggable";
 import { DraggableEvent } from "react-draggable";
 import { MdDragIndicator } from "react-icons/md";
 import ParametersList from "@/src/components/ParametersList";
+import TimelineBlockEffects from "@/src/components/TimelineBlockEffects";
 
 type TimelineBlockProps = {
   block: Block;
@@ -110,29 +111,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
           </Text>
         </HStack>
         <ParametersList block={block} />
-        {block.blockEffects.map((blockEffect) => (
-          <Fragment key={blockEffect.id}>
-            <HStack
-              key={blockEffect.id}
-              pt={1}
-              width="100%"
-              borderTopWidth={2}
-              borderColor="gray.500"
-              borderStyle="solid"
-              borderRadius={0}
-              justify="center"
-            >
-              <Text
-                userSelect="none"
-                textOverflow="clip"
-                overflowWrap="anywhere"
-              >
-                {`Effect: ${blockEffect.pattern.name}`}
-              </Text>
-            </HStack>
-            <ParametersList block={blockEffect} />
-          </Fragment>
-        ))}
+        <TimelineBlockEffects block={block} />
       </Card>
     </Draggable>
   );

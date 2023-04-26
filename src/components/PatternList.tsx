@@ -9,6 +9,8 @@ import { observer } from "mobx-react-lite";
 import Keyboard from "@/src/components/Keyboard";
 import CartesianView from "@/src/components/CartesianView";
 import RenderPipeline from "@/src/components/RenderPipeline";
+import { effects } from "@/src/effects/effects";
+import { action } from "mobx";
 
 const PATTERN_PREVIEW_DISPLAY_FACTOR = 1.5;
 
@@ -37,22 +39,35 @@ export default observer(function PatternList() {
         </Canvas>
       </Box>
 
+      <Text userSelect="none" fontSize="xs">
+        double click to insert
+      </Text>
+
       <VStack>
         {patterns.map((p) => (
           <SelectablePattern
             key={p.name}
             pattern={p}
             selected={p === selectedPattern}
+            onInsert={action(() => store.insertCloneOfPattern(p))}
           />
         ))}
       </VStack>
+
       <Text userSelect="none" fontSize="xs">
-        click to preview
+        Effects
       </Text>
-      <Text userSelect="none" fontSize="xs">
-        double click to insert
-      </Text>
-      <Divider />
+
+      <VStack>
+        {effects.map((effect) => (
+          <SelectablePattern
+            key={effect.name}
+            pattern={effect}
+            selected={effect === selectedPattern}
+            onInsert={action(() => store.insertCloneOfEffect(effect))}
+          />
+        ))}
+      </VStack>
       <Keyboard />
     </VStack>
   );

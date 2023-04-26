@@ -126,6 +126,16 @@ export default class Store {
     this.addBlock(newBlock);
   };
 
+  insertCloneOfEffect = (effect: Pattern) => {
+    // for now, can only insert effects when you have a block selected
+    if (this.selectedBlocks.size === 0) return;
+
+    for (const block of Array.from(this.selectedBlocks)) {
+      const newBlock = new Block(clone(effect));
+      block.blockEffects.push(newBlock);
+    }
+  };
+
   addBlock = (block: Block) => {
     // insert block in sorted order
     const index = this.blocks.findIndex((b) => b.startTime > block.startTime);
