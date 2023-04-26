@@ -10,6 +10,7 @@ const patterns: Pattern[] = [
   Rainbow(),
   SunCycle(),
   Disc(),
+  LogSpirals(),
   BlahPattern(),
   Clouds(),
 ];
