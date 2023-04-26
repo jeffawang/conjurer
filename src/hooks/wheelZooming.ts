@@ -1,7 +1,7 @@
 import { useStore } from "@/src/types/StoreContext";
 import { useCallback, useEffect } from "react";
 
-export default function useWheelZooming(element: HTMLElement | null) {
+export function useWheelZooming(element: HTMLElement | null) {
   const { uiStore } = useStore();
 
   const wheelZooming = useCallback(
@@ -26,4 +26,21 @@ export default function useWheelZooming(element: HTMLElement | null) {
       element?.removeEventListener("wheel", wheelZooming);
     };
   }, [wheelZooming, element]);
+}
+
+export function useDisableWheelEventPropagation(element: HTMLElement | null) {
+  const wheelZooming = useCallback((e: WheelEvent) => {
+    // If inside this container, don't zoom
+    e.stopPropagation();
+  }, []);
+
+  useEffect(() => {
+    if (!element) return;
+
+    element.addEventListener("wheel", wheelZooming);
+    const cachedElement = element;
+    return () => {
+      cachedElement.removeEventListener("wheel", wheelZooming);
+    };
+  }, [element, wheelZooming]);
 }

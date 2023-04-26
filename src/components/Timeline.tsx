@@ -5,7 +5,7 @@ import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
 import PlayHead from "@/src/components/PlayHead";
 import { useRef } from "react";
-import useWheelZooming from "@/src/hooks/wheelZooming";
+import { useWheelZooming } from "@/src/hooks/wheelZooming";
 import ShaderWaveform from "@/src/components/ShaderWaveform";
 import WavesurferWaveform from "@/src/components/WavesurferWaveform";
 import { MAX_TIME } from "@/src/utils/time";

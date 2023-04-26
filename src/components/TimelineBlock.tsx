@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import {
   MouseEvent as ReactMouseEvent,
   useCallback,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -15,6 +16,7 @@ import { DraggableData } from "react-draggable";
 import { DraggableEvent } from "react-draggable";
 import { MdDragIndicator } from "react-icons/md";
 import ParametersList from "@/src/components/ParametersList";
+import { useDisableWheelEventPropagation } from "@/src/hooks/wheelZooming";
 
 type TimelineBlockProps = {
   block: Block;
@@ -24,7 +26,9 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   const store = useStore();
   const { selectedBlocks, uiStore } = store;
 
-  const dragNodeRef = useRef(null);
+  const dragNodeRef = useRef<HTMLDivElement | null>(null);
+  useDisableWheelEventPropagation(dragNodeRef.current);
+
   const lastMouseDown = useRef(0);
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -87,6 +91,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         borderColor={isSelected ? "blue.500" : "gray.300"}
         borderWidth={3}
         alignItems="center"
+        overflowY="scroll"
       >
         <TimelineBlockBound block={block} leftBound />
         <TimelineBlockBound block={block} rightBound />
