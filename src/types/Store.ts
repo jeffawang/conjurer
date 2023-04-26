@@ -14,6 +14,7 @@ import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { Vector4 } from "three";
 import Clouds from "@/src/patterns/Clouds";
 import AudioStore from "@/src/types/AudioStore";
+import ColorTint from "@/src/effects/ColorTint";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -41,7 +42,7 @@ export default class Store {
 
   // returns the block that the global time is inside of, or null if none
   // runs every frame, so we keep this performant with caching + a binary search
-  get currentBlock() {
+  get currentBlock(): Block | null {
     if (
       this._lastComputedCurrentBlock &&
       this._lastComputedCurrentBlock.startTime <= this.timer.globalTime &&
@@ -76,7 +77,7 @@ export default class Store {
   initialize = () => {
     // Temporary hard-coded blocks
     this.blocks.push(new Block(Clouds()));
-    this.blocks[0].setTiming({ startTime: 0, duration: 45 });
+    this.blocks[0].setTiming({ startTime: 0, duration: 30 });
     this.blocks[0].parameterVariations = {
       u_color: [
         new LinearVariation4(
@@ -99,13 +100,16 @@ export default class Store {
         new SineVariation(4, 0.5, 1, 0, -0.1),
         new FlatVariation(1.5, 0.1),
         new LinearVariation(2, 0.1, 1),
-        new LinearVariation(30, 1, 1),
+        new LinearVariation(10, 1, 1),
       ],
       u_scale: [
         new LinearVariation(5.5, 0.5, 1),
         new LinearVariation(5, 1, 0.5),
       ],
     };
+
+    // Temporary hard-coded effects
+    this.blocks[0].blockEffects.push(new Block(ColorTint()));
 
     // set up an autosave interval
     setInterval(() => {
@@ -366,7 +370,8 @@ export default class Store {
   };
 
   saveToLocalStorage = (key: string) => {
-    localStorage.setItem(key, JSON.stringify(this.serialize()));
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(key, JSON.stringify(this.serialize()));
   };
 
   serialize = () => ({
@@ -375,7 +380,8 @@ export default class Store {
   });
 
   loadFromLocalStorage = (key: string) => {
-    const arrangement = localStorage.getItem(key);
+    if (typeof window === "undefined") return;
+    const arrangement = window.localStorage.getItem(key);
     if (arrangement) {
       this.deserialize(JSON.parse(arrangement));
     }

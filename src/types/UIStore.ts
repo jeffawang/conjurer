@@ -14,6 +14,7 @@ export default class UIStore {
   pixelsPerSecond = INITIAL_PIXELS_PER_SECOND; // this controls the zoom of the timeline
   usingWavesurfer = true;
   showingPerformance = false;
+  displayingCanopy = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -47,5 +48,9 @@ export default class UIStore {
 
   togglePerformance = () => {
     this.showingPerformance = !this.showingPerformance;
+  };
+
+  toggleCanopyDisplay = () => {
+    this.displayingCanopy = !this.displayingCanopy;
   };
 }

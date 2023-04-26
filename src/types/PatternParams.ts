@@ -1,6 +1,6 @@
-import { Vector2, Vector4 } from "three";
+import { Texture, Vector4 } from "three";
 
-export type ParamType = number | Vector2 | Vector4;
+export type ParamType = number | Vector4 | Texture | null;
 
 export type PatternParam<T = ParamType> = {
   name: string;
@@ -16,9 +16,10 @@ export type StandardParams = {
     name: "Global Time";
     value: number;
   };
-  u_resolution: {
-    name: "Resolution";
-    value: Vector2;
+  // for effects
+  u_texture: {
+    name: "Input Texture";
+    value: Texture | null;
   };
 };
 

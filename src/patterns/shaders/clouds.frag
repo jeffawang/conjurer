@@ -2,7 +2,6 @@
 #define F4 0.309016994374947451
 #define PI 3.14159265359
 
-uniform vec2 u_resolution;
 uniform float u_time;
 uniform float u_global_time;
 

@@ -12,6 +12,8 @@ export default class Block<T extends ExtraParams = {}> {
   pattern: Pattern<T>;
   parameterVariations: { [K in keyof T]?: Variation[] } = {};
 
+  blockEffects: Block[] = [];
+
   startTime: number = 0; // global time that block starts playing at in seconds
   duration: number = 5; // duration that block plays for in seconds
 
@@ -46,13 +48,16 @@ export default class Block<T extends ExtraParams = {}> {
     for (const parameter of Object.keys(this.parameterVariations)) {
       this.updateParameter(parameter, time);
     }
+
+    for (const effect of this.blockEffects) {
+      effect.updateParameters(time, globalTime);
+    }
   };
 
   updateParameter = (parameter: keyof T, time: number) => {
     const variations = this.parameterVariations[parameter];
     if (!variations) return;
 
-    // TODO: maybe this should be block.startTime instead of 0
     let variationTime = 0;
     for (const variation of variations) {
       if (
@@ -64,11 +69,19 @@ export default class Block<T extends ExtraParams = {}> {
         this.pattern.paramValues[parameter] = variation.valueAtTime(
           time - variationTime
         );
-        break;
+        return;
       }
 
       variationTime += variation.duration;
     }
+
+    if (variations.length === 0) return;
+
+    // if the current time is beyond the end of the last variation, use the last variation's last value
+    const lastVariation = variations[variations.length - 1];
+    this.pattern.paramValues[parameter] = lastVariation.valueAtTime(
+      lastVariation.duration
+    );
   };
 
   addVariation = (uniformName: string, variation: Variation) => {

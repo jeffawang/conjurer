@@ -5,6 +5,7 @@ import { Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
+  Fragment,
   MouseEvent as ReactMouseEvent,
   useCallback,
   useRef,
@@ -24,7 +25,8 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   const store = useStore();
   const { selectedBlocks, uiStore } = store;
 
-  const dragNodeRef = useRef(null);
+  const dragNodeRef = useRef<HTMLDivElement | null>(null);
+
   const lastMouseDown = useRef(0);
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -82,7 +84,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         top={0}
         left={uiStore.timeToXPixels(block.startTime)}
         width={uiStore.timeToXPixels(block.duration)}
-        height="100%"
+        minHeight="100%"
         border="solid"
         borderColor={isSelected ? "blue.500" : "gray.300"}
         borderWidth={3}
@@ -92,11 +94,11 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         <TimelineBlockBound block={block} rightBound />
 
         <HStack
-          py={2}
+          pt={2}
           width="100%"
           color={isSelected ? "blue.500" : "gray.300"}
           className="handle"
-          justifyContent="center"
+          justify="center"
           cursor="move"
           spacing={0}
           onClick={handleClick}
@@ -104,10 +106,33 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         >
           <MdDragIndicator size={30} />
           <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
-            {block.pattern.name}
+            {`Pattern: ${block.pattern.name}`}
           </Text>
         </HStack>
         <ParametersList block={block} />
+        {block.blockEffects.map((blockEffect) => (
+          <Fragment key={blockEffect.id}>
+            <HStack
+              key={blockEffect.id}
+              pt={1}
+              width="100%"
+              borderTopWidth={2}
+              borderColor="gray.500"
+              borderStyle="solid"
+              borderRadius={0}
+              justify="center"
+            >
+              <Text
+                userSelect="none"
+                textOverflow="clip"
+                overflowWrap="anywhere"
+              >
+                {`Effect: ${blockEffect.pattern.name}`}
+              </Text>
+            </HStack>
+            <ParametersList block={blockEffect} />
+          </Fragment>
+        ))}
       </Card>
     </Draggable>
   );

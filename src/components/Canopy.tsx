@@ -1,18 +1,18 @@
-import { BufferAttribute, BufferGeometry, ShaderMaterial } from "three";
+import { BufferAttribute, BufferGeometry, WebGLRenderTarget } from "three";
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
-import { observer } from "mobx-react-lite";
-import { useStore } from "@/src/types/StoreContext";
-import vert from "@/src/patterns/shaders/canopy.vert";
-import black from "@/src/patterns/shaders/black.frag";
+import canopyVert from "@/src/patterns/shaders/canopy.vert";
+import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
 import { LED_COUNTS, STRIP_LENGTH } from "@/src/utils/size";
 import catenary from "@/src/utils/catenary";
 
-type CanopyViewProps = {};
+type CanopyViewProps = {
+  renderTarget: WebGLRenderTarget;
+};
 
-export default observer(function Canopy({}: CanopyViewProps) {
-  const { currentBlock } = useStore();
-  const shaderMaterial = useRef<ShaderMaterial>(null);
+export default function Canopy({ renderTarget }: CanopyViewProps) {
+  const canopyMesh = useRef<THREE.Points>(null);
+  const canopyUniforms = useRef({ u_texture: { value: renderTarget.texture } });
 
   const bufferGeometry = useMemo(() => {
     // TODO: fix this horrible hack
@@ -42,30 +42,22 @@ export default observer(function Canopy({}: CanopyViewProps) {
     return geometry;
   }, []);
 
-  const { timer } = useStore();
-  useFrame(() => {
-    // mobx linting will complain about these lines if observableRequiresReaction is enabled, but
-    // it's fine. We don't want this function to react to changes in these variables - it runs every
-    // frame already.
-    const { globalTime } = timer;
+  // render the canopy
+  useFrame(({ gl, camera }) => {
+    if (!canopyMesh.current) return;
 
-    if (currentBlock)
-      currentBlock.updateParameters(
-        globalTime - currentBlock.startTime,
-        globalTime
-      );
-  });
+    gl.setRenderTarget(null);
+    gl.render(canopyMesh.current, camera);
+  }, 100);
 
   return (
-    <points>
+    <points ref={canopyMesh}>
       <primitive attach="geometry" object={bufferGeometry} />
       <shaderMaterial
-        key={currentBlock?.id}
-        ref={shaderMaterial}
-        uniforms={currentBlock?.pattern.params}
-        fragmentShader={currentBlock ? currentBlock.pattern.src : black}
-        vertexShader={vert}
+        uniforms={canopyUniforms.current}
+        fragmentShader={fromTexture}
+        vertexShader={canopyVert}
       />
     </points>
   );
-});
+}

@@ -5,14 +5,15 @@ import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
 import PlayHead from "@/src/components/PlayHead";
 import { useRef } from "react";
-import useWheelZooming from "@/src/hooks/wheelZooming";
+import { useWheelZooming } from "@/src/hooks/wheelZooming";
 import ShaderWaveform from "@/src/components/ShaderWaveform";
 import WavesurferWaveform from "@/src/components/WavesurferWaveform";
 import { MAX_TIME } from "@/src/utils/time";
 import PatternBlocks from "@/src/components/PatternBlocks";
 
 export default observer(function Timeline() {
-  const { timer, uiStore } = useStore();
+  const store = useStore();
+  const { timer, uiStore } = store;
   const rulerBoxRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +37,7 @@ export default observer(function Timeline() {
       height="100%"
       overflowX="scroll"
       overscrollBehavior="none"
+      onClick={store.deselectAllBlocks}
     >
       <Box
         ref={rulerBoxRef}

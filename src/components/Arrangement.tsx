@@ -35,7 +35,7 @@ export default memo(function Arrangement() {
           </Heading>
         </VStack>
       </GridItem>
-      <GridItem area="right">
+      <GridItem area="right" bgColor="gray.400">
         <Timeline />
       </GridItem>
     </Grid>

@@ -30,7 +30,7 @@ export default observer(function PlayHead() {
         top="40px"
         bgColor="red"
         width="1px"
-        height="250px"
+        height="42vh"
       />
     </Box>
   );
