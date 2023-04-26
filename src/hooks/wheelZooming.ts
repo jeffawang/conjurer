@@ -9,6 +9,9 @@ export function useWheelZooming(element: HTMLElement | null) {
       // If scrolling horizontally, don't zoom
       if (e.deltaX > 1 || e.deltaX < -1) return;
 
+      // Only zoom when holding ctrl
+      if (!e.ctrlKey) return;
+
       if (e.deltaY > 1) {
         uiStore.zoomOut();
         e.preventDefault();

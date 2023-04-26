@@ -15,7 +15,6 @@ import { DraggableData } from "react-draggable";
 import { DraggableEvent } from "react-draggable";
 import { MdDragIndicator } from "react-icons/md";
 import ParametersList from "@/src/components/ParametersList";
-import { useDisableWheelEventPropagation } from "@/src/hooks/wheelZooming";
 
 type TimelineBlockProps = {
   block: Block;
@@ -26,7 +25,6 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
   const { selectedBlocks, uiStore } = store;
 
   const dragNodeRef = useRef<HTMLDivElement | null>(null);
-  useDisableWheelEventPropagation(dragNodeRef.current);
 
   const lastMouseDown = useRef(0);
 
@@ -85,7 +83,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         top={0}
         left={uiStore.timeToXPixels(block.startTime)}
         width={uiStore.timeToXPixels(block.duration)}
-        height="100%"
+        minHeight="100%"
         border="solid"
         borderColor={isSelected ? "blue.500" : "gray.300"}
         borderWidth={3}
