@@ -5,6 +5,7 @@ import { Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
+  Fragment,
   MouseEvent as ReactMouseEvent,
   useCallback,
   useRef,
@@ -88,13 +89,12 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         borderColor={isSelected ? "blue.500" : "gray.300"}
         borderWidth={3}
         alignItems="center"
-        overflowY="scroll"
       >
         <TimelineBlockBound block={block} leftBound />
         <TimelineBlockBound block={block} rightBound />
 
         <HStack
-          py={2}
+          pt={2}
           width="100%"
           color={isSelected ? "blue.500" : "gray.300"}
           className="handle"
@@ -106,17 +106,32 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         >
           <MdDragIndicator size={30} />
           <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
-            {block.pattern.name}
+            {`Pattern: ${block.pattern.name}`}
           </Text>
         </HStack>
         <ParametersList block={block} />
         {block.blockEffects.map((blockEffect) => (
-          <VStack key={blockEffect.id} width="100%">
-            <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
-              {blockEffect.pattern.name + " Effect"}
-            </Text>
+          <Fragment key={blockEffect.id}>
+            <HStack
+              key={blockEffect.id}
+              pt={1}
+              width="100%"
+              borderTopWidth={2}
+              borderColor="gray.500"
+              borderStyle="solid"
+              borderRadius={0}
+              justify="center"
+            >
+              <Text
+                userSelect="none"
+                textOverflow="clip"
+                overflowWrap="anywhere"
+              >
+                {`Effect: ${blockEffect.pattern.name}`}
+              </Text>
+            </HStack>
             <ParametersList block={blockEffect} />
-          </VStack>
+          </Fragment>
         ))}
       </Card>
     </Draggable>

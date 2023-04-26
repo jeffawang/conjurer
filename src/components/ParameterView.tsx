@@ -31,10 +31,6 @@ export default observer(function ParameterView({
         width="100%"
         height={7}
         p={0}
-        borderTopWidth={1}
-        borderColor="gray.500"
-        borderStyle="solid"
-        borderRadius={0}
         onClick={() => setExpanded(!isExpanded)}
       >
         <HStack width="100%" justify="center">

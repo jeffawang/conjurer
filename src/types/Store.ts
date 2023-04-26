@@ -77,7 +77,7 @@ export default class Store {
   initialize = () => {
     // Temporary hard-coded blocks
     this.blocks.push(new Block(Clouds()));
-    this.blocks[0].setTiming({ startTime: 0, duration: 45 });
+    this.blocks[0].setTiming({ startTime: 0, duration: 30 });
     this.blocks[0].parameterVariations = {
       u_color: [
         new LinearVariation4(
@@ -100,7 +100,7 @@ export default class Store {
         new SineVariation(4, 0.5, 1, 0, -0.1),
         new FlatVariation(1.5, 0.1),
         new LinearVariation(2, 0.1, 1),
-        new LinearVariation(30, 1, 1),
+        new LinearVariation(10, 1, 1),
       ],
       u_scale: [
         new LinearVariation(5.5, 0.5, 1),

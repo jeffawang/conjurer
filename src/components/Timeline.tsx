@@ -12,7 +12,8 @@ import { MAX_TIME } from "@/src/utils/time";
 import PatternBlocks from "@/src/components/PatternBlocks";
 
 export default observer(function Timeline() {
-  const { timer, uiStore } = useStore();
+  const store = useStore();
+  const { timer, uiStore } = store;
   const rulerBoxRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +37,7 @@ export default observer(function Timeline() {
       height="100%"
       overflowX="scroll"
       overscrollBehavior="none"
+      onClick={store.deselectAllBlocks}
     >
       <Box
         ref={rulerBoxRef}
