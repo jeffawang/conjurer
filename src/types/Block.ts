@@ -162,6 +162,17 @@ export default class Block<T extends ExtraParams = {}> {
     this.parameterVariations[uniformName as keyof T] = [...variations];
   };
 
+  reorderBlockEffect = (block: Block, delta: number) => {
+    const index = this.blockEffects.indexOf(block);
+    if (index < 0) return;
+
+    const newIndex = index + delta;
+    if (newIndex < 0 || newIndex >= this.blockEffects.length) return;
+
+    this.blockEffects.splice(index, 1);
+    this.blockEffects.splice(newIndex, 0, block);
+  };
+
   removeBlockEffect = (block: Block) => {
     const index = this.blockEffects.indexOf(block);
     if (index > -1) {

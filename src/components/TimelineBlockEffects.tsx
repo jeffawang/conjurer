@@ -34,6 +34,7 @@ export default observer(function TimelineBlockEffects({
         <Fragment key={blockEffect.id}>
           <HStack
             key={blockEffect.id}
+            position="relative"
             pt={1}
             width="100%"
             borderTopWidth={2}
@@ -45,37 +46,44 @@ export default observer(function TimelineBlockEffects({
             <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
               {`Effect: ${blockEffect.pattern.name}`}
             </Text>
-            <IconButton
-              variant="link"
-              aria-label="Delete effect"
-              title="Delete effect"
-              height={6}
-              _hover={{ color: "red.500" }}
-              icon={<FaTrashAlt size={12} />}
-              onClick={action(() => block.removeBlockEffect(blockEffect))}
-            />
-            {index > 0 && (
+
+            <HStack position="absolute" right={0}>
+              {index < lastBlockEffectIndex && (
+                <IconButton
+                  variant="link"
+                  aria-label="Move down"
+                  title="Move down"
+                  height={6}
+                  _hover={{ color: "blue.500" }}
+                  icon={<RxCaretDown size={28} />}
+                  onClick={action(() =>
+                    block.reorderBlockEffect(blockEffect, 1)
+                  )}
+                />
+              )}
+              {index > 0 && (
+                <IconButton
+                  variant="link"
+                  aria-label="Move up"
+                  title="Move up"
+                  height={6}
+                  _hover={{ color: "blue.500" }}
+                  icon={<RxCaretUp size={28} />}
+                  onClick={action(() =>
+                    block.reorderBlockEffect(blockEffect, -1)
+                  )}
+                />
+              )}
               <IconButton
                 variant="link"
-                aria-label="Move up"
-                title="Move up"
+                aria-label="Delete effect"
+                title="Delete effect"
                 height={6}
-                _hover={{ color: "blue.500" }}
-                icon={<RxCaretUp size={28} />}
+                _hover={{ color: "red.500" }}
+                icon={<FaTrashAlt size={12} />}
                 onClick={action(() => block.removeBlockEffect(blockEffect))}
               />
-            )}
-            {index < lastBlockEffectIndex && (
-              <IconButton
-                variant="link"
-                aria-label="Move up"
-                title="Move up"
-                height={6}
-                _hover={{ color: "blue.500" }}
-                icon={<RxCaretDown size={28} />}
-                onClick={action(() => block.removeBlockEffect(blockEffect))}
-              />
-            )}
+            </HStack>
           </HStack>
           <ParametersList block={blockEffect} />
         </Fragment>
