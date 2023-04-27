@@ -52,13 +52,16 @@ export default class Timer {
     if (this.playing) {
       this._lastStartedAtDateTime = Date.now();
       this.lastCursorPosition = this.globalTime;
+      requestAnimationFrame(this.tick);
     }
   };
 
-  tick = () => {
-    requestAnimationFrame(this.tick);
-
+  tick = (t: number) => {
     if (!this.playing) return;
+
+    // this will tie the timer tick to the refresh rate of the browser/monitor. We may want to
+    // revisit this later if we want to cap the framerate.
+    requestAnimationFrame(this.tick);
 
     if (this.globalTime > MAX_TIME) {
       this.playing = false;
