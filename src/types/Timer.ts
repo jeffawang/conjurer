@@ -1,4 +1,4 @@
-import { FRAMES_PER_SECOND, MAX_TIME } from "@/src/utils/time";
+import { MAX_TIME } from "@/src/utils/time";
 import { makeAutoObservable, runInAction } from "mobx";
 
 export default class Timer {
@@ -42,7 +42,8 @@ export default class Timer {
   }
 
   initialize = () => {
-    setInterval(this.tick, 1000 / FRAMES_PER_SECOND);
+    if (typeof window === "undefined") return;
+    requestAnimationFrame(this.tick);
   };
 
   togglePlaying = () => {
@@ -55,6 +56,8 @@ export default class Timer {
   };
 
   tick = () => {
+    requestAnimationFrame(this.tick);
+
     if (!this.playing) return;
 
     if (this.globalTime > MAX_TIME) {
