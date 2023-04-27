@@ -1,16 +1,14 @@
-import { Box, Divider, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 import { useMemo } from "react";
 import Block from "../types/Block";
-import { Canvas } from "@react-three/fiber";
 import { LED_COUNTS } from "@/src/utils/size";
 import SelectablePattern from "@/src/components/SelectablePattern";
 import { useStore } from "@/src/types/StoreContext";
 import { observer } from "mobx-react-lite";
 import Keyboard from "@/src/components/Keyboard";
-import CartesianView from "@/src/components/CartesianView";
-import RenderPipeline from "@/src/components/RenderPipeline";
 import { effects } from "@/src/effects/effects";
 import { action } from "mobx";
+import PreviewCanvas from "@/src/components/PreviewCanvas";
 
 const PATTERN_PREVIEW_DISPLAY_FACTOR = 1.5;
 
@@ -32,11 +30,7 @@ export default observer(function PatternList() {
         width={`${LED_COUNTS.x * PATTERN_PREVIEW_DISPLAY_FACTOR}px`}
         height={`${LED_COUNTS.y * PATTERN_PREVIEW_DISPLAY_FACTOR}px`}
       >
-        <Canvas>
-          <RenderPipeline block={block} autorun>
-            {(renderTarget) => <CartesianView renderTarget={renderTarget} />}
-          </RenderPipeline>
-        </Canvas>
+        <PreviewCanvas block={block} />
       </Box>
 
       <Text userSelect="none" fontSize="xs">
