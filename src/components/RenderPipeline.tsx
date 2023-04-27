@@ -7,6 +7,10 @@ import black from "@/src/patterns/shaders/black.frag";
 import RenderNode from "@/src/components/RenderNode";
 import Block from "@/src/types/Block";
 
+// This size greatly affects performance. Somewhat arbitrarily chosen for now. We can lower this as
+// needed in the future.
+const RENDER_TARGET_SIZE = 256;
+
 type RenderPipelineProps = {
   autorun?: boolean;
   block?: Block;
@@ -18,8 +22,14 @@ export default observer(function RenderPipeline({
   block,
   children,
 }: RenderPipelineProps) {
-  const renderTargetA = useMemo(() => new WebGLRenderTarget(512, 512), []);
-  const renderTargetB = useMemo(() => new WebGLRenderTarget(512, 512), []);
+  const renderTargetA = useMemo(
+    () => new WebGLRenderTarget(RENDER_TARGET_SIZE, RENDER_TARGET_SIZE),
+    []
+  );
+  const renderTargetB = useMemo(
+    () => new WebGLRenderTarget(RENDER_TARGET_SIZE, RENDER_TARGET_SIZE),
+    []
+  );
 
   const { currentBlock, timer } = useStore();
   const targetBlock = block ?? currentBlock;

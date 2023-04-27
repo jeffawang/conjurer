@@ -1,4 +1,4 @@
-import { FRAMES_PER_SECOND, MAX_TIME } from "@/src/utils/time";
+import { MAX_TIME } from "@/src/utils/time";
 import { makeAutoObservable, runInAction } from "mobx";
 
 export default class Timer {
@@ -42,7 +42,8 @@ export default class Timer {
   }
 
   initialize = () => {
-    setInterval(this.tick, 1000 / FRAMES_PER_SECOND);
+    if (typeof window === "undefined") return;
+    requestAnimationFrame(this.tick);
   };
 
   togglePlaying = () => {
@@ -51,11 +52,16 @@ export default class Timer {
     if (this.playing) {
       this._lastStartedAtDateTime = Date.now();
       this.lastCursorPosition = this.globalTime;
+      requestAnimationFrame(this.tick);
     }
   };
 
-  tick = () => {
+  tick = (t: number) => {
     if (!this.playing) return;
+
+    // this will tie the timer tick to the refresh rate of the browser/monitor. We may want to
+    // revisit this later if we want to cap the framerate.
+    requestAnimationFrame(this.tick);
 
     if (this.globalTime > MAX_TIME) {
       this.playing = false;
