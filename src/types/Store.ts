@@ -15,6 +15,8 @@ import { Vector4 } from "three";
 import Clouds from "@/src/patterns/Clouds";
 import AudioStore from "@/src/types/AudioStore";
 import ColorTint from "@/src/effects/ColorTint";
+import CartesianProjection from "@/src/effects/CartesianProjection";
+import LogSpirals from "@/src/patterns/LogSpirals";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -76,9 +78,10 @@ export default class Store {
 
   initialize = () => {
     // Temporary hard-coded blocks
-    this.blocks.push(new Block(Clouds()));
+    this.blocks.push(new Block(LogSpirals()), new Block(Clouds()));
     this.blocks[0].setTiming({ startTime: 0, duration: 30 });
-    this.blocks[0].parameterVariations = {
+    this.blocks[1].setTiming({ startTime: 30, duration: 30 });
+    this.blocks[1].parameterVariations = {
       u_color: [
         new LinearVariation4(
           5,
@@ -109,7 +112,7 @@ export default class Store {
     };
 
     // Temporary hard-coded effects
-    this.blocks[0].blockEffects.push(new Block(ColorTint()));
+    this.blocks[0].blockEffects.push(new Block(CartesianProjection()));
 
     // set up an autosave interval
     setInterval(() => {
