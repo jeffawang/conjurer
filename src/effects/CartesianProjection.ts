@@ -5,7 +5,7 @@ type CartesianProjectionParams = {};
 
 const CartesianProjection = () =>
   new Pattern<CartesianProjectionParams>(
-    "Cartesian Projection",
+    "Cartesian Proj",
     cartesianProjection,
     {}
   );

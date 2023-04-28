@@ -21,8 +21,8 @@ export default observer(function ParameterView({
   const variations = block.parameterVariations[uniformName] ?? [];
   const [isExpanded, setExpanded] = useState(false);
 
-  // only expand once we are on the client, otherwise strange errors
-  useEffect(() => setExpanded(true), [setExpanded]);
+  // only expand once we are on the client, otherwise dnd hydration errors occur
+  useEffect(() => setExpanded(variations.length > 0), []);
 
   return (
     <Box width="100%" mb={isExpanded ? 2 : 0}>

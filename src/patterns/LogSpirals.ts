@@ -57,7 +57,7 @@ type LogSpiralsParams = {
 };
 
 const LogSpirals = () =>
-  new Pattern<LogSpiralsParams>("LogSpirals", logSpiralsShader, {
+  new Pattern<LogSpiralsParams>("Log Spirals", logSpiralsShader, {
     u_spikeMotionTimeScalingFactor: {
       name: "spikeMotionTimeScalingFactor",
       value: -0.4,
@@ -111,4 +111,5 @@ const LogSpirals = () =>
       value: 4,
     },
   });
+
 export default LogSpirals;
