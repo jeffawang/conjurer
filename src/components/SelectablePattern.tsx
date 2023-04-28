@@ -56,7 +56,11 @@ export default memo(function SelectablePattern({
         role="button"
       >
         <VStack width="150px" height={10} justify="center">
-          <Text userSelect="none" color={selected ? "teal.200" : "ButtonText"}>
+          <Text
+            textAlign="center"
+            userSelect="none"
+            color={selected ? "teal.200" : "ButtonText"}
+          >
             {selected ? `> ${pattern.name} <` : pattern.name}
           </Text>
         </VStack>

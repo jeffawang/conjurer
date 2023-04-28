@@ -6,7 +6,7 @@ import { IconButton, Select, Text } from "@chakra-ui/react";
 import { RiZoomInLine, RiZoomOutLine } from "react-icons/ri";
 import { BsSoundwave, BsGearFill } from "react-icons/bs";
 import { BiTimer } from "react-icons/bi";
-import { FaFolderOpen } from "react-icons/fa";
+import { FaFolderOpen, FaRegClipboard } from "react-icons/fa";
 import { FiSave } from "react-icons/fi";
 import { useStore } from "@/src/types/StoreContext";
 import { action, runInAction } from "mobx";
@@ -50,6 +50,15 @@ export default observer(function Controls() {
 
   return (
     <>
+      <IconButton
+        aria-label="Copy to clipboard"
+        title="Copy to clipboard"
+        height={6}
+        icon={<FaRegClipboard size={17} />}
+        onClick={() =>
+          navigator.clipboard.writeText(JSON.stringify(store.serialize()))
+        }
+      />
       <IconButton
         aria-label="Save"
         title="Save"

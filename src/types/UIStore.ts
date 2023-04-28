@@ -13,7 +13,7 @@ const MIN_PIXELS_PER_SECOND = 4;
 export default class UIStore {
   pixelsPerSecond = INITIAL_PIXELS_PER_SECOND; // this controls the zoom of the timeline
   usingWavesurfer = true;
-  showingPerformance = false;
+  showingPerformance = true;
   displayingCanopy = true;
 
   constructor() {

@@ -35,13 +35,14 @@ export default observer(function Timeline() {
     <Box
       ref={timelineRef}
       height="100%"
-      overflowX="scroll"
+      overflow="scroll"
       overscrollBehavior="none"
       onClick={store.deselectAllBlocks}
     >
       <Box
         ref={rulerBoxRef}
-        position="relative"
+        position="sticky"
+        top={0}
         height={10}
         width={uiStore.timeToXPixels(MAX_TIME)}
         bgColor="gray.500"
@@ -54,6 +55,7 @@ export default observer(function Timeline() {
             { once: true }
           );
         })}
+        zIndex={10}
       >
         {uiStore.usingWavesurfer ? <WavesurferWaveform /> : <ShaderWaveform />}
         <Ruler />

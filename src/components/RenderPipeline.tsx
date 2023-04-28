@@ -45,7 +45,9 @@ export default observer(function RenderPipeline({
     const { startTime } = targetBlock;
 
     if (autorun) {
-      targetBlock.updateParameters(clock.elapsedTime, clock.elapsedTime);
+      // Don't let the elapsed time go over five minutes
+      const elapsedTime = clock.elapsedTime % (1000 * 60 * 5);
+      targetBlock.updateParameters(elapsedTime, elapsedTime);
     } else {
       targetBlock.updateParameters(globalTime - startTime, globalTime);
     }

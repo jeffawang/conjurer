@@ -6,6 +6,15 @@ import Variation from "@/src/types/Variations/Variation";
 import { MINIMUM_VARIATION_DURATION } from "@/src/utils/time";
 import { patternMap } from "@/src/patterns/patterns";
 import { deserializeVariation } from "@/src/types/Variations/variations";
+import { effectMap } from "@/src/effects/effects";
+
+type SerializedBlock = {
+  pattern: string;
+  parameterVariations: { [key: string]: any[] | undefined };
+  startTime: number;
+  duration: number;
+  blockEffects: SerializedBlock[];
+};
 
 export default class Block<T extends ExtraParams = {}> {
   id: string = Math.random().toString(16).slice(2); // unique id
@@ -192,15 +201,21 @@ export default class Block<T extends ExtraParams = {}> {
     return serialized;
   };
 
-  serialize = () => ({
+  serialize = (): SerializedBlock => ({
     pattern: this.pattern.name,
-    parameterVariations: this.serializeParameterVariations(),
     startTime: this.startTime,
     duration: this.duration,
+    parameterVariations: this.serializeParameterVariations(),
+    blockEffects: this.blockEffects.map((blockEffect) =>
+      blockEffect.serialize()
+    ),
   });
 
-  static deserialize = (data: any) => {
-    const block = new Block<ExtraParams>(clone(patternMap[data.pattern]));
+  static deserialize = (data: any, effect?: boolean) => {
+    const block = new Block<ExtraParams>(
+      clone(effect ? effectMap[data.pattern] : patternMap[data.pattern])
+    );
+
     block.setTiming({
       startTime: data.startTime,
       duration: data.duration,
@@ -211,6 +226,10 @@ export default class Block<T extends ExtraParams = {}> {
         parameter
       ]?.map((variationData: any) => deserializeVariation(variationData));
     }
+
+    block.blockEffects = data.blockEffects.map((blockEffectData: any) =>
+      Block.deserialize(blockEffectData, true)
+    );
 
     return block;
   };

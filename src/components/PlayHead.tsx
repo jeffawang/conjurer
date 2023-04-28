@@ -4,17 +4,35 @@ import { FaLongArrowAltDown } from "react-icons/fa";
 import { useStore } from "@/src/types/StoreContext";
 import styles from "@/styles/TimeMarker.module.css";
 import classNames from "classnames";
+import { useEffect, useRef } from "react";
 
 export default observer(function PlayHead() {
   const { timer, uiStore } = useStore();
 
-  // TODO: renders every frame. need to optimize this
+  const playHead = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!playHead.current) return;
+
+    // This forces the animation to restart. https://css-tricks.com/restart-css-animation/
+    playHead.current.style.animation = "none";
+    void playHead.current.offsetHeight; // trigger reflow
+    playHead.current.style.animation = "";
+
+    // Account for the zoom level. The distance the playhead travels stays the same, 144000px.
+    // The duration of the animation changes based on the zoom level.
+    playHead.current.style.animationDuration = `${
+      144000 / uiStore.pixelsPerSecond
+    }s`;
+  }, [timer.lastCursor, uiStore.pixelsPerSecond]);
+
   return (
     <Box
+      ref={playHead}
       position="absolute"
       top={0}
-      // className={classNames(styles.marker, { [styles.playing]: timer.playing })}
-      transform={`translateX(${uiStore.timeToXPixels(timer.globalTime)})`}
+      left={uiStore.timeToXPixels(timer.lastCursor.position)}
+      className={classNames(styles.marker, { [styles.playing]: timer.playing })}
       willChange="transform"
       overflowY="visible"
       zIndex={10}

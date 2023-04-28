@@ -12,12 +12,16 @@ export default class Timer {
     return this._globalTime;
   }
 
+  get globalTimeRounded() {
+    return Math.round(this._globalTime * 10) / 10;
+  }
+
   set globalTime(time: number) {
     this._globalTime = time < 0 ? 0 : time;
   }
 
   /**
-   * The last cursor position that was set by the user. This is listenable/observable, since it is and object and not a primitive.
+   * The last cursor position that was set by the user. This is listenable/observable, since it is an object and not a primitive.
    *
    * @readonly
    * @memberof Timer

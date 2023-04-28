@@ -7,14 +7,8 @@ import { clone } from "@/src/utils/object";
 import { DEFAULT_BLOCK_DURATION } from "@/src/utils/time";
 import { patterns } from "@/src/patterns/patterns";
 import { makeAutoObservable, configure, runInAction } from "mobx";
-import FlatVariation from "@/src/types/Variations/FlatVariation";
-import LinearVariation from "@/src/types/Variations/LinearVariation";
-import SineVariation from "@/src/types/Variations/SineVariation";
-import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
-import { Vector4 } from "three";
-import Clouds from "@/src/patterns/Clouds";
 import AudioStore from "@/src/types/AudioStore";
-import ColorTint from "@/src/effects/ColorTint";
+const initialExperience = require("../data/initialExperience.json");
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -75,44 +69,13 @@ export default class Store {
   }
 
   initialize = () => {
-    // Temporary hard-coded blocks
-    this.blocks.push(new Block(Clouds()));
-    this.blocks[0].setTiming({ startTime: 0, duration: 30 });
-    this.blocks[0].parameterVariations = {
-      u_color: [
-        new LinearVariation4(
-          5,
-          new Vector4(0.0588, 1.0, 0.9216, 1),
-          new Vector4(0, 0.5, 1, 1)
-        ),
-        new LinearVariation4(
-          10,
-          new Vector4(0, 0.5, 1, 1),
-          new Vector4(0.4588, 0.2, 0.7216, 1)
-        ),
-        new LinearVariation4(
-          10,
-          new Vector4(0.4588, 0.2, 0.7216, 1),
-          new Vector4(0.9, 0.5, 0.2, 1)
-        ),
-      ],
-      u_speed: [
-        new SineVariation(4, 0.5, 1, 0, -0.1),
-        new FlatVariation(1.5, 0.1),
-        new LinearVariation(2, 0.1, 1),
-        new LinearVariation(10, 1, 1),
-      ],
-      u_scale: [
-        new LinearVariation(5.5, 0.5, 1),
-        new LinearVariation(5, 1, 0.5),
-      ],
-    };
-
-    // Temporary hard-coded effects
-    this.blocks[0].blockEffects.push(new Block(ColorTint()));
+    // load initial experience from file. if you would like to change this, click the clipboard
+    // button in the UI and paste the contents into the data/initialExperience.json file.
+    this.deserialize(initialExperience);
 
     // set up an autosave interval
     setInterval(() => {
+      console.log("auto saving");
       if (!this.timer.playing) this.saveToLocalStorage("autosave");
     }, 60 * 1000);
 
@@ -193,6 +156,7 @@ export default class Store {
     this.selectedBlocks = new Set();
   };
 
+  // TODO: this should use serialize/deserialize
   copyBlocksToClipboard = (clipboardData: DataTransfer) => {
     clipboardData.setData(
       "text/plain",
@@ -202,6 +166,7 @@ export default class Store {
     );
   };
 
+  // TODO: this should use serialize/deserialize
   pasteBlocksFromClipboard = (clipboardData: DataTransfer) => {
     const ids = clipboardData.getData("text/plain").split(",");
     const blocksToCopy = this.blocks.filter((b) => ids.includes(b.id));
