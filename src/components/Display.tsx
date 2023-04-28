@@ -10,7 +10,7 @@ export default memo(function Display() {
         <Heading>Conjurer</Heading>
       </VStack>
       <DisplayControls />
-      <Box height="100%" bgColor="black">
+      <Box height="100%" bgColor="gray.900">
         <DisplayCanvas />
       </Box>
     </Box>

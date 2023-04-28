@@ -75,7 +75,7 @@ export default class Store {
 
     // set up an autosave interval
     setInterval(() => {
-      console.log("auto saving");
+      // TODO: fix this memory leak
       if (!this.timer.playing) this.saveToLocalStorage("autosave");
     }, 60 * 1000);
 
