@@ -1,11 +1,10 @@
 import Block from "@/src/types/Block";
 import { useStore } from "@/src/types/StoreContext";
 import TimelineBlockBound from "@/src/components/TimelineBlockBound";
-import { Card, HStack, Text, VStack } from "@chakra-ui/react";
+import { Card, HStack, Heading, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
-  Fragment,
   MouseEvent as ReactMouseEvent,
   useCallback,
   useRef,
@@ -50,7 +49,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
     lastMouseDown.current = e.clientX;
   }, []);
 
-  const handleClick = useCallback(
+  const handleBlockClick = useCallback(
     (e: ReactMouseEvent) => {
       if (Math.abs(e.clientX - lastMouseDown.current) > 5) return;
 
@@ -87,7 +86,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         width={uiStore.timeToXPixels(block.duration)}
         minHeight="100%"
         border="solid"
-        borderColor={isSelected ? "blue.500" : "gray.300"}
+        borderColor={isSelected ? "blue.500" : "white"}
         borderWidth={3}
         alignItems="center"
       >
@@ -97,21 +96,29 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         <HStack
           pt={2}
           width="100%"
-          color={isSelected ? "blue.500" : "gray.300"}
+          color={isSelected ? "blue.500" : "white"}
           className="handle"
           justify="center"
           cursor="move"
           spacing={0}
-          onClick={handleClick}
+          onClick={handleBlockClick}
           role="button"
         >
           <MdDragIndicator size={30} />
-          <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
+          <Heading
+            size="md"
+            userSelect="none"
+            textOverflow="clip"
+            overflowWrap="anywhere"
+          >
             {`Pattern: ${block.pattern.name}`}
-          </Text>
+          </Heading>
         </HStack>
         <ParametersList block={block} />
-        <TimelineBlockEffects block={block} />
+        <TimelineBlockEffects
+          block={block}
+          handleBlockClick={handleBlockClick}
+        />
       </Card>
     </Draggable>
   );

@@ -1,7 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import Pattern from "./Pattern";
 import { ExtraParams } from "./PatternParams";
-import { clone } from "@/src/utils/object";
 import Variation from "@/src/types/Variations/Variation";
 import { MINIMUM_VARIATION_DURATION } from "@/src/utils/time";
 import { patternMap } from "@/src/patterns/patterns";
@@ -21,6 +20,7 @@ export default class Block<T extends ExtraParams = {}> {
   pattern: Pattern<T>;
   parameterVariations: { [K in keyof T]?: Variation[] } = {};
 
+  parentBlock: Block | null = null; // if this is an effect block, this is the block that it is applied to
   blockEffects: Block[] = [];
 
   startTime: number = 0; // global time that block starts playing at in seconds
@@ -30,8 +30,9 @@ export default class Block<T extends ExtraParams = {}> {
     return this.startTime + this.duration;
   }
 
-  constructor(pattern: Pattern<T>) {
+  constructor(pattern: Pattern<T>, parentBlock: Block | null = null) {
     this.pattern = pattern;
+    this.parentBlock = parentBlock;
 
     makeAutoObservable(this, {
       pattern: false,
@@ -157,8 +158,10 @@ export default class Block<T extends ExtraParams = {}> {
       0
     );
 
-    if (totalVariationDuration < this.duration) {
-      variation.duration += this.duration - totalVariationDuration;
+    // use the parent block's duration if this is an effect block
+    const duration = this.parentBlock?.duration ?? this.duration;
+    if (totalVariationDuration < duration) {
+      variation.duration += duration - totalVariationDuration;
       this.triggerVariationReactions(uniformName);
     }
   };
@@ -189,7 +192,19 @@ export default class Block<T extends ExtraParams = {}> {
     }
   };
 
-  clone = () => new Block(clone(this.pattern));
+  /**
+   * Adds a clone of the effect to the block
+   *
+   * @param {Pattern} effect
+   * @memberof Block
+   */
+  addCloneOfEffect = (effect: Pattern) => {
+    const newBlock = new Block(effect.clone());
+    newBlock.parentBlock = this;
+    this.blockEffects.push(newBlock);
+  };
+
+  clone = () => new Block(this.pattern.clone());
 
   serializeParameterVariations = () => {
     const serialized: { [K in keyof T]?: any[] } = {};
@@ -211,15 +226,18 @@ export default class Block<T extends ExtraParams = {}> {
     ),
   });
 
-  static deserialize = (data: any, effect?: boolean) => {
+  static deserialize = (data: any, effect?: boolean, parentBlock?: Block) => {
     const block = new Block<ExtraParams>(
-      clone(effect ? effectMap[data.pattern] : patternMap[data.pattern])
+      effect
+        ? effectMap[data.pattern].clone()
+        : patternMap[data.pattern].clone()
     );
 
     block.setTiming({
       startTime: data.startTime,
       duration: data.duration,
     });
+    block.parentBlock = parentBlock ?? null;
 
     for (const parameter of Object.keys(data.parameterVariations)) {
       block.parameterVariations[parameter] = data.parameterVariations[
@@ -228,7 +246,7 @@ export default class Block<T extends ExtraParams = {}> {
     }
 
     block.blockEffects = data.blockEffects.map((blockEffectData: any) =>
-      Block.deserialize(blockEffectData, true)
+      Block.deserialize(blockEffectData, true, block)
     );
 
     return block;

@@ -7,6 +7,8 @@ import NewVariationButtons from "@/src/components/NewVariationButtons";
 import ParameterVariations from "@/src/components/ParameterVariations";
 import { observer } from "mobx-react-lite";
 
+let didInitialize = false;
+
 type ParameterProps = {
   uniformName: string;
   patternParam: PatternParam;
@@ -22,8 +24,13 @@ export default observer(function ParameterView({
   const [isExpanded, setExpanded] = useState(false);
 
   // only expand once we are on the client, otherwise dnd hydration errors occur
-  useEffect(() => setExpanded(variations.length > 0), []);
+  useEffect(() => {
+    if (didInitialize) return;
+    didInitialize = true;
+    setExpanded(variations.length > 0);
+  }, [setExpanded, variations.length]);
 
+  const headerColor = variations.length ? "orange" : "gray.300";
   return (
     <Box width="100%" mb={isExpanded ? 2 : 0}>
       <Button
@@ -38,14 +45,14 @@ export default observer(function ParameterView({
             lineHeight={1}
             userSelect="none"
             fontSize={14}
-            color={isExpanded ? "orange" : "white"}
+            color={headerColor}
           >
             {patternParam.name}
           </Text>
           {isExpanded ? (
-            <BsCaretUp size={10} color="orange" />
+            <BsCaretUp key={headerColor} size={10} color={headerColor} />
           ) : (
-            <BsCaretDown size={10} />
+            <BsCaretDown key={headerColor} size={10} color={headerColor} />
           )}
         </HStack>
       </Button>

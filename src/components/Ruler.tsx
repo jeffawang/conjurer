@@ -5,7 +5,7 @@ import { MAX_TIME } from "@/src/utils/time";
 
 export default observer(function Ruler() {
   const { uiStore } = useStore();
-  const { pixelsPerSecond } = uiStore;
+  const { pixelsPerSecond, beatLength } = uiStore;
 
   const width = MAX_TIME * pixelsPerSecond;
 
@@ -16,7 +16,7 @@ export default observer(function Ruler() {
           id="mix-editor-grid-pattern"
           x="0"
           y="0"
-          width={`${pixelsPerSecond}`}
+          width={`${pixelsPerSecond * beatLength}`}
           height="40"
           patternUnits="userSpaceOnUse"
         >
@@ -24,14 +24,19 @@ export default observer(function Ruler() {
           <rect
             width="0.5"
             height="40"
-            x={`${pixelsPerSecond * 0.25}`}
+            x={`${pixelsPerSecond * beatLength * 0.25}`}
             y="30"
           />
-          <rect width="0.5" height="40" x={`${pixelsPerSecond * 0.5}`} y="30" />
           <rect
             width="0.5"
             height="40"
-            x={`${pixelsPerSecond * 0.75}`}
+            x={`${pixelsPerSecond * beatLength * 0.5}`}
+            y="30"
+          />
+          <rect
+            width="0.5"
+            height="40"
+            x={`${pixelsPerSecond * beatLength * 0.75}`}
             y="30"
           />
         </pattern>
@@ -41,7 +46,7 @@ export default observer(function Ruler() {
           <text
             key={i}
             className={styles.rulerText}
-            x={i * pixelsPerSecond + 3}
+            x={i * pixelsPerSecond * beatLength + 3}
             y="12"
           >
             {i % 60}

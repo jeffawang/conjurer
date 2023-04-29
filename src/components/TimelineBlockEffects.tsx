@@ -1,33 +1,41 @@
 import Block from "@/src/types/Block";
 import { useStore } from "@/src/types/StoreContext";
-import TimelineBlockBound from "@/src/components/TimelineBlockBound";
-import { Card, HStack, IconButton, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Heading,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import {
-  Fragment,
-  MouseEvent as ReactMouseEvent,
-  useCallback,
-  useRef,
-  useState,
-} from "react";
-import Draggable from "react-draggable";
-import { DraggableData } from "react-draggable";
-import { DraggableEvent } from "react-draggable";
+import { Fragment } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { RxCaretUp, RxCaretDown } from "react-icons/rx";
+import { FiPlusSquare } from "react-icons/fi";
 import ParametersList from "@/src/components/ParametersList";
+import { MouseEvent as ReactMouseEvent } from "react";
+import { effects } from "@/src/effects/effects";
 
 type TimelineBlockEffectsProps = {
   block: Block;
+  handleBlockClick: (e: ReactMouseEvent) => void;
 };
 
 export default observer(function TimelineBlockEffects({
   block,
+  handleBlockClick,
 }: TimelineBlockEffectsProps) {
   const store = useStore();
+  const { selectedBlocks } = store;
 
   const lastBlockEffectIndex = block.blockEffects.length - 1;
+  const isSelected = selectedBlocks.has(block);
   return (
     <>
       {block.blockEffects.map((blockEffect, index) => (
@@ -43,9 +51,17 @@ export default observer(function TimelineBlockEffects({
             borderRadius={0}
             justify="center"
           >
-            <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
+            <Heading
+              size="md"
+              userSelect="none"
+              textOverflow="clip"
+              overflowWrap="anywhere"
+              cursor="grab"
+              color={isSelected ? "blue.500" : "white"}
+              onClick={handleBlockClick}
+            >
               {`Effect: ${blockEffect.pattern.name}`}
-            </Text>
+            </Heading>
 
             <HStack position="absolute" right={0}>
               {index < lastBlockEffectIndex && (
@@ -88,6 +104,48 @@ export default observer(function TimelineBlockEffects({
           <ParametersList block={blockEffect} />
         </Fragment>
       ))}
+      <Box
+        width="100%"
+        borderTopWidth={2}
+        borderColor="gray.500"
+        borderStyle="solid"
+      >
+        <Menu>
+          <MenuButton
+            as={Button}
+            variant="ghost"
+            width="100%"
+            textAlign={"center"}
+          >
+            <HStack
+              userSelect="none"
+              textOverflow="clip"
+              overflowWrap="anywhere"
+              justify="center"
+            >
+              <FiPlusSquare size={20} />
+              <Text
+                userSelect="none"
+                textOverflow="clip"
+                overflowWrap="anywhere"
+                onClick={handleBlockClick}
+              >
+                Add effect
+              </Text>
+            </HStack>
+          </MenuButton>
+          <MenuList>
+            {effects.map((effect) => (
+              <MenuItem
+                key={effect.name}
+                onClick={action(() => block.addCloneOfEffect(effect))}
+              >
+                {effect.name}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+      </Box>
     </>
   );
 });

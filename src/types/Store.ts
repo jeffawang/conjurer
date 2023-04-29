@@ -3,12 +3,11 @@ import Pattern from "@/src/types/Pattern";
 import Timer from "@/src/types/Timer";
 import UIStore from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";
-import { clone } from "@/src/utils/object";
 import { DEFAULT_BLOCK_DURATION } from "@/src/utils/time";
 import { patterns } from "@/src/patterns/patterns";
 import { makeAutoObservable, configure, runInAction } from "mobx";
 import AudioStore from "@/src/types/AudioStore";
-const initialExperience = require("../data/initialExperience.json");
+import initialExperience from "@/src/data/initialExperience.json";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -83,19 +82,23 @@ export default class Store {
   };
 
   insertCloneOfPattern = (pattern: Pattern) => {
-    const newBlock = new Block(clone(pattern));
+    const newBlock = new Block(pattern.clone());
     const nextGap = this.nextFiniteGap(this.timer.globalTime);
     newBlock.setTiming(nextGap);
     this.addBlock(newBlock);
   };
 
+  /**
+   * Inserts a clone of the given effect into the selected blocks
+   *
+   * @param {Pattern} effect
+   * @memberof Store
+   */
   insertCloneOfEffect = (effect: Pattern) => {
-    // for now, can only insert effects when you have a block selected
     if (this.selectedBlocks.size === 0) return;
 
     for (const block of Array.from(this.selectedBlocks)) {
-      const newBlock = new Block(clone(effect));
-      block.blockEffects.push(newBlock);
+      block.addCloneOfEffect(effect);
     }
   };
 
@@ -349,11 +352,6 @@ export default class Store {
     window.localStorage.setItem(key, JSON.stringify(this.serialize()));
   };
 
-  serialize = () => ({
-    audioStore: this.audioStore.serialize(),
-    blocks: this.blocks.map((b) => b.serialize()),
-  });
-
   loadFromLocalStorage = (key: string) => {
     if (typeof window === "undefined") return;
     const arrangement = window.localStorage.getItem(key);
@@ -362,8 +360,16 @@ export default class Store {
     }
   };
 
+  serialize = () => ({
+    audioStore: this.audioStore.serialize(),
+    blocks: this.blocks.map((b) => b.serialize()),
+    uiStore: this.uiStore.serialize(),
+  });
+
   deserialize = (data: any) => {
     this.audioStore.deserialize(data.audioStore);
+    this.uiStore.deserialize(data.uiStore);
     this.blocks = data.blocks.map((b: any) => Block.deserialize(b));
+    this._lastComputedCurrentBlock = null;
   };
 }

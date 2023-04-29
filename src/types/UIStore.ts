@@ -11,10 +11,12 @@ const MIN_PIXELS_PER_SECOND = 4;
  * @class UIStore
  */
 export default class UIStore {
-  pixelsPerSecond = INITIAL_PIXELS_PER_SECOND; // this controls the zoom of the timeline
   usingWavesurfer = true;
   showingPerformance = false;
   displayingCanopy = true;
+
+  pixelsPerSecond = INITIAL_PIXELS_PER_SECOND; // the zoom of the timeline
+  beatLength = 1; // length of a beat in seconds
 
   constructor() {
     makeAutoObservable(this);
@@ -52,5 +54,20 @@ export default class UIStore {
 
   toggleCanopyDisplay = () => {
     this.displayingCanopy = !this.displayingCanopy;
+  };
+
+  serialize = () => ({
+    showingPerformance: this.showingPerformance,
+    displayingCanopy: this.displayingCanopy,
+    pixelsPerSecond: this.pixelsPerSecond,
+    beatLength: this.beatLength,
+  });
+
+  deserialize = (data: any) => {
+    this.showingPerformance =
+      data?.showingPerformance ?? this.showingPerformance;
+    this.displayingCanopy = data?.displayingCanopy ?? this.displayingCanopy;
+    this.pixelsPerSecond = data?.pixelsPerSecond ?? this.pixelsPerSecond;
+    this.beatLength = data?.beatLength ?? 1;
   };
 }
