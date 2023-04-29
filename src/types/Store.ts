@@ -352,11 +352,6 @@ export default class Store {
     window.localStorage.setItem(key, JSON.stringify(this.serialize()));
   };
 
-  serialize = () => ({
-    audioStore: this.audioStore.serialize(),
-    blocks: this.blocks.map((b) => b.serialize()),
-  });
-
   loadFromLocalStorage = (key: string) => {
     if (typeof window === "undefined") return;
     const arrangement = window.localStorage.getItem(key);
@@ -365,8 +360,15 @@ export default class Store {
     }
   };
 
+  serialize = () => ({
+    audioStore: this.audioStore.serialize(),
+    blocks: this.blocks.map((b) => b.serialize()),
+    uiStore: this.uiStore.serialize(),
+  });
+
   deserialize = (data: any) => {
     this.audioStore.deserialize(data.audioStore);
+    this.uiStore.deserialize(data.uiStore);
     this.blocks = data.blocks.map((b: any) => Block.deserialize(b));
     this._lastComputedCurrentBlock = null;
   };
