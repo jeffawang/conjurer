@@ -1,33 +1,29 @@
 import Block from "@/src/types/Block";
 import { useStore } from "@/src/types/StoreContext";
-import TimelineBlockBound from "@/src/components/TimelineBlockBound";
-import { Card, HStack, IconButton, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Heading, IconButton, Text } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import {
-  Fragment,
-  MouseEvent as ReactMouseEvent,
-  useCallback,
-  useRef,
-  useState,
-} from "react";
-import Draggable from "react-draggable";
-import { DraggableData } from "react-draggable";
-import { DraggableEvent } from "react-draggable";
+import { Fragment } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { RxCaretUp, RxCaretDown } from "react-icons/rx";
+import { FiPlusSquare } from "react-icons/fi";
 import ParametersList from "@/src/components/ParametersList";
+import { MouseEvent as ReactMouseEvent } from "react";
 
 type TimelineBlockEffectsProps = {
   block: Block;
+  handleBlockClick: (e: ReactMouseEvent) => void;
 };
 
 export default observer(function TimelineBlockEffects({
   block,
+  handleBlockClick,
 }: TimelineBlockEffectsProps) {
   const store = useStore();
+  const { selectedBlocks } = store;
 
   const lastBlockEffectIndex = block.blockEffects.length - 1;
+  const isSelected = selectedBlocks.has(block);
   return (
     <>
       {block.blockEffects.map((blockEffect, index) => (
@@ -43,9 +39,17 @@ export default observer(function TimelineBlockEffects({
             borderRadius={0}
             justify="center"
           >
-            <Text userSelect="none" textOverflow="clip" overflowWrap="anywhere">
+            <Heading
+              size="md"
+              userSelect="none"
+              textOverflow="clip"
+              overflowWrap="anywhere"
+              cursor="grab"
+              color={isSelected ? "blue.500" : "white"}
+              onClick={handleBlockClick}
+            >
               {`Effect: ${blockEffect.pattern.name}`}
-            </Text>
+            </Heading>
 
             <HStack position="absolute" right={0}>
               {index < lastBlockEffectIndex && (
@@ -88,6 +92,26 @@ export default observer(function TimelineBlockEffects({
           <ParametersList block={blockEffect} />
         </Fragment>
       ))}
+      <HStack
+        width="100%"
+        borderTopWidth={2}
+        borderColor="gray.500"
+        borderStyle="solid"
+        borderRadius={0}
+        justify="center"
+      >
+        <Button variant="ghost" width="100%">
+          <FiPlusSquare size={20} />
+          <Text
+            userSelect="none"
+            textOverflow="clip"
+            overflowWrap="anywhere"
+            onClick={handleBlockClick}
+          >
+            &nbsp; Add effect
+          </Text>
+        </Button>
+      </HStack>
     </>
   );
 });
