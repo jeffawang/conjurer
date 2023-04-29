@@ -7,7 +7,7 @@ import { DEFAULT_BLOCK_DURATION } from "@/src/utils/time";
 import { patterns } from "@/src/patterns/patterns";
 import { makeAutoObservable, configure, runInAction } from "mobx";
 import AudioStore from "@/src/types/AudioStore";
-const initialExperience = require("../data/initialExperience.json");
+import initialExperience from "@/src/data/initialExperience.json";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -368,5 +368,6 @@ export default class Store {
   deserialize = (data: any) => {
     this.audioStore.deserialize(data.audioStore);
     this.blocks = data.blocks.map((b: any) => Block.deserialize(b));
+    this._lastComputedCurrentBlock = null;
   };
 }
