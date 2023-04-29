@@ -7,6 +7,8 @@ import NewVariationButtons from "@/src/components/NewVariationButtons";
 import ParameterVariations from "@/src/components/ParameterVariations";
 import { observer } from "mobx-react-lite";
 
+let didInitialize = false;
+
 type ParameterProps = {
   uniformName: string;
   patternParam: PatternParam;
@@ -22,7 +24,11 @@ export default observer(function ParameterView({
   const [isExpanded, setExpanded] = useState(false);
 
   // only expand once we are on the client, otherwise dnd hydration errors occur
-  useEffect(() => setExpanded(variations.length > 0), []);
+  useEffect(() => {
+    if (didInitialize) return;
+    didInitialize = true;
+    setExpanded(variations.length > 0);
+  }, [setExpanded, variations.length]);
 
   return (
     <Box width="100%" mb={isExpanded ? 2 : 0}>

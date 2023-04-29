@@ -89,13 +89,17 @@ export default class Store {
     this.addBlock(newBlock);
   };
 
+  /**
+   * Inserts a clone of the given effect into the selected blocks
+   *
+   * @param {Pattern} effect
+   * @memberof Store
+   */
   insertCloneOfEffect = (effect: Pattern) => {
-    // for now, can only insert effects when you have a block selected
     if (this.selectedBlocks.size === 0) return;
 
     for (const block of Array.from(this.selectedBlocks)) {
-      const newBlock = new Block(clone(effect));
-      block.blockEffects.push(newBlock);
+      block.addCloneOfEffect(effect);
     }
   };
 

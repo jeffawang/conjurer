@@ -193,6 +193,18 @@ export default class Block<T extends ExtraParams = {}> {
     }
   };
 
+  /**
+   * Adds a clone of the effect to the block
+   *
+   * @param {Pattern} effect
+   * @memberof Block
+   */
+  addCloneOfEffect = (effect: Pattern) => {
+    const newBlock = new Block(clone(effect));
+    newBlock.parentBlock = this;
+    this.blockEffects.push(newBlock);
+  };
+
   clone = () => new Block(clone(this.pattern));
 
   serializeParameterVariations = () => {

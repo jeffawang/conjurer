@@ -1,6 +1,16 @@
 import Block from "@/src/types/Block";
 import { useStore } from "@/src/types/StoreContext";
-import { Button, HStack, Heading, IconButton, Text } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Heading,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { Fragment } from "react";
@@ -9,6 +19,7 @@ import { RxCaretUp, RxCaretDown } from "react-icons/rx";
 import { FiPlusSquare } from "react-icons/fi";
 import ParametersList from "@/src/components/ParametersList";
 import { MouseEvent as ReactMouseEvent } from "react";
+import { effects } from "@/src/effects/effects";
 
 type TimelineBlockEffectsProps = {
   block: Block;
@@ -100,17 +111,41 @@ export default observer(function TimelineBlockEffects({
         borderRadius={0}
         justify="center"
       >
-        <Button variant="ghost" width="100%">
-          <FiPlusSquare size={20} />
-          <Text
-            userSelect="none"
-            textOverflow="clip"
-            overflowWrap="anywhere"
-            onClick={handleBlockClick}
+        <Menu>
+          <MenuButton
+            as={Button}
+            variant="ghost"
+            width="100%"
+            textAlign={"center"}
           >
-            &nbsp; Add effect
-          </Text>
-        </Button>
+            <HStack
+              userSelect="none"
+              textOverflow="clip"
+              overflowWrap="anywhere"
+              justify="center"
+            >
+              <FiPlusSquare size={20} />
+              <Text
+                userSelect="none"
+                textOverflow="clip"
+                overflowWrap="anywhere"
+                onClick={handleBlockClick}
+              >
+                Add effect
+              </Text>
+            </HStack>
+          </MenuButton>
+          <MenuList>
+            {effects.map((effect) => (
+              <MenuItem
+                key={effect.name}
+                onClick={action(() => block.addCloneOfEffect(effect))}
+              >
+                {effect.name}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
       </HStack>
     </>
   );
