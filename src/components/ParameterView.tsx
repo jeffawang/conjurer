@@ -30,6 +30,8 @@ export default observer(function ParameterView({
     setExpanded(variations.length > 0);
   }, [setExpanded, variations.length]);
 
+  const headerColor = variations.length ? "orange" : "white";
+
   return (
     <Box width="100%" mb={isExpanded ? 2 : 0}>
       <Button
@@ -44,14 +46,14 @@ export default observer(function ParameterView({
             lineHeight={1}
             userSelect="none"
             fontSize={14}
-            color={isExpanded ? "orange" : "white"}
+            color={headerColor}
           >
             {patternParam.name}
           </Text>
           {isExpanded ? (
-            <BsCaretUp size={10} color="orange" />
+            <BsCaretUp size={10} color={headerColor} />
           ) : (
-            <BsCaretDown size={10} />
+            <BsCaretDown size={10} color={headerColor} />
           )}
         </HStack>
       </Button>

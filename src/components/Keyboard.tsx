@@ -1,5 +1,5 @@
 import { useStore } from "@/src/types/StoreContext";
-import { Text, VStack } from "@chakra-ui/react";
+import { Kbd, Text, VStack } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
@@ -61,30 +61,30 @@ export default observer(function Keyboard() {
   }, [store, timer, uiStore]);
 
   return (
-    <VStack justifyContent="center">
+    <VStack>
       <Text fontSize={9} userSelect="none">
-        spacebar: play/pause
+        <Kbd>spacebar</Kbd>: play/pause
       </Text>
       <Text fontSize={9} userSelect="none">
-        ←/→: scan backward/forward
+        <Kbd>←</Kbd>/<Kbd>→</Kbd>: scan backward/forward
       </Text>
       <Text fontSize={9} userSelect="none">
-        +/-: zoom in/out
+        <Kbd>+</Kbd>/<Kbd>-</Kbd>: zoom in/out
       </Text>
       <Text fontSize={9} userSelect="none">
-        cmd+c: copy block(s)
+        <Kbd>cmd</Kbd>+<Kbd>c</Kbd>: copy block(s)
       </Text>
       <Text fontSize={9} userSelect="none">
-        cmd+v: paste block(s)
+        <Kbd>cmd</Kbd>+<Kbd>v</Kbd>: paste block(s)
       </Text>
       <Text fontSize={9} userSelect="none">
-        cmd+d: duplicate block(s)
+        <Kbd>cmd</Kbd>+<Kbd>d</Kbd>: duplicate block(s)
       </Text>
       <Text fontSize={9} userSelect="none">
-        cmd+a: select all blocks
+        <Kbd>cmd</Kbd>+<Kbd>a</Kbd>: select all blocks
       </Text>
       <Text fontSize={9} userSelect="none">
-        delete: delete selected block(s)
+        <Kbd>delete</Kbd>: delete selected block(s)
       </Text>
       {/* <Text>cmd+z: undo</Text> */}
       {/* <Text>cmd+shift+z: redo</Text> */}
