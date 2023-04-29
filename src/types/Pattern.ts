@@ -1,3 +1,4 @@
+import { deepClone } from "@/src/utils/object";
 import {
   ExtraParams,
   ParamValues,
@@ -32,4 +33,10 @@ export default class Pattern<T extends ExtraParams = ExtraParams> {
     };
     this.paramValues = ParamsProxy(this.params);
   }
+
+  clone = () => {
+    const clonedParams = deepClone(this.params);
+    const pattern = new Pattern<T>(this.name, this.src, clonedParams);
+    return pattern;
+  };
 }

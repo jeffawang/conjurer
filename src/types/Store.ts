@@ -3,7 +3,6 @@ import Pattern from "@/src/types/Pattern";
 import Timer from "@/src/types/Timer";
 import UIStore from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";
-import { clone } from "@/src/utils/object";
 import { DEFAULT_BLOCK_DURATION } from "@/src/utils/time";
 import { patterns } from "@/src/patterns/patterns";
 import { makeAutoObservable, configure, runInAction } from "mobx";
@@ -83,7 +82,7 @@ export default class Store {
   };
 
   insertCloneOfPattern = (pattern: Pattern) => {
-    const newBlock = new Block(clone(pattern));
+    const newBlock = new Block(pattern.clone());
     const nextGap = this.nextFiniteGap(this.timer.globalTime);
     newBlock.setTiming(nextGap);
     this.addBlock(newBlock);

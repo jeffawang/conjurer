@@ -1,7 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import Pattern from "./Pattern";
 import { ExtraParams } from "./PatternParams";
-import { clone } from "@/src/utils/object";
 import Variation from "@/src/types/Variations/Variation";
 import { MINIMUM_VARIATION_DURATION } from "@/src/utils/time";
 import { patternMap } from "@/src/patterns/patterns";
@@ -200,12 +199,12 @@ export default class Block<T extends ExtraParams = {}> {
    * @memberof Block
    */
   addCloneOfEffect = (effect: Pattern) => {
-    const newBlock = new Block(clone(effect));
+    const newBlock = new Block(effect.clone());
     newBlock.parentBlock = this;
     this.blockEffects.push(newBlock);
   };
 
-  clone = () => new Block(clone(this.pattern));
+  clone = () => new Block(this.pattern.clone());
 
   serializeParameterVariations = () => {
     const serialized: { [K in keyof T]?: any[] } = {};
@@ -229,7 +228,9 @@ export default class Block<T extends ExtraParams = {}> {
 
   static deserialize = (data: any, effect?: boolean, parentBlock?: Block) => {
     const block = new Block<ExtraParams>(
-      clone(effect ? effectMap[data.pattern] : patternMap[data.pattern])
+      effect
+        ? effectMap[data.pattern].clone()
+        : patternMap[data.pattern].clone()
     );
 
     block.setTiming({
