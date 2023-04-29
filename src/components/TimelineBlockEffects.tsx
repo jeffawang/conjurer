@@ -1,6 +1,7 @@
 import Block from "@/src/types/Block";
 import { useStore } from "@/src/types/StoreContext";
 import {
+  Box,
   Button,
   HStack,
   Heading,
@@ -103,13 +104,11 @@ export default observer(function TimelineBlockEffects({
           <ParametersList block={blockEffect} />
         </Fragment>
       ))}
-      <HStack
+      <Box
         width="100%"
         borderTopWidth={2}
         borderColor="gray.500"
         borderStyle="solid"
-        borderRadius={0}
-        justify="center"
       >
         <Menu>
           <MenuButton
@@ -146,7 +145,7 @@ export default observer(function TimelineBlockEffects({
             ))}
           </MenuList>
         </Menu>
-      </HStack>
+      </Box>
     </>
   );
 });
