@@ -2,7 +2,7 @@ import { ExtraParams } from "@/src/types/PatternParams";
 import { IconButton, VStack } from "@chakra-ui/react";
 import { memo } from "react";
 import { BsArrowUpRight } from "react-icons/bs";
-import { TbWaveSine } from "react-icons/tb";
+import { TbWaveSine, TbVectorSpline } from "react-icons/tb";
 import { MdTrendingFlat, MdColorLens } from "react-icons/md";
 import Block from "@/src/types/Block";
 import { action } from "mobx";
@@ -12,6 +12,7 @@ import SineVariation from "@/src/types/Variations/SineVariation";
 import { Vector4 } from "three";
 import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { DEFAULT_VARIATION_DURATION } from "@/src/utils/time";
+import SplineVariation from "@/src/types/Variations/SplineVariation";
 
 type NewVariationButtonsProps = {
   uniformName: string;
@@ -102,6 +103,19 @@ export default memo(function NewVariationButtons({
             block.addVariation(
               uniformName,
               new SineVariation(DEFAULT_VARIATION_DURATION, 0.5, 0.5, 0, 0.5)
+            )
+          )}
+        />
+        <IconButton
+          size="xs"
+          aria-label="Spline"
+          title="Spline"
+          height={6}
+          icon={<TbVectorSpline size={17} />}
+          onClick={action(() =>
+            block.addVariation(
+              uniformName,
+              new SplineVariation(DEFAULT_VARIATION_DURATION)
             )
           )}
         />
