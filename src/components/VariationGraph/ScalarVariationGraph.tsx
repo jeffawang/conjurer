@@ -1,4 +1,4 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useToken } from "@chakra-ui/react";
 import { LineChart, Line, Tooltip, YAxis } from "recharts";
 import Variation from "@/src/types/Variations/Variation";
 import Block from "@/src/types/Block";
@@ -22,6 +22,7 @@ export default memo(function ScalarVariationGraph({
   domain,
   block,
 }: ScalarVariationGraphProps) {
+  const orange = useToken("colors", "orange.400");
   if (variation instanceof SplineVariation)
     return (
       <SplineVariationGraph
@@ -47,7 +48,7 @@ export default memo(function ScalarVariationGraph({
           isAnimationActive={false}
           type="monotone"
           dataKey="value"
-          stroke="#ff7300"
+          stroke={orange}
           yAxisId={0}
         />
         <Tooltip isAnimationActive={false} content={<ScalarValueTooltip />} />

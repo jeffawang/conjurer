@@ -2541,6 +2541,12 @@
   resolved "https://registry.yarnpkg.com/@zag-js/focus-visible/-/focus-visible-0.2.2.tgz#56233480ca1275d3218fb2e10696a33d1a6b9e64"
   integrity sha512-0j2gZq8HiZ51z4zNnSkF1iSkqlwRDvdH+son3wHdoz+7IUdMN/5Exd4TxMJ+gq2Of1DiXReYLL9qqh2PdQ4wgA==
 
+CanvasSpliner@jonathanlurie/CanvasSpliner:
+  version "0.1.0"
+  resolved "https://codeload.github.com/jonathanlurie/CanvasSpliner/tar.gz/549d3ca8778e2f45edcb4442f246d7f619ab445a"
+  dependencies:
+    splines jonathanlurie/splines
+
 acorn-jsx@^5.3.2:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
@@ -5005,6 +5011,10 @@ source-map@^0.5.7:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==
+
+splines@jonathanlurie/splines:
+  version "1.0.0"
+  resolved "https://codeload.github.com/jonathanlurie/splines/tar.gz/571665cfe15f5aa9aad338cb6f933c773e251073"
 
 stats.js@^0.17.0:
   version "0.17.0"

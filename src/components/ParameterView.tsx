@@ -29,7 +29,7 @@ export default observer(function ParameterView({
     setExpanded(variations.length > 0);
   }, [setExpanded, variations.length]);
 
-  const headerColor = variations.length ? "orange" : "gray.300";
+  const headerColor = variations.length ? "orange.400" : "gray.300";
   return (
     <Box width="100%" mb={isExpanded ? 2 : 0}>
       <Button

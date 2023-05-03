@@ -123,7 +123,7 @@ export default memo(function NewVariationButtons({
     );
 
   return (
-    <VStack pl={2} wrap="wrap" spacing={0.5}>
+    <VStack wrap="wrap" spacing={0} height="60px">
       {newVariationButtons}
     </VStack>
   );
