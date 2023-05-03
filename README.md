@@ -37,7 +37,7 @@ yarn dev
 ### Tips
 
 - In this repo, patterns/effects at their core are just fragment shaders. They may seem scary at first, but with a proper introduction like in [The Book of Shaders](https://thebookofshaders.com/), you too could wield their considerable power!
-- We use [Chakra](https://chakra-ui.com/) for our UI in this repo. Check out the [available components here](https://chakra-ui.com/docs/components) as well as the [default theme](<https://chakra-ui.com/docs/styled-system/theme()>)
+- We use [Chakra](https://chakra-ui.com/) for our UI in this repo. Check out the [available components here](https://chakra-ui.com/docs/components) as well as the [default theme](https://chakra-ui.com/docs/styled-system/theme)
 - We use [MobX](https://github.com/mobxjs/mobx) for state management. It's not Redux!
 - We use [ThreeJS](https://threejs.org/) and [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) to render the shaders/3D canopy.
 - We use [`react-icons`](https://react-icons.github.io/react-icons/search) - just search for what you want and import the icon from the correct place.
