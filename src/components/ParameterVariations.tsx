@@ -64,27 +64,27 @@ export default observer(function ParameterVariations({
           >
             {variations.map((variation, index) => (
               <Fragment key={variation.id}>
-                <Draggable draggableId={variation.id} index={index}>
-                  {(provided, snapshot) => (
-                    <VStack
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <VariationGraph
-                        uniformName={uniformName}
-                        variation={variation}
-                        width={
-                          variation.duration < 0
-                            ? width
-                            : (variation.duration / block.duration) * width
-                        }
-                        domain={domain}
-                        block={block}
-                      />
-                    </VStack>
-                  )}
-                </Draggable>
+                {/* <Draggable draggableId={variation.id} index={index}>
+                  {(provided, snapshot) => (*/}
+                <VStack
+                  ref={provided.innerRef}
+                  // {...provided.draggableProps}
+                  // {...provided.dragHandleProps}
+                >
+                  <VariationGraph
+                    uniformName={uniformName}
+                    variation={variation}
+                    width={
+                      variation.duration < 0
+                        ? width
+                        : (variation.duration / block.duration) * width
+                    }
+                    domain={domain}
+                    block={block}
+                  />
+                </VStack>
+                {/*  )}
+               </Draggable> */}
                 <VariationBound
                   uniformName={uniformName}
                   block={block}

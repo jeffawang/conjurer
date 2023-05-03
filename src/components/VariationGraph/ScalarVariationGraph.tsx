@@ -4,6 +4,8 @@ import Variation from "@/src/types/Variations/Variation";
 import Block from "@/src/types/Block";
 import { memo } from "react";
 import { VARIATION_BOUND_WIDTH } from "@/src/utils/layout";
+import SplineVariation from "@/src/types/Variations/SplineVariation";
+import SplineVariationGraph from "@/src/components/VariationGraph/SplineVariationGraph";
 
 type ScalarVariationGraphProps = {
   uniformName: string;
@@ -20,6 +22,17 @@ export default memo(function ScalarVariationGraph({
   domain,
   block,
 }: ScalarVariationGraphProps) {
+  if (variation instanceof SplineVariation)
+    return (
+      <SplineVariationGraph
+        uniformName={uniformName}
+        variation={variation}
+        width={width}
+        domain={domain}
+        block={block}
+      />
+    );
+
   const data = variation.computeSampledData(variation.duration);
   return (
     <Box py={1} bgColor="gray.600" _hover={{ bgColor: "gray.500" }}>
