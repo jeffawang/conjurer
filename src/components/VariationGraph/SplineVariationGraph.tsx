@@ -1,11 +1,11 @@
 import { Box, useToken } from "@chakra-ui/react";
-import Variation from "@/src/types/Variations/Variation";
 import Block from "@/src/types/Block";
 import { memo, useEffect, useRef } from "react";
+import SplineVariation from "@/src/types/Variations/SplineVariation";
 
 type ScalarVariationGraphProps = {
   uniformName: string;
-  variation: Variation;
+  variation: SplineVariation;
   width: number;
   domain: [number, number];
   block: Block;
@@ -32,11 +32,12 @@ export default memo(function SplineVariationGraph({
       const CanvasSpliner = (await import("CanvasSpliner")).CanvasSpliner;
 
       const spliner = new CanvasSpliner(id, width, 58);
-      spliner.add({ x: 0, y: 0, xLocked: true, safe: true });
-      spliner.add({ x: 0.1, y: 0.4 });
-      spliner.add({ x: 0.3, y: 0.45 });
-      spliner.add({ x: 0.6, y: 1 });
-      spliner.add({ x: 1, y: 0.6, xLocked: true, safe: true });
+      for (let i = 0; i < variation.points.length; i++) {
+        const { x, y } = variation.points[i];
+        const xLocked = i === 0 || i === variation.points.length - 1;
+        const safe = i === 0 || i === variation.points.length - 1;
+        spliner.add({ x, y, xLocked, safe });
+      }
       spliner.setControlPointRadius(5);
       spliner.setControlPointColor("idle", orange);
       spliner.setControlPointColor("hovered", blue);
@@ -47,11 +48,14 @@ export default memo(function SplineVariationGraph({
       spliner.setTextColor("#ffffff");
       // spliner.setCurveThickness(5);
       // spliner.setBackgroundColor(null);
+
+      // TODO: attach listeners
+
       spliner.draw();
     };
 
     create();
-  }, [id, width, orange, blue]);
+  }, [variation.points, id, width, orange, blue]);
 
   return (
     <Box

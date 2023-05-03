@@ -20,6 +20,7 @@
     "@react-three/postprocessing": "^2.7.1",
     "@types/recharts": "^1.8.24",
     "CanvasSpliner": "jonathanlurie/CanvasSpliner",
+    "splines": "jonathanlurie/splines",
     "classnames": "^2.3.2",
     "framer-motion": "^10.10.0",
     "glslify-loader": "^2.0.0",

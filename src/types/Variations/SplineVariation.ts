@@ -1,41 +1,42 @@
 import Variation from "@/src/types/Variations/Variation";
+import { CubicSpline } from "splines";
 
 export default class SplineVariation extends Variation<number> {
-  // amplitude: number;
-  // frequency: number;
-  // phase: number;
-  // offset: number;
+  points: { x: number; y: number }[] = [];
+  spline: any;
 
-  constructor(
-    duration: number
-    // amplitude: number,
-    // frequency: number,
-    // phase: number,
-    // offset: number
-  ) {
+  constructor(duration: number, points?: { x: number; y: number }[]) {
     super("spline", duration);
 
-    // this.amplitude = amplitude;
-    // this.frequency = frequency;
-    // this.phase = phase;
-    // this.offset = offset;
+    this.points = points ?? [
+      { x: 0, y: 0 },
+      { x: 0.1, y: 0.4 },
+      { x: 0.3, y: 0.45 },
+      { x: 0.6, y: 1 },
+      { x: 1, y: 0.6 },
+    ];
+    this._computeSpline();
   }
 
-  valueAtTime = (time: number) => 0;
-  // Math.sin(time * this.frequency * 2 * Math.PI + this.phase) *
-  //   this.amplitude +
-  // this.offset;
+  private _computeSpline = () => {
+    const xSeries = [];
+    const ySeries = [];
+    for (var i = 0; i < this.points.length; i++) {
+      xSeries.push(this.points[i].x);
+      ySeries.push(this.points[i].y);
+    }
+    this.spline = new CubicSpline(xSeries, ySeries);
+  };
+
+  valueAtTime = (time: number) => {
+    const value = this.spline.interpolate(time / this.duration);
+    return value;
+  };
 
   computeDomain = () => [0, 1] as [number, number];
-  // [-this.amplitude + this.offset, this.amplitude + this.offset] as [
-  //   number,
-  //   number
-  // ];
 
   computeSampledData = (duration: number) => {
-    const samplingFrequency = 8;
-    // const samplingFrequency = 8 * this.frequency;
-    const totalSamples = Math.ceil(duration * samplingFrequency);
+    const totalSamples = Math.ceil(duration * 4);
 
     const data = [];
     for (let i = 0; i < totalSamples; i++) {
@@ -46,30 +47,14 @@ export default class SplineVariation extends Variation<number> {
     return data;
   };
 
-  clone = () =>
-    new SplineVariation(
-      this.duration
-      // this.amplitude,
-      // this.frequency,
-      // this.phase,
-      // this.offset
-    );
+  clone = () => new SplineVariation(this.duration, this.points);
 
   serialize = () => ({
     type: this.type,
     duration: this.duration,
-    // amplitude: this.amplitude,
-    // frequency: this.frequency,
-    // phase: this.phase,
-    // offset: this.offset,
+    points: this.points,
   });
 
   static deserialize = (data: any) =>
-    new SplineVariation(
-      data.duration
-      // data.amplitude,
-      // data.frequency,
-      // data.phase,
-      // data.offset
-    );
+    new SplineVariation(data.duration, data.points);
 }
