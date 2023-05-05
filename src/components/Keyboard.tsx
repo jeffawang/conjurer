@@ -30,7 +30,7 @@ export default observer(function Keyboard() {
         e.preventDefault();
       } else if (e.key === "Escape") store.deselectAllBlocks();
       else if (e.key === "Delete" || e.key === "Backspace") {
-        store.deleteSelectedBlocks();
+        store.deleteSelected();
       } else if (e.key === "d" && (e.ctrlKey || e.metaKey)) {
         store.duplicateBlocks();
         e.preventDefault();

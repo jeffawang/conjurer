@@ -158,9 +158,16 @@ export default class Store {
     this.selectedBlocks = new Set();
   };
 
-  deleteSelectedBlocks = () => {
-    this.blocks = this.blocks.filter((b) => !this.selectedBlocks.has(b));
-    this.selectedBlocks = new Set();
+  deleteSelected = () => {
+    if (this.selectedBlocks.size > 0) {
+      this.blocks = this.blocks.filter((b) => !this.selectedBlocks.has(b));
+      this.selectedBlocks = new Set();
+      return;
+    }
+
+    if (this.selectedVariationId) {
+      // TODO: delete variation
+    }
   };
 
   // TODO: this should use serialize/deserialize
