@@ -26,6 +26,7 @@ export default memo(function ScalarVariationGraph({
   if (variation instanceof SplineVariation)
     return (
       <SplineVariationGraph
+        key={width}
         uniformName={uniformName}
         variation={variation}
         width={width}

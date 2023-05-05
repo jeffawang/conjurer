@@ -31,7 +31,8 @@ export default memo(function SplineVariationGraph({
       // Cannot be run on the server, so we need to use dynamic import
       const CanvasSpliner = (await import("CanvasSpliner")).CanvasSpliner;
 
-      const spliner = new CanvasSpliner(id, width, 58);
+      const HEIGHT = 58;
+      const spliner = new CanvasSpliner(id, width, HEIGHT);
       for (let i = 0; i < variation.points.length; i++) {
         const { x, y } = variation.points[i];
         const xLocked = i === 0 || i === variation.points.length - 1;
@@ -43,19 +44,30 @@ export default memo(function SplineVariationGraph({
       spliner.setControlPointColor("hovered", blue);
       spliner.setControlPointColor("grabbed", blue);
       spliner.setCurveColor("idle", orange);
-      // spliner.setGridColor(5);
-      spliner.setGridStep(0.25);
       spliner.setTextColor("#ffffff");
+      spliner.setGridStep(0.25);
+      // spliner.setGridColor(5);
       // spliner.setCurveThickness(5);
       // spliner.setBackgroundColor(null);
 
-      // TODO: attach listeners
+      const handler = (newSpliner: any) => {
+        variation.points = newSpliner._pointCollection._points.map(
+          // renormalize points
+          (p: { x: number; y: number }) => ({
+            x: p.x / width,
+            y: p.y / HEIGHT,
+          })
+        );
+      };
+      spliner.on("movePoint", handler);
+      spliner.on("pointAdded", handler);
+      spliner.on("pointRemoved", handler);
 
       spliner.draw();
     };
 
     create();
-  }, [variation.points, id, width, orange, blue]);
+  }, [variation, id, width, orange, blue]);
 
   return (
     <Box

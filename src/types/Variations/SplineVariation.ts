@@ -2,8 +2,17 @@ import Variation from "@/src/types/Variations/Variation";
 import { CubicSpline } from "splines";
 
 export default class SplineVariation extends Variation<number> {
-  points: { x: number; y: number }[] = [];
+  private _points: { x: number; y: number }[] = [];
   spline: any;
+
+  get points() {
+    return this._points;
+  }
+
+  set points(points: { x: number; y: number }[]) {
+    this._points = points;
+    this._computeSpline();
+  }
 
   constructor(duration: number, points?: { x: number; y: number }[]) {
     super("spline", duration);
@@ -15,7 +24,6 @@ export default class SplineVariation extends Variation<number> {
       { x: 0.6, y: 1 },
       { x: 1, y: 0.6 },
     ];
-    this._computeSpline();
   }
 
   private _computeSpline = () => {
