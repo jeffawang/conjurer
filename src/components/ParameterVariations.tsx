@@ -1,5 +1,5 @@
 import { ExtraParams } from "@/src/types/PatternParams";
-import { HStack, Text, VStack } from "@chakra-ui/react";
+import { HStack, VStack } from "@chakra-ui/react";
 import Variation from "@/src/types/Variations/Variation";
 import VariationGraph from "@/src/components/VariationGraph/VariationGraph";
 import {
@@ -16,7 +16,7 @@ import NewVariationButtons from "@/src/components/NewVariationButtons";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import { Fragment } from "react";
-import { MdDragIndicator } from "react-icons/md";
+import VariationHandle from "@/src/components/VariationHandle";
 
 type ParameterVariationsProps = {
   uniformName: string;
@@ -29,7 +29,8 @@ export default observer(function ParameterVariations({
   block,
   variations,
 }: ParameterVariationsProps) {
-  const { uiStore } = useStore();
+  const store = useStore();
+  const { uiStore } = store;
   const width = uiStore.timeToX(block.duration);
 
   const domain: [number, number] = [0, 1];
@@ -77,11 +78,11 @@ export default observer(function ParameterVariations({
                       width={uiStore.timeToXPixels(variation.duration)}
                       justify="center"
                       spacing={0}
+                      cursor="move"
+                      role="button"
+                      onClick={() => store.selectVariation(variation)}
                     >
-                      <MdDragIndicator size={18} />
-                      <Text pointerEvents="none" fontSize="x-small">
-                        {variation.type}
-                      </Text>
+                      <VariationHandle variation={variation} />
                     </HStack>
                   )}
                 </Draggable>

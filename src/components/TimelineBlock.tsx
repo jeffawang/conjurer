@@ -111,7 +111,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
             textOverflow="clip"
             overflowWrap="anywhere"
           >
-            {`Pattern: ${block.pattern.name}`}
+            Pattern: {block.pattern.name}
           </Heading>
         </HStack>
         <ParametersList block={block} />
