@@ -1,5 +1,5 @@
 import { ExtraParams } from "@/src/types/PatternParams";
-import { HStack, VStack } from "@chakra-ui/react";
+import { HStack, Text, VStack } from "@chakra-ui/react";
 import Variation from "@/src/types/Variations/Variation";
 import VariationGraph from "@/src/components/VariationGraph/VariationGraph";
 import {
@@ -16,6 +16,7 @@ import NewVariationButtons from "@/src/components/NewVariationButtons";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import { Fragment } from "react";
+import { MdDragIndicator } from "react-icons/md";
 
 type ParameterVariationsProps = {
   uniformName: string;
@@ -39,11 +40,8 @@ export default observer(function ParameterVariations({
   }
 
   const onDragEnd: OnDragEndResponder = action((result) => {
-    // dropped outside the list, delete
-    if (!result.destination) {
-      block.removeVariation(uniformName, variations[result.source.index]);
-      return;
-    }
+    // dropped outside the list, do nothing
+    if (!result.destination) return;
 
     block.parameterVariations[uniformName] = reorder(
       variations,
@@ -51,52 +49,73 @@ export default observer(function ParameterVariations({
       result.destination.index
     );
   });
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId={block.id + uniformName} direction="horizontal">
-        {(provided, snapshot) => (
-          <HStack
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            width="100%"
-            justify="start"
-            spacing={0}
-          >
-            {variations.map((variation, index) => (
-              <Fragment key={variation.id}>
-                {/* <Draggable draggableId={variation.id} index={index}>
-                  {(provided, snapshot) => (*/}
-                <VStack
-                  ref={provided.innerRef}
-                  // {...provided.draggableProps}
-                  // {...provided.dragHandleProps}
+    <VStack spacing={0}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={block.id + uniformName} direction="horizontal">
+          {(provided, snapshot) => (
+            <HStack
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              width="100%"
+              justify="start"
+              spacing={0}
+            >
+              {variations.map((variation, index) => (
+                <Draggable
+                  draggableId={variation.id}
+                  index={index}
+                  key={variation.id}
                 >
-                  <VariationGraph
-                    uniformName={uniformName}
-                    variation={variation}
-                    width={
-                      variation.duration < 0
-                        ? width
-                        : (variation.duration / block.duration) * width
-                    }
-                    domain={domain}
-                    block={block}
-                  />
-                </VStack>
-                {/*  )}
-               </Draggable> */}
-                <VariationBound
-                  uniformName={uniformName}
-                  block={block}
-                  variation={variation}
-                />
-              </Fragment>
-            ))}
-            {provided.placeholder}
-            <NewVariationButtons uniformName={uniformName} block={block} />
-          </HStack>
-        )}
-      </Droppable>
-    </DragDropContext>
+                  {(provided, snapshot) => (
+                    <HStack
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      height={4}
+                      width={uiStore.timeToXPixels(variation.duration)}
+                      justify="center"
+                      spacing={0}
+                    >
+                      <MdDragIndicator size={18} />
+                      <Text pointerEvents="none" fontSize="x-small">
+                        {variation.type}
+                      </Text>
+                    </HStack>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </HStack>
+          )}
+        </Droppable>
+      </DragDropContext>
+      <HStack width="100%" justify="start" spacing={0}>
+        {variations.map((variation) => (
+          <Fragment key={variation.id}>
+            <VStack>
+              <VariationGraph
+                uniformName={uniformName}
+                variation={variation}
+                width={
+                  variation.duration < 0
+                    ? width
+                    : (variation.duration / block.duration) * width
+                }
+                domain={domain}
+                block={block}
+              />
+            </VStack>
+            <VariationBound
+              uniformName={uniformName}
+              block={block}
+              variation={variation}
+            />
+          </Fragment>
+        ))}
+        <NewVariationButtons uniformName={uniformName} block={block} />
+      </HStack>
+    </VStack>
   );
 });

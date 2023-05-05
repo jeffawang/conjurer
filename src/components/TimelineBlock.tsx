@@ -1,7 +1,7 @@
 import Block from "@/src/types/Block";
 import { useStore } from "@/src/types/StoreContext";
 import TimelineBlockBound from "@/src/components/TimelineBlockBound";
-import { Card, HStack, Heading, Text, VStack } from "@chakra-ui/react";
+import { Card, HStack, Heading } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
