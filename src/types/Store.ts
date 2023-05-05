@@ -63,8 +63,6 @@ export default class Store {
     makeAutoObservable(this, {
       _lastComputedCurrentBlock: false, // don't make this observable, since it's just a cache
     });
-
-    runInAction(() => this.initialize());
   }
 
   initialize = () => {
@@ -74,7 +72,6 @@ export default class Store {
 
     // set up an autosave interval
     setInterval(() => {
-      // TODO: fix this memory leak
       if (!this.timer.playing) this.saveToLocalStorage("autosave");
     }, 60 * 1000);
 
