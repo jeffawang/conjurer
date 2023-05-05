@@ -2,6 +2,7 @@ import FlatVariation from "@/src/types/Variations/FlatVariation";
 import LinearVariation from "@/src/types/Variations/LinearVariation";
 import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import SineVariation from "@/src/types/Variations/SineVariation";
+import SplineVariation from "@/src/types/Variations/SplineVariation";
 import Variation from "@/src/types/Variations/Variation";
 
 export const deserializeVariation = (data: any): Variation => {
@@ -12,6 +13,8 @@ export const deserializeVariation = (data: any): Variation => {
       return LinearVariation.deserialize(data);
     case "sine":
       return SineVariation.deserialize(data);
+    case "spline":
+      return SplineVariation.deserialize(data);
     case "linear4":
       return LinearVariation4.deserialize(data);
     default:

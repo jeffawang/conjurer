@@ -5,3 +5,12 @@
 .recharts-surface {
   overflow: visible;
 }
+
+.spline-container {
+  overflow: visible;
+}
+
+.spline-container canvas {
+  border-width: 0 !important;
+  overflow: visible;
+}

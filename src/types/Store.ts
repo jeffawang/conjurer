@@ -5,9 +5,15 @@ import UIStore from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";
 import { DEFAULT_BLOCK_DURATION } from "@/src/utils/time";
 import { patterns } from "@/src/patterns/patterns";
-import { makeAutoObservable, configure, runInAction } from "mobx";
+import {
+  makeAutoObservable,
+  configure,
+  runInAction,
+  getObserverTree,
+} from "mobx";
 import AudioStore from "@/src/types/AudioStore";
 import initialExperience from "@/src/data/initialExperience.json";
+import Variation from "@/src/types/Variations/Variation";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -26,6 +32,7 @@ export default class Store {
 
   blocks: Block[] = [];
   selectedBlocks: Set<Block> = new Set();
+  selectedVariationId: string = "";
 
   patterns: Pattern[] = patterns;
   selectedPattern: Pattern = patterns[0];
@@ -63,8 +70,6 @@ export default class Store {
     makeAutoObservable(this, {
       _lastComputedCurrentBlock: false, // don't make this observable, since it's just a cache
     });
-
-    runInAction(() => this.initialize());
   }
 
   initialize = () => {
@@ -74,7 +79,6 @@ export default class Store {
 
     // set up an autosave interval
     setInterval(() => {
-      // TODO: fix this memory leak
       if (!this.timer.playing) this.saveToLocalStorage("autosave");
     }, 60 * 1000);
 
@@ -151,12 +155,20 @@ export default class Store {
   };
 
   deselectAllBlocks = () => {
+    if (this.selectedBlocks.size === 0) return;
     this.selectedBlocks = new Set();
   };
 
-  deleteSelectedBlocks = () => {
-    this.blocks = this.blocks.filter((b) => !this.selectedBlocks.has(b));
-    this.selectedBlocks = new Set();
+  deleteSelected = () => {
+    if (this.selectedBlocks.size > 0) {
+      this.blocks = this.blocks.filter((b) => !this.selectedBlocks.has(b));
+      this.selectedBlocks = new Set();
+      return;
+    }
+
+    if (this.selectedVariationId) {
+      // TODO: delete variation
+    }
   };
 
   // TODO: this should use serialize/deserialize
@@ -345,6 +357,15 @@ export default class Store {
     }
 
     block.duration += delta;
+  };
+
+  selectVariation = (variation: Variation) => {
+    if (this.selectedVariationId === variation.id) {
+      this.selectedVariationId = "";
+      return;
+    }
+
+    this.selectedVariationId = variation.id;
   };
 
   saveToLocalStorage = (key: string) => {

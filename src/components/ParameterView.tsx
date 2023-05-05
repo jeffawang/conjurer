@@ -1,13 +1,11 @@
 import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
 import { Box, Button, HStack, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import Block from "@/src/types/Block";
 import NewVariationButtons from "@/src/components/NewVariationButtons";
 import ParameterVariations from "@/src/components/ParameterVariations";
 import { observer } from "mobx-react-lite";
-
-let didInitialize = false;
 
 type ParameterProps = {
   uniformName: string;
@@ -20,17 +18,18 @@ export default observer(function ParameterView({
   patternParam,
   block,
 }: ParameterProps) {
+  const didInitialize = useRef(false);
   const variations = block.parameterVariations[uniformName] ?? [];
   const [isExpanded, setExpanded] = useState(false);
 
   // only expand once we are on the client, otherwise dnd hydration errors occur
   useEffect(() => {
-    if (didInitialize) return;
-    didInitialize = true;
+    if (didInitialize.current) return;
+    didInitialize.current = true;
     setExpanded(variations.length > 0);
   }, [setExpanded, variations.length]);
 
-  const headerColor = variations.length ? "orange" : "gray.300";
+  const headerColor = variations.length ? "orange.400" : "gray.300";
   return (
     <Box width="100%" mb={isExpanded ? 2 : 0}>
       <Button

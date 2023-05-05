@@ -24,6 +24,7 @@ import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
 import { HexColorPicker } from "react-colorful";
 import { hexToRgb, vector4ToHex } from "@/src/utils/color";
 import { HexColorInput } from "react-colorful";
+import SplineVariation from "@/src/types/Variations/SplineVariation";
 
 type VariationControlsProps = {
   uniformName: string;
@@ -59,6 +60,14 @@ export default (function VariationControls(props: VariationControlsProps) {
         variation={variation}
       />
     );
+    // } else if (variation instanceof SplineVariation) {
+    //   controls = (
+    //     <SplineVariationControls
+    //       uniformName={uniformName}
+    //       block={block}
+    //       variation={variation}
+    //     />
+    //   );
   } else if (variation instanceof LinearVariation4) {
     controls = (
       <LinearVariation4Controls

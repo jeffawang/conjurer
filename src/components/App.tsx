@@ -2,8 +2,18 @@ import Arrangement from "@/src/components/Arrangement";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import Display from "@/src/components/Display";
 import PatternList from "@/src/components/PatternList";
+import { useEffect, useRef } from "react";
+import { useStore } from "@/src/types/StoreContext";
 
-export default function Editor() {
+export default function App() {
+  const store = useStore();
+  const didInitialize = useRef(false);
+  useEffect(() => {
+    if (didInitialize.current) return;
+    didInitialize.current = true;
+    store.initialize();
+  }, [store]);
+
   return (
     <Box w="100vw" h="100vh">
       <Grid

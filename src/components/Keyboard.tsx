@@ -10,6 +10,8 @@ export default observer(function Keyboard() {
 
   useEffect(() => {
     const handleKeyDown = action((e: KeyboardEvent) => {
+      if (document.activeElement?.nodeName === "INPUT") return;
+
       if (
         e.key === " " &&
         !e.ctrlKey &&
@@ -28,8 +30,7 @@ export default observer(function Keyboard() {
         e.preventDefault();
       } else if (e.key === "Escape") store.deselectAllBlocks();
       else if (e.key === "Delete" || e.key === "Backspace") {
-        // TODO: triggers when trying to backspace a number in an input field, fix
-        // store.deleteSelectedBlocks();
+        store.deleteSelected();
       } else if (e.key === "d" && (e.ctrlKey || e.metaKey)) {
         store.duplicateBlocks();
         e.preventDefault();
@@ -39,17 +40,20 @@ export default observer(function Keyboard() {
     window.addEventListener("keydown", handleKeyDown);
 
     const handleCopy = (e: ClipboardEvent) => {
-      if (!e.clipboardData) return;
-      // TODO: this interferes with the browser's default copy behavior in input fields
-      // store.copyBlocksToClipboard(e.clipboardData);
-      // e.preventDefault();
+      if (!e.clipboardData || document.activeElement?.nodeName === "INPUT")
+        return;
+
+      store.copyBlocksToClipboard(e.clipboardData);
+      e.preventDefault();
     };
     window.addEventListener("copy", handleCopy);
 
     const handlePaste = (e: ClipboardEvent) => {
-      if (!e.clipboardData) return;
-      // store.pasteBlocksFromClipboard(e.clipboardData);
-      // e.preventDefault();
+      if (!e.clipboardData || document.activeElement?.nodeName === "INPUT")
+        return;
+
+      store.pasteBlocksFromClipboard(e.clipboardData);
+      e.preventDefault();
     };
     window.addEventListener("paste", handlePaste);
 

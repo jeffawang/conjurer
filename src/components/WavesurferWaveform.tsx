@@ -31,8 +31,6 @@ export default observer(function WaveSurferWaveform() {
         waveColor: "#ddd",
         progressColor: "#0178FF",
         cursorColor: "#00000000",
-        barWidth: 2,
-        barRadius: 2,
         responsive: true,
         height: 32,
         normalize: true,
