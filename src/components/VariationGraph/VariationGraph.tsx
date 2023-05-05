@@ -47,7 +47,6 @@ export default (function VariationGraph({
       />
     );
 
-  // TODO: temporary
   if (variation instanceof SplineVariation) return variationGraph;
 
   return (
@@ -55,7 +54,6 @@ export default (function VariationGraph({
       placement="bottom"
       isLazy
       returnFocusOnClose={false}
-      // closeOnBlur={false}
       openDelay={0}
       closeDelay={0}
     >
