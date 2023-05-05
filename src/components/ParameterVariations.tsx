@@ -80,7 +80,10 @@ export default observer(function ParameterVariations({
                       spacing={0}
                       cursor="move"
                       role="button"
-                      onClick={() => store.selectVariation(variation)}
+                      onClick={(e) => {
+                        store.selectVariation(variation);
+                        e.stopPropagation();
+                      }}
                     >
                       <VariationHandle variation={variation} />
                     </HStack>

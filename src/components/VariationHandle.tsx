@@ -14,7 +14,10 @@ export default observer(function VariationHandle({
   const { selectedVariationId } = useStore();
 
   return (
-    <HStack color={selectedVariationId === variation.id ? "blue.500" : "white"}>
+    <HStack
+      spacing={0}
+      color={selectedVariationId === variation.id ? "blue.500" : "white"}
+    >
       <MdDragIndicator size={18} />
       <Text pointerEvents="none" fontSize="x-small">
         {variation.type}

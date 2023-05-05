@@ -155,6 +155,7 @@ export default class Store {
   };
 
   deselectAllBlocks = () => {
+    if (this.selectedBlocks.size === 0) return;
     this.selectedBlocks = new Set();
   };
 
