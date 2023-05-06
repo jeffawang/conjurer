@@ -141,20 +141,19 @@ float surface(vec4 coord) {
 }
 
 void main() {
-
-    float s = v_uv.x;
-    float t = v_uv.y;
+    float s = v_uv.x * u_scale;
+    float t = v_uv.y * u_scale;
 
     // Tiling 4d noise based on
     // https://gamedev.stackexchange.com/questions/23625/how-do-you-generate-tileable-perlin-noise/23639#23639
-    float multiplier = 1.0 / (2.0 * PI) * u_scale;
+    float multiplier = 1.0 / (2.0 * PI);
     float nx = cos(s * 2.0 * PI) * multiplier;
     float ny = cos(t * 2.0 * PI) * multiplier;
     float nz = sin(s * 2.0 * PI) * multiplier;
     float nw = sin(t * 2.0 * PI) * multiplier;
 
     // TODO: u_time, u_speed need to be applied differently. when input to surface becomes to high, doesn't work anymore
-    float surf = surface(vec4(nx, ny, nz, nw) + u_time * 0.005 * u_speed);
+    float surf = surface(vec4(nx, ny, nz, nw) + u_time * 0.05 * u_speed);
 
     gl_FragColor = u_color * vec4(vec3(surf), 1.0);
 }

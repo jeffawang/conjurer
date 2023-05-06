@@ -4,219 +4,145 @@
     {
       "pattern": "Disc",
       "startTime": 0,
-      "duration": 25.625,
-      "parameterVariations": {
-        "u_radius": [
-          {
-            "type": "sine",
-            "duration": 8,
-            "amplitude": 0.5,
-            "frequency": 0.5,
-            "phase": 0,
-            "offset": 0.5
-          },
-          { "type": "spline", "duration": 11.950000000000001 }
-        ],
-        "u_fuzziness": [{ "type": "flat", "duration": 2, "value": 0.5 }]
-      },
-      "blockEffects": [
-        {
-          "pattern": "Color Tint",
-          "startTime": 0,
-          "duration": 5,
-          "parameterVariations": {
-            "u_color": [
-              {
-                "type": "linear4",
-                "duration": 1.7750000000000004,
-                "from": [1, 0, 0, 1],
-                "to": [0.5019607843137255, 0.6, 0.09411764705882353, 1]
-              },
-              {
-                "type": "linear4",
-                "duration": 2,
-                "from": [0.5019607843137255, 0.6, 0.09411764705882353, 1],
-                "to": [0.12941176470588237, 0.6, 0.09411764705882353, 1]
-              },
-              {
-                "type": "linear4",
-                "duration": 2,
-                "from": [0.12941176470588237, 0.6, 0.09411764705882353, 1],
-                "to": [0.09411764705882353, 0.5647058823529412, 0.6, 1]
-              },
-              {
-                "type": "linear4",
-                "duration": 2,
-                "from": [0.09411764705882353, 0.5647058823529412, 0.6, 1],
-                "to": [0.09411764705882353, 0.17647058823529413, 0.6, 1]
-              }
-            ],
-            "u_intensity": [{ "type": "flat", "duration": 2, "value": 0.2 }]
-          },
-          "blockEffects": []
-        }
-      ]
-    },
-    {
-      "pattern": "Log Spirals",
-      "startTime": 25.625,
-      "duration": 19.10000000000001,
-      "parameterVariations": {
-        "u_colorIterations": [
-          { "type": "flat", "duration": 0.8777777777777778, "value": 8 },
-          { "type": "flat", "duration": 1.1444444444444444, "value": 12 },
-          { "type": "flat", "duration": 2.388888888888889, "value": 16 },
-          { "type": "flat", "duration": 2, "value": 32 }
-        ],
-        "u_colorRangeStart": []
-      },
-      "blockEffects": [
-        {
-          "pattern": "Color Tint",
-          "startTime": 0,
-          "duration": 5,
-          "parameterVariations": {
-            "u_color": [
-              {
-                "type": "linear4",
-                "duration": 2,
-                "from": [0, 0, 0, 1],
-                "to": [0, 0, 0, 1]
-              }
-            ],
-            "u_intensity": [
-              { "type": "flat", "duration": 0.22222222222222213, "value": 1 },
-              {
-                "type": "sine",
-                "duration": 0.36111111111111105,
-                "amplitude": 0.5,
-                "frequency": 1.9,
-                "phase": 3.7,
-                "offset": 0.5
-              },
-              { "type": "flat", "duration": 0.6888888888888889, "value": 1 },
-              {
-                "type": "sine",
-                "duration": 0.17222222222222217,
-                "amplitude": 0.5,
-                "frequency": 1.9,
-                "phase": 3.7,
-                "offset": 0.5
-              },
-              {
-                "type": "sine",
-                "duration": 0.36111111111111105,
-                "amplitude": 0.5,
-                "frequency": 1.9,
-                "phase": 3.7,
-                "offset": 0.5
-              },
-              { "type": "flat", "duration": 0.5666666666666667, "value": 1 },
-              {
-                "type": "sine",
-                "duration": 0.17222222222222217,
-                "amplitude": 0.5,
-                "frequency": 1.9,
-                "phase": 3.7,
-                "offset": 0.5
-              },
-              {
-                "type": "sine",
-                "duration": 0.6166666666666667,
-                "amplitude": 0.5,
-                "frequency": 1.9,
-                "phase": 3.7,
-                "offset": 0.5
-              },
-              { "type": "flat", "duration": 0.7888888888888888, "value": 0 },
-              {
-                "type": "sine",
-                "duration": 0.36111111111111105,
-                "amplitude": 0.5,
-                "frequency": 1.9,
-                "phase": 3.7,
-                "offset": 0.5
-              },
-              { "type": "flat", "duration": 1.1444444444444444, "value": 1 },
-              { "type": "flat", "duration": 2, "value": 0 }
-            ]
-          },
-          "blockEffects": []
-        }
-      ]
-    },
-    {
-      "pattern": "Clouds",
-      "startTime": 44.72500000000001,
-      "duration": 23.549999999999997,
+      "duration": 79.14088888888888,
       "parameterVariations": {
         "u_color": [
           {
             "type": "linear4",
-            "duration": 5,
-            "from": [0.0588, 1, 0.9216, 1],
-            "to": [0, 0.5, 1, 1]
+            "duration": 4.814499999999995,
+            "from": [1, 0, 0, 1],
+            "to": [0.32, 0.1, 0.6, 1]
+          },
+          {
+            "type": "linear4",
+            "duration": 10.5,
+            "from": [0.32, 0.1, 0.6, 1],
+            "to": [0.09411764705882353, 0.6, 0.21176470588235294, 1]
+          },
+          {
+            "type": "linear4",
+            "duration": 7.25,
+            "from": [0.09411764705882353, 0.6, 0.21176470588235294, 1],
+            "to": [0.6, 0.47058823529411764, 0.09411764705882353, 1]
+          },
+          {
+            "type": "linear4",
+            "duration": 6.944444444444445,
+            "from": [0.6, 0.47058823529411764, 0.09411764705882353, 1],
+            "to": [0.09411764705882353, 0.49019607843137253, 0.6, 1]
+          },
+          {
+            "type": "linear4",
+            "duration": 8.055555555555555,
+            "from": [0.09411764705882353, 0.49019607843137253, 0.6, 1],
+            "to": [0.09411764705882353, 0.1411764705882353, 0.6, 1]
           },
           {
             "type": "linear4",
             "duration": 10,
-            "from": [0, 0.5, 1, 1],
-            "to": [0.4588, 0.2, 0.7216, 1]
-          },
-          {
-            "type": "linear4",
-            "duration": 10,
-            "from": [0.4588, 0.2, 0.7216, 1],
-            "to": [0.9, 0.5, 0.2, 1]
+            "from": [0.09411764705882353, 0.1411764705882353, 0.6, 1],
+            "to": [0.32, 0.1, 0.6, 1]
           }
         ],
-        "u_speed": [
+        "u_radius": [
+          { "type": "flat", "duration": 2, "value": 0 },
           {
-            "type": "sine",
-            "duration": 4,
-            "amplitude": 0.5,
-            "frequency": 1,
-            "phase": 0,
-            "offset": -0.1
-          },
-          { "type": "flat", "duration": 1.5, "value": 0.1 },
-          { "type": "linear", "duration": 2, "from": 0.1, "to": 1 },
-          { "type": "linear", "duration": 10, "from": 1, "to": 1 }
-        ],
-        "u_scale": [{ "type": "linear", "duration": 5.5, "from": 0.5, "to": 1 }]
-      },
-      "blockEffects": []
-    },
-    {
-      "pattern": "Clouds",
-      "startTime": 68.275,
-      "duration": 38,
-      "parameterVariations": {
-        "u_speed": [{ "type": "flat", "duration": 2, "value": 7 }],
-        "u_scale": [{ "type": "flat", "duration": 2, "value": 1.6 }]
+            "type": "spline",
+            "duration": 75.752,
+            "points": [
+              { "x": 0, "y": 0 },
+              { "x": 0.10000000000000002, "y": 0.4 },
+              { "x": 0.29438166201441285, "y": 0.9499995790678879 },
+              { "x": 0.6, "y": 1 },
+              { "x": 1, "y": 0.6 }
+            ]
+          }
+        ]
       },
       "blockEffects": [
         {
-          "pattern": "Color Tint",
+          "pattern": "Shaper",
           "startTime": 0,
           "duration": 5,
-          "parameterVariations": {},
-          "blockEffects": []
-        },
-        {
-          "pattern": "Cartesian Proj",
-          "startTime": 0,
-          "duration": 5,
-          "parameterVariations": {},
+          "parameterVariations": {
+            "u_tiling": [
+              {
+                "type": "linear",
+                "duration": 34.14088888888888,
+                "from": 1,
+                "to": 16
+              },
+              {
+                "type": "linear",
+                "duration": 28.611111111111114,
+                "from": 16,
+                "to": 2
+              }
+            ],
+            "u_rotation": [
+              { "type": "linear", "duration": 76.252, "from": 0, "to": 20 }
+            ],
+            "u_circle_size": [
+              {
+                "type": "spline",
+                "duration": 43.001999999999995,
+                "points": [
+                  { "x": 0, "y": 0 },
+                  { "x": 0.1, "y": 0.4 },
+                  { "x": 0.3, "y": 0.45 },
+                  { "x": 0.44111046622454947, "y": 0.29137973127693967 },
+                  { "x": 0.5809727144725026, "y": 0.20517283472521552 },
+                  { "x": 0.8053888887551541, "y": 0.3172418002424569 },
+                  { "x": 1, "y": 0.06551703091325431 }
+                ]
+              },
+              { "type": "flat", "duration": 2, "value": 0 }
+            ],
+            "u_box_size": [
+              {
+                "type": "spline",
+                "duration": 74.627,
+                "points": [
+                  { "x": 0, "y": 0 },
+                  { "x": 0.023198718465695434, "y": 0.4804603313577586 },
+                  { "x": 0.10000000000000002, "y": 0.4 },
+                  { "x": 0.20326089435377884, "y": 0.6540232691271551 },
+                  { "x": 0.3, "y": 0.45 },
+                  { "x": 0.375673906268353, "y": 0.6689653067753233 },
+                  { "x": 0.4150363354159806, "y": 0.1172411688442888 },
+                  { "x": 0.47114873441366234, "y": 0.6517239274649784 },
+                  { "x": 0.5389861123063822, "y": 0.5310342722925646 },
+                  { "x": 0.5748589601421774, "y": 0.45689655172413796 },
+                  { "x": 0.6209213772298267, "y": 0.6120689655172413 },
+                  { "x": 0.6862462596450384, "y": 0.4224137931034483 },
+                  { "x": 0.7931296789339607, "y": 0.903448696794181 },
+                  { "x": 0.8296073910518567, "y": 0.6620693864493534 },
+                  { "x": 1, "y": 0.6 }
+                ]
+              }
+            ],
+            "u_brick_offset_x": [
+              { "type": "flat", "duration": 25.1875, "value": 0 },
+              { "type": "flat", "duration": 1.625, "value": 1 },
+              { "type": "flat", "duration": 2, "value": 0 },
+              { "type": "flat", "duration": 2, "value": 1 }
+            ],
+            "u_brick_offset_y": [
+              { "type": "flat", "duration": 29.72222222222222, "value": 0 },
+              { "type": "flat", "duration": 2, "value": 1 }
+            ],
+            "u_box_smooth": [{ "type": "flat", "duration": 2, "value": 0.3 }],
+            "u_circle_smooth": [{ "type": "flat", "duration": 2, "value": 0.2 }]
+          },
           "blockEffects": []
         }
       ]
     }
   ],
   "uiStore": {
-    "showingPerformance": false,
+    "showingPerformance": true,
     "displayingCanopy": true,
-    "pixelsPerSecond": 40,
+    "pixelsPerSecond": 16,
     "beatLength": 1
   }
 }
