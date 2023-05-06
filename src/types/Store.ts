@@ -171,36 +171,32 @@ export default class Store {
     }
   };
 
-  // TODO: this should use serialize/deserialize
   copyBlocksToClipboard = (clipboardData: DataTransfer) => {
     clipboardData.setData(
       "text/plain",
-      Array.from(this.selectedBlocks)
-        .map((b) => b.id)
-        .join(",")
+      JSON.stringify(Array.from(this.selectedBlocks).map((b) => b.serialize()))
     );
   };
 
-  // TODO: this should use serialize/deserialize
   pasteBlocksFromClipboard = (clipboardData: DataTransfer) => {
-    const ids = clipboardData.getData("text/plain").split(",");
-    const blocksToCopy = this.blocks.filter((b) => ids.includes(b.id));
-    if (blocksToCopy.length === 0) return;
+    const blocksData = JSON.parse(clipboardData.getData("text/plain"));
+    if (!blocksData || !blocksData.length) return;
 
+    const blocksToPaste = blocksData.map((b: any) => Block.deserialize(b));
     this.selectedBlocks = new Set();
-    for (const blockToCopy of blocksToCopy) {
-      const newBlock = blockToCopy.clone();
+    for (const blockToPaste of blocksToPaste) {
       const nextGap = this.nextFiniteGap(
         this.timer.globalTime,
-        blockToCopy.duration
+        blockToPaste.duration
       );
-      newBlock.setTiming(nextGap);
-      this.addBlock(newBlock);
-      this.addBlockToSelection(newBlock);
+      blockToPaste.setTiming(nextGap);
+      this.addBlock(blockToPaste);
+      this.addBlockToSelection(blockToPaste);
     }
   };
 
-  duplicateBlocks = () => {
+  duplicateSelected = () => {
+    // TODO: implement duplicating variations
     if (this.selectedBlocks.size === 0) return;
 
     const selectedBlocks = Array.from(this.selectedBlocks);

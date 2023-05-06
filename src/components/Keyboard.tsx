@@ -32,7 +32,7 @@ export default observer(function Keyboard() {
       else if (e.key === "Delete" || e.key === "Backspace") {
         store.deleteSelected();
       } else if (e.key === "d" && (e.ctrlKey || e.metaKey)) {
-        store.duplicateBlocks();
+        store.duplicateSelected();
         e.preventDefault();
       } else if (e.key === "+" || e.key === "=") uiStore.zoomIn();
       else if (e.key === "-") uiStore.zoomOut();
