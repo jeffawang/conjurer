@@ -11,9 +11,9 @@ const MIN_PIXELS_PER_SECOND = 4;
  * @class UIStore
  */
 export default class UIStore {
-  usingWavesurfer = true;
   showingPerformance = false;
   displayingCanopy = true;
+  showingWaveformOverlay = false;
 
   pixelsPerSecond = INITIAL_PIXELS_PER_SECOND; // the zoom of the timeline
   beatLength = 1; // length of a beat in seconds
@@ -44,16 +44,16 @@ export default class UIStore {
     }
   };
 
-  toggleWavesurfer = () => {
-    this.usingWavesurfer = !this.usingWavesurfer;
-  };
-
   togglePerformance = () => {
     this.showingPerformance = !this.showingPerformance;
   };
 
   toggleCanopyDisplay = () => {
     this.displayingCanopy = !this.displayingCanopy;
+  };
+
+  toggleWaveformOverlay = () => {
+    this.showingWaveformOverlay = !this.showingWaveformOverlay;
   };
 
   serialize = () => ({

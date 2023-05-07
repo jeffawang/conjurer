@@ -5,7 +5,6 @@ import { action } from "mobx";
 import PlayHead from "@/src/components/PlayHead";
 import { useRef } from "react";
 import { useWheelZooming } from "@/src/hooks/wheelZooming";
-import ShaderWaveform from "@/src/components/ShaderWaveform";
 import WavesurferWaveform from "@/src/components/WavesurferWaveform";
 import { MAX_TIME } from "@/src/utils/time";
 import TimelineBlockStacks from "@/src/components/TimelineBlockStacks";
@@ -56,7 +55,7 @@ export default observer(function Timeline() {
         })}
         zIndex={10}
       >
-        {uiStore.usingWavesurfer ? <WavesurferWaveform /> : <ShaderWaveform />}
+        <WavesurferWaveform />
         {/* Can reimplement Ruler if we want more functionality than Wavesurfer provides */}
         {/* <Ruler /> */}
         <PlayHead />

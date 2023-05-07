@@ -108,7 +108,15 @@ export default observer(function Controls() {
         title="Toggle waveform style"
         height={6}
         icon={<BsSoundwave size={17} />}
-        onClick={action(() => uiStore.toggleWavesurfer())}
+        bgColor={uiStore.showingWaveformOverlay ? "orange.700" : undefined}
+        _hover={
+          uiStore.showingWaveformOverlay
+            ? {
+                bgColor: "orange.600",
+              }
+            : undefined
+        }
+        onClick={action(() => uiStore.toggleWaveformOverlay())}
       />
       <Popover
         placement="bottom"
