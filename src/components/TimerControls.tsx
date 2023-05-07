@@ -5,7 +5,7 @@ import { MAX_TIME } from "@/src/utils/time";
 import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
 
-export default observer(function TimerControls() {
+export const TimerControls = observer(function TimerControls() {
   const { timer } = useStore();
 
   return (

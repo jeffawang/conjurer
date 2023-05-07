@@ -8,7 +8,7 @@ type VariationHandleProps = {
   variation: Variation;
 };
 
-export default observer(function VariationHandle({
+export const VariationHandle = observer(function VariationHandle({
   variation,
 }: VariationHandleProps) {
   const { selectedVariation } = useStore();

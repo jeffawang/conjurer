@@ -1,6 +1,6 @@
 import { Block } from "@/src/types/Block";
 import { ExtraParams } from "@/src/types/PatternParams";
-import ParameterView from "@/src/components/ParameterView";
+import { ParameterView } from "@/src/components/ParameterView";
 import { VStack } from "@chakra-ui/react";
 import { memo } from "react";
 
@@ -11,7 +11,7 @@ type ParametersListProps = {
   expandMode: "expanded" | "collapsed";
 };
 
-export default memo(function ParametersList({
+export const ParametersList = memo(function ParametersList({
   block,
   expandMode,
 }: ParametersListProps) {

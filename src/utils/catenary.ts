@@ -13,12 +13,12 @@ type Point = {
  * Ported from MATLAB code written by Yuval:
  * https://www.mathworks.com/matlabcentral/fileexchange/38550-catenary-hanging-rope-between-two-points
  */
-const catenary = (
+export const catenary = (
   { x: x1, y: y1 }: Point,
   { x: x2, y: y2 }: Point,
   rLength: number,
   N: number,
-  sagInit: number = 1,
+  sagInit: number = 1
 ) => {
   const maxIter = 100; // maximum number of iterations
   const minGrad = 1e-10; // minimum norm of gradient
@@ -103,8 +103,6 @@ const catenary = (
 
   return zip(X, Y);
 };
-
-export default catenary;
 
 /********************************************************************************
  * Helper methods

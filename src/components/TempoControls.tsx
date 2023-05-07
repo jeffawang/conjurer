@@ -13,7 +13,7 @@ import {
 import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
 
-export default observer(function SnapSettings() {
+export const SnapSettings = observer(function SnapSettings() {
   const store = useStore();
   const { uiStore } = store;
   const [recording, setRecording] = useState(false);

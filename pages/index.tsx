@@ -1,6 +1,6 @@
 import { Store } from "@/src/types/Store";
 import { StoreContext } from "@/src/types/StoreContext";
-import App from "@/src/components/App";
+import { App } from "@/src/components/App";
 import { ChakraProvider, theme } from "@chakra-ui/react";
 import Head from "next/head";
 

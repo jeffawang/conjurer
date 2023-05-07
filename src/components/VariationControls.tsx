@@ -30,7 +30,9 @@ type VariationControlsProps = {
   block: Block;
 };
 
-export default (function VariationControls(props: VariationControlsProps) {
+export const VariationControls = function VariationControls(
+  props: VariationControlsProps
+) {
   const { uniformName, variation, block } = props;
 
   let controls = <Text>Needs implementation!</Text>;
@@ -97,7 +99,7 @@ export default (function VariationControls(props: VariationControlsProps) {
       </HStack>
     </VStack>
   );
-});
+};
 
 type FlatVariationControlsProps = {
   uniformName: string;

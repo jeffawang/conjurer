@@ -20,7 +20,7 @@ type NewVariationButtonsProps = {
   block: Block<ExtraParams>;
 };
 
-export default memo(function NewVariationButtons({
+export const NewVariationButtons = memo(function NewVariationButtons({
   uniformName,
   block,
 }: NewVariationButtonsProps) {

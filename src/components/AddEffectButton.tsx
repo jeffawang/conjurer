@@ -19,7 +19,10 @@ type Props = {
   isSelected: boolean;
 };
 
-export default memo(function AddEffectButton({ block, isSelected }: Props) {
+export const AddEffectButton = memo(function AddEffectButton({
+  block,
+  isSelected,
+}: Props) {
   return (
     <Box
       width="100%"

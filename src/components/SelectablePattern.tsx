@@ -11,7 +11,7 @@ type SelectablePatternProps = {
   onInsert: () => void;
 };
 
-export default memo(function SelectablePattern({
+export const SelectablePattern = memo(function SelectablePattern({
   pattern,
   selected,
   onInsert,

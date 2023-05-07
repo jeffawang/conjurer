@@ -4,7 +4,7 @@ import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 
-export default observer(function Keyboard() {
+export const Keyboard = observer(function Keyboard() {
   const store = useStore();
   const { timer, uiStore } = store;
 

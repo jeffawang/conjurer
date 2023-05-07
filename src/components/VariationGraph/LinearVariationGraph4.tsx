@@ -13,7 +13,7 @@ type LinearVariationGraph4Props = {
   block: Block;
 };
 
-export default memo(function LinearVariationGraph4({
+export const LinearVariationGraph4 = memo(function LinearVariationGraph4({
   uniformName,
   variation,
   width,

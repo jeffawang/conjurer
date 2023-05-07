@@ -11,7 +11,7 @@ const formatTime = (time: number) => {
   }${seconds.toFixed(1)}`;
 };
 
-export default observer(function TimerReadout() {
+export const TimerReadout = observer(function TimerReadout() {
   const { timer } = useStore();
 
   return (

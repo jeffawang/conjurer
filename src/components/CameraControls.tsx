@@ -2,7 +2,7 @@ import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { PerspectiveCamera as PerspectiveCameraThree, Vector3 } from "three";
 import { memo, useRef } from "react";
 
-export default memo(function CameraControls() {
+export const CameraControls = memo(function CameraControls() {
   const cameraRef = useRef<PerspectiveCameraThree>();
   return (
     <>

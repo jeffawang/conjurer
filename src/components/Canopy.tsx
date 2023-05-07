@@ -10,17 +10,18 @@ import {
   LED_COUNTS,
   STRIP_LENGTH,
 } from "@/src/utils/size";
-import catenary from "@/src/utils/catenary";
+import { catenary } from "@/src/utils/catenary";
 
 type CanopyViewProps = {
   renderTarget: WebGLRenderTarget;
 };
 
-export default function Canopy({ renderTarget }: CanopyViewProps) {
+export const Canopy = function Canopy({ renderTarget }: CanopyViewProps) {
   const canopyMesh = useRef<THREE.Points>(null);
   const canopyUniforms = useRef({ u_texture: { value: renderTarget.texture } });
 
   const bufferGeometry = useMemo(() => {
+    // TODO: persist this calculation in a file somewhere
     const catenaryCoordinates = catenary(
       { x: APEX_RADIUS, y: APEX_HEIGHT },
       { x: BASE_RADIUS, y: 0 },
@@ -71,4 +72,4 @@ export default function Canopy({ renderTarget }: CanopyViewProps) {
       />
     </points>
   );
-}
+};

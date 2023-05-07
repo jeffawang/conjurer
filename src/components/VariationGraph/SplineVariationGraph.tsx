@@ -11,7 +11,7 @@ type ScalarVariationGraphProps = {
   block: Block;
 };
 
-export default memo(function SplineVariationGraph({
+export const SplineVariationGraph = memo(function SplineVariationGraph({
   uniformName,
   variation,
   width,

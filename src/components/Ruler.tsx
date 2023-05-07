@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import { MAX_TIME } from "@/src/utils/time";
 
-export default observer(function Ruler() {
+export const Ruler = observer(function Ruler() {
   const { uiStore } = useStore();
   const { pixelsPerSecond, beatLength } = uiStore;
 

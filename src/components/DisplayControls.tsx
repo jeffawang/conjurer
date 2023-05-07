@@ -6,7 +6,7 @@ import { FaDotCircle } from "react-icons/fa";
 import { TbRectangleFilled } from "react-icons/tb";
 import { AiOutlineLineChart } from "react-icons/ai";
 
-export default observer(function DisplayControls() {
+export const DisplayControls = observer(function DisplayControls() {
   const { uiStore } = useStore();
   return (
     <VStack p={2} position="absolute" top={0} left={0} zIndex={1}>

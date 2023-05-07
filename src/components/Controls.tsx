@@ -16,10 +16,10 @@ import {
   AUDIO_BUCKET_PREFIX,
   AUDIO_BUCKET_REGION,
 } from "@/src/utils/audio";
-import TimerControls from "@/src/components/TimerControls";
-import TimerReadout from "@/src/components/TimerReadout";
+import { TimerControls } from "@/src/components/TimerControls";
+import { TimerReadout } from "@/src/components/TimerReadout";
 
-export default observer(function Controls() {
+export const Controls = observer(function Controls() {
   const store = useStore();
   const { uiStore, audioStore } = store;
 

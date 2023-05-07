@@ -14,7 +14,7 @@ type ParameterProps = {
   variation: Variation;
 };
 
-export default memo(function VariationBound({
+export const VariationBound = memo(function VariationBound({
   uniformName,
   block,
   variation,

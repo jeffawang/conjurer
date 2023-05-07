@@ -1,9 +1,9 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import Controls from "@/src/components/Controls";
-import Timeline from "@/src/components/Timeline";
+import { Controls } from "@/src/components/Controls";
+import { Timeline } from "@/src/components/Timeline";
 import { memo } from "react";
 
-export default memo(function Arrangement() {
+export const Arrangement = memo(function Arrangement() {
   return (
     <Grid
       height="100%"

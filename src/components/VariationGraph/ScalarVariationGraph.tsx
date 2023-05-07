@@ -5,7 +5,7 @@ import { Block } from "@/src/types/Block";
 import { memo } from "react";
 import { VARIATION_BOUND_WIDTH } from "@/src/utils/layout";
 import { SplineVariation } from "@/src/types/Variations/SplineVariation";
-import SplineVariationGraph from "@/src/components/VariationGraph/SplineVariationGraph";
+import { SplineVariationGraph } from "@/src/components/VariationGraph/SplineVariationGraph";
 
 type ScalarVariationGraphProps = {
   uniformName: string;
@@ -15,7 +15,7 @@ type ScalarVariationGraphProps = {
   block: Block;
 };
 
-export default memo(function ScalarVariationGraph({
+export const ScalarVariationGraph = memo(function ScalarVariationGraph({
   uniformName,
   variation,
   width,

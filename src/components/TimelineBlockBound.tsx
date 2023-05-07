@@ -12,7 +12,7 @@ type TimelineBlockProps = {
   rightBound?: boolean;
 };
 
-export default observer(function TimelineBlockBound({
+export const TimelineBlockBound = observer(function TimelineBlockBound({
   block,
   leftBound,
   rightBound,

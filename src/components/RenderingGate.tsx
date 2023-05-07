@@ -3,7 +3,7 @@ import { useThree } from "@react-three/fiber";
 
 // RenderingGate should only be used with a <Canvas frameloop="demand">. It will advance the render
 // loop (which will call all useFrame functions) only when shouldRender is true.
-export default memo(function RenderingGate({
+export const RenderingGate = memo(function RenderingGate({
   shouldRender,
 }: {
   shouldRender: boolean;

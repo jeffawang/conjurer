@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
-import TimelineBlockStack from "@/src/components/TimelineBlockStack";
+import { TimelineBlockStack } from "@/src/components/TimelineBlockStack";
 import { useStore } from "@/src/types/StoreContext";
 import { Box } from "@chakra-ui/react";
 import { MAX_TIME } from "@/src/utils/time";
 
-export default observer(function TimelineBlockStacks() {
+export const TimelineBlockStacks = observer(function TimelineBlockStacks() {
   const { patternBlocks, uiStore } = useStore();
 
   return (
