@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import { ListObjectsCommand, S3Client } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { observer } from "mobx-react-lite";
-import { HStack, IconButton, Select, Text } from "@chakra-ui/react";
+import { HStack, IconButton, Select, Tooltip } from "@chakra-ui/react";
 import { RiZoomInLine, RiZoomOutLine } from "react-icons/ri";
 import { BsSoundwave } from "react-icons/bs";
 import { BiTimer } from "react-icons/bi";
 import { FaFolderOpen, FaRegClipboard } from "react-icons/fa";
+import { HiOutlineInformationCircle } from "react-icons/hi";
 import { FiSave } from "react-icons/fi";
 import { useStore } from "@/src/types/StoreContext";
 import { action, runInAction } from "mobx";
@@ -149,7 +150,11 @@ export default observer(function Controls() {
           </option>
         ))}
       </Select>
-      <Text fontSize={12}>(contact Ben to have your music added!)</Text>
+      <Tooltip label="Contact Ben to have your music added!" fontSize="xs">
+        <span>
+          <HiOutlineInformationCircle />
+        </span>
+      </Tooltip>
     </HStack>
   );
 });
