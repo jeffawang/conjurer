@@ -1,16 +1,16 @@
 import { observer } from "mobx-react-lite";
-import TimelineBlock from "@/src/components/TimelineBlock";
+import TimelineBlockStack from "@/src/components/TimelineBlockStack";
 import { useStore } from "@/src/types/StoreContext";
 import { Box } from "@chakra-ui/react";
 import { MAX_TIME } from "@/src/utils/time";
 
-export default observer(function PatternBlocks() {
-  const { blocks, uiStore } = useStore();
+export default observer(function TimelineBlockStacks() {
+  const { patternBlocks, uiStore } = useStore();
 
   return (
     <Box position="relative" width={uiStore.timeToXPixels(MAX_TIME)}>
-      {blocks.map((block) => (
-        <TimelineBlock key={block.id} block={block} />
+      {patternBlocks.map((block) => (
+        <TimelineBlockStack key={block.id} patternBlock={block} />
       ))}
     </Box>
   );

@@ -1,8 +1,8 @@
 import Block from "@/src/types/Block";
 import { useStore } from "@/src/types/StoreContext";
 import TimelineBlockBound from "@/src/components/TimelineBlockBound";
-import { Card, HStack, Heading } from "@chakra-ui/react";
-import { action } from "mobx";
+import { Card } from "@chakra-ui/react";
+import { action, computed } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
   MouseEvent as ReactMouseEvent,
@@ -13,15 +13,14 @@ import {
 import Draggable from "react-draggable";
 import { DraggableData } from "react-draggable";
 import { DraggableEvent } from "react-draggable";
-import { MdDragIndicator } from "react-icons/md";
-import ParametersList from "@/src/components/ParametersList";
-import TimelineBlockEffects from "@/src/components/TimelineBlockEffects";
+import PatternOrEffectBlock from "@/src/components/PatternOrEffectBlock";
+import AddEffectButton from "@/src/components/AddEffectButton";
 
-type TimelineBlockProps = {
-  block: Block;
+type Props = {
+  patternBlock: Block;
 };
 
-export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
+export default observer(function TimelineBlockStack({ patternBlock }: Props) {
   const store = useStore();
   const { selectedBlocks, uiStore } = store;
 
@@ -35,13 +34,18 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
     setPosition({ x: data.x, y: 0 });
   }, []);
   // handle moving a block to a new start time
-  const handleDragStop = action(() => {
+  const handleDragStop = action((e: DraggableEvent, data: DraggableData) => {
+    if (Math.abs(position.x) < 1) return;
+
     // prevent block overlaps for now by snapping to nearest valid start time
     const validTimeDelta = store.nearestValidStartTimeDelta(
-      block,
+      patternBlock,
       uiStore.xToTime(position.x)
     );
-    store.changeBlockStartTime(block, block.startTime + validTimeDelta);
+    store.changeBlockStartTime(
+      patternBlock,
+      patternBlock.startTime + validTimeDelta
+    );
     setPosition({ x: 0, y: 0 });
   });
 
@@ -53,19 +57,22 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
     (e: ReactMouseEvent) => {
       if (Math.abs(e.clientX - lastMouseDown.current) > 5) return;
 
-      if (selectedBlocks.has(block)) {
-        store.deselectBlock(block);
+      if (selectedBlocks.has(patternBlock)) {
+        store.deselectBlock(patternBlock);
       } else if (e.shiftKey) {
-        store.addBlockToSelection(block);
+        store.addBlockToSelection(patternBlock);
       } else {
-        store.selectBlock(block);
+        store.selectBlock(patternBlock);
       }
       e.stopPropagation();
     },
-    [store, block, selectedBlocks]
+    [store, patternBlock, selectedBlocks]
   );
 
-  const isSelected = selectedBlocks.has(block);
+  // cache this value, see https://mobx.js.org/computeds-with-args.html
+  const isSelected = computed(() =>
+    store.selectedBlocks.has(patternBlock)
+  ).get();
 
   return (
     <Draggable
@@ -82,43 +89,32 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         ref={dragNodeRef}
         position="absolute"
         top={0}
-        left={uiStore.timeToXPixels(block.startTime)}
-        width={uiStore.timeToXPixels(block.duration)}
+        left={uiStore.timeToXPixels(patternBlock.startTime)}
+        width={uiStore.timeToXPixels(patternBlock.duration)}
         minHeight="100%"
         border="solid"
         borderColor={isSelected ? "blue.500" : "white"}
         borderWidth={3}
         alignItems="center"
       >
-        <TimelineBlockBound block={block} leftBound />
-        <TimelineBlockBound block={block} rightBound />
+        <TimelineBlockBound block={patternBlock} leftBound />
+        <TimelineBlockBound block={patternBlock} rightBound />
 
-        <HStack
-          pt={2}
-          width="100%"
-          color={isSelected ? "blue.500" : "white"}
-          className="handle"
-          justify="center"
-          cursor="move"
-          spacing={0}
-          onClick={handleBlockClick}
-          role="button"
-        >
-          <MdDragIndicator size={30} />
-          <Heading
-            size="md"
-            userSelect="none"
-            textOverflow="clip"
-            overflowWrap="anywhere"
-          >
-            Pattern: {block.pattern.name}
-          </Heading>
-        </HStack>
-        <ParametersList block={block} />
-        <TimelineBlockEffects
-          block={block}
+        <PatternOrEffectBlock
+          block={patternBlock}
           handleBlockClick={handleBlockClick}
+          isSelected={isSelected}
         />
+        {patternBlock.effectBlocks.map((effectBlock, index) => (
+          <PatternOrEffectBlock
+            key={effectBlock.id}
+            block={effectBlock}
+            effectIndex={index}
+            handleBlockClick={handleBlockClick}
+            isSelected={isSelected}
+          />
+        ))}
+        <AddEffectButton block={patternBlock} isSelected={isSelected} />
       </Card>
     </Draggable>
   );

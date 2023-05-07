@@ -1,6 +1,6 @@
 import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
 import { Box, Button, HStack, Text } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import Block from "@/src/types/Block";
 import NewVariationButtons from "@/src/components/NewVariationButtons";
@@ -11,27 +11,27 @@ type ParameterProps = {
   uniformName: string;
   patternParam: PatternParam;
   block: Block<ExtraParams>;
+  expandMode: "expanded" | "collapsed";
 };
 
 export default observer(function ParameterView({
   uniformName,
   patternParam,
   block,
+  expandMode,
 }: ParameterProps) {
-  const didInitialize = useRef(false);
   const variations = block.parameterVariations[uniformName] ?? [];
-  const [isExpanded, setExpanded] = useState(false);
-
-  // only expand once we are on the client, otherwise dnd hydration errors occur
-  useEffect(() => {
-    if (didInitialize.current) return;
-    didInitialize.current = true;
-    setExpanded(variations.length > 0);
-  }, [setExpanded, variations.length]);
+  const [isExpanded, setExpanded] = useState(expandMode === "expanded");
 
   const headerColor = variations.length ? "orange.400" : "gray.300";
   return (
-    <Box width="100%" mb={isExpanded ? 2 : 0}>
+    <Box
+      width="100%"
+      pb={isExpanded ? 2 : 0}
+      borderStyle="dashed"
+      borderBottomWidth={1}
+      borderColor="gray.500"
+    >
       <Button
         variant="ghost"
         width="100%"
@@ -65,11 +65,7 @@ export default observer(function ParameterView({
             <NewVariationButtons uniformName={uniformName} block={block} />
           </HStack>
         ) : (
-          <ParameterVariations
-            uniformName={uniformName}
-            block={block}
-            variations={variations}
-          />
+          <ParameterVariations uniformName={uniformName} block={block} />
         ))}
     </Box>
   );

@@ -1,6 +1,5 @@
 import { ParamType } from "@/src/types/PatternParams";
 
-// TODO: implement more variation types
 type VariationType = "flat" | "linear" | "sine" | "spline" | "linear4";
 // | "random"
 // | "saw"

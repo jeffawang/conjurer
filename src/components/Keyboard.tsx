@@ -32,7 +32,7 @@ export default observer(function Keyboard() {
       else if (e.key === "Delete" || e.key === "Backspace") {
         store.deleteSelected();
       } else if (e.key === "d" && (e.ctrlKey || e.metaKey)) {
-        store.duplicateBlocks();
+        store.duplicateSelected();
         e.preventDefault();
       } else if (e.key === "+" || e.key === "=") uiStore.zoomIn();
       else if (e.key === "-") uiStore.zoomOut();
@@ -65,7 +65,7 @@ export default observer(function Keyboard() {
   }, [store, timer, uiStore]);
 
   return (
-    <VStack>
+    <VStack textAlign={"center"}>
       <Text fontSize={9} userSelect="none">
         <Kbd>spacebar</Kbd>: play/pause
       </Text>
@@ -76,19 +76,19 @@ export default observer(function Keyboard() {
         <Kbd>+</Kbd>/<Kbd>-</Kbd>: zoom in/out
       </Text>
       <Text fontSize={9} userSelect="none">
+        <Kbd>cmd</Kbd>+<Kbd>a</Kbd>: select all blocks
+      </Text>
+      <Text fontSize={9} userSelect="none">
         <Kbd>cmd</Kbd>+<Kbd>c</Kbd>: copy block(s)
       </Text>
       <Text fontSize={9} userSelect="none">
         <Kbd>cmd</Kbd>+<Kbd>v</Kbd>: paste block(s)
       </Text>
       <Text fontSize={9} userSelect="none">
-        <Kbd>cmd</Kbd>+<Kbd>d</Kbd>: duplicate block(s)
+        <Kbd>cmd</Kbd>+<Kbd>d</Kbd>: duplicate selected block(s)/variation(s)
       </Text>
       <Text fontSize={9} userSelect="none">
-        <Kbd>cmd</Kbd>+<Kbd>a</Kbd>: select all blocks
-      </Text>
-      <Text fontSize={9} userSelect="none">
-        <Kbd>delete</Kbd>: delete selected block(s)
+        <Kbd>delete</Kbd>: delete selected block(s)/variation(s)
       </Text>
       {/* <Text>cmd+z: undo</Text> */}
       {/* <Text>cmd+shift+z: redo</Text> */}

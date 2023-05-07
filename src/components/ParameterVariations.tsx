@@ -1,6 +1,5 @@
 import { ExtraParams } from "@/src/types/PatternParams";
 import { HStack, VStack } from "@chakra-ui/react";
-import Variation from "@/src/types/Variations/Variation";
 import VariationGraph from "@/src/components/VariationGraph/VariationGraph";
 import {
   DragDropContext,
@@ -21,17 +20,16 @@ import VariationHandle from "@/src/components/VariationHandle";
 type ParameterVariationsProps = {
   uniformName: string;
   block: Block<ExtraParams>;
-  variations: Variation[];
 };
 
 export default observer(function ParameterVariations({
   uniformName,
   block,
-  variations,
 }: ParameterVariationsProps) {
   const store = useStore();
   const { uiStore } = store;
   const width = uiStore.timeToX(block.duration);
+  const variations = block.parameterVariations[uniformName] ?? [];
 
   const domain: [number, number] = [0, 1];
   for (const variation of variations) {
@@ -78,10 +76,10 @@ export default observer(function ParameterVariations({
                       width={uiStore.timeToXPixels(variation.duration)}
                       justify="center"
                       spacing={0}
-                      cursor="move"
+                      cursor="grab"
                       role="button"
                       onClick={(e) => {
-                        store.selectVariation(variation);
+                        store.selectVariation(block, uniformName, variation);
                         e.stopPropagation();
                       }}
                     >

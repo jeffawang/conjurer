@@ -1,15 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { Box } from "@chakra-ui/react";
-import Ruler from "@/src/components/Ruler";
 import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
 import PlayHead from "@/src/components/PlayHead";
 import { useRef } from "react";
 import { useWheelZooming } from "@/src/hooks/wheelZooming";
-import ShaderWaveform from "@/src/components/ShaderWaveform";
 import WavesurferWaveform from "@/src/components/WavesurferWaveform";
 import { MAX_TIME } from "@/src/utils/time";
-import PatternBlocks from "@/src/components/PatternBlocks";
+import TimelineBlockStacks from "@/src/components/TimelineBlockStacks";
 
 export default observer(function Timeline() {
   const store = useStore();
@@ -57,11 +55,12 @@ export default observer(function Timeline() {
         })}
         zIndex={10}
       >
-        {uiStore.usingWavesurfer ? <WavesurferWaveform /> : <ShaderWaveform />}
-        <Ruler />
+        <WavesurferWaveform />
+        {/* Can reimplement Ruler if we want more functionality than Wavesurfer provides */}
+        {/* <Ruler /> */}
         <PlayHead />
       </Box>
-      <PatternBlocks />
+      <TimelineBlockStacks />
     </Box>
   );
 });

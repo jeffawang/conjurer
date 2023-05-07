@@ -5,12 +5,7 @@ import UIStore from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";
 import { DEFAULT_BLOCK_DURATION } from "@/src/utils/time";
 import { patterns } from "@/src/patterns/patterns";
-import {
-  makeAutoObservable,
-  configure,
-  runInAction,
-  getObserverTree,
-} from "mobx";
+import { makeAutoObservable, configure } from "mobx";
 import AudioStore from "@/src/types/AudioStore";
 import initialExperience from "@/src/data/initialExperience.json";
 import Variation from "@/src/types/Variations/Variation";
@@ -30,9 +25,12 @@ export default class Store {
   uiStore = new UIStore();
   audioStore = new AudioStore();
 
-  blocks: Block[] = [];
+  patternBlocks: Block[] = [];
   selectedBlocks: Set<Block> = new Set();
-  selectedVariationId: string = "";
+
+  selectedVariationBlock: Block | null = null;
+  selectedVariationUniformName: string = "";
+  selectedVariation: Variation | null = null;
 
   patterns: Pattern[] = patterns;
   selectedPattern: Pattern = patterns[0];
@@ -52,17 +50,18 @@ export default class Store {
     }
 
     const currentBlockIndex = binarySearchForBlockAtTime(
-      this.blocks,
+      this.patternBlocks,
       this.timer.globalTime
     );
-    this._lastComputedCurrentBlock = this.blocks[currentBlockIndex] ?? null;
+    this._lastComputedCurrentBlock =
+      this.patternBlocks[currentBlockIndex] ?? null;
     return this._lastComputedCurrentBlock;
   }
 
   get endTime() {
-    if (this.blocks.length === 0) return 0;
+    if (this.patternBlocks.length === 0) return 0;
 
-    const lastBlock = this.blocks[this.blocks.length - 1];
+    const lastBlock = this.patternBlocks[this.patternBlocks.length - 1];
     return lastBlock.endTime;
   }
 
@@ -108,17 +107,19 @@ export default class Store {
 
   addBlock = (block: Block) => {
     // insert block in sorted order
-    const index = this.blocks.findIndex((b) => b.startTime > block.startTime);
+    const index = this.patternBlocks.findIndex(
+      (b) => b.startTime > block.startTime
+    );
     if (index === -1) {
-      this.blocks.push(block);
+      this.patternBlocks.push(block);
       return;
     }
 
-    this.blocks.splice(index, 0, block);
+    this.patternBlocks.splice(index, 0, block);
   };
 
   removeBlock = (block: Block) => {
-    this.blocks = this.blocks.filter((b) => b !== block);
+    this.patternBlocks = this.patternBlocks.filter((b) => b !== block);
   };
 
   /**
@@ -151,7 +152,7 @@ export default class Store {
   };
 
   selectAllBlocks = () => {
-    this.selectedBlocks = new Set(this.blocks);
+    this.selectedBlocks = new Set(this.patternBlocks);
   };
 
   deselectAllBlocks = () => {
@@ -161,59 +162,67 @@ export default class Store {
 
   deleteSelected = () => {
     if (this.selectedBlocks.size > 0) {
-      this.blocks = this.blocks.filter((b) => !this.selectedBlocks.has(b));
+      this.patternBlocks = this.patternBlocks.filter(
+        (b) => !this.selectedBlocks.has(b)
+      );
       this.selectedBlocks = new Set();
       return;
     }
 
-    if (this.selectedVariationId) {
-      // TODO: delete variation
+    if (this.selectedVariation) {
+      this.selectedVariationBlock?.removeVariation(
+        this.selectedVariationUniformName,
+        this.selectedVariation
+      );
     }
   };
 
-  // TODO: this should use serialize/deserialize
   copyBlocksToClipboard = (clipboardData: DataTransfer) => {
     clipboardData.setData(
       "text/plain",
-      Array.from(this.selectedBlocks)
-        .map((b) => b.id)
-        .join(",")
+      JSON.stringify(Array.from(this.selectedBlocks).map((b) => b.serialize()))
     );
   };
 
-  // TODO: this should use serialize/deserialize
   pasteBlocksFromClipboard = (clipboardData: DataTransfer) => {
-    const ids = clipboardData.getData("text/plain").split(",");
-    const blocksToCopy = this.blocks.filter((b) => ids.includes(b.id));
-    if (blocksToCopy.length === 0) return;
+    const blocksData = JSON.parse(clipboardData.getData("text/plain"));
+    if (!blocksData || !blocksData.length) return;
 
+    const blocksToPaste = blocksData.map((b: any) => Block.deserialize(b));
     this.selectedBlocks = new Set();
-    for (const blockToCopy of blocksToCopy) {
-      const newBlock = blockToCopy.clone();
+    for (const blockToPaste of blocksToPaste) {
       const nextGap = this.nextFiniteGap(
         this.timer.globalTime,
-        blockToCopy.duration
+        blockToPaste.duration
       );
-      newBlock.setTiming(nextGap);
-      this.addBlock(newBlock);
-      this.addBlockToSelection(newBlock);
+      blockToPaste.setTiming(nextGap);
+      this.addBlock(blockToPaste);
+      this.addBlockToSelection(blockToPaste);
     }
   };
 
-  duplicateBlocks = () => {
-    if (this.selectedBlocks.size === 0) return;
+  duplicateSelected = () => {
+    if (this.selectedBlocks.size > 0) {
+      const selectedBlocks = Array.from(this.selectedBlocks);
+      this.selectedBlocks = new Set();
+      for (const selectedBlock of selectedBlocks) {
+        const newBlock = selectedBlock.clone();
+        const nextGap = this.nextFiniteGap(
+          selectedBlock.endTime,
+          selectedBlock.duration
+        );
+        newBlock.setTiming(nextGap);
+        this.addBlock(newBlock);
+        this.addBlockToSelection(newBlock);
+      }
+      return;
+    }
 
-    const selectedBlocks = Array.from(this.selectedBlocks);
-    this.selectedBlocks = new Set();
-    for (const selectedBlock of selectedBlocks) {
-      const newBlock = selectedBlock.clone();
-      const nextGap = this.nextFiniteGap(
-        selectedBlock.endTime,
-        selectedBlock.duration
+    if (this.selectedVariation) {
+      this.selectedVariationBlock?.duplicateVariation(
+        this.selectedVariationUniformName,
+        this.selectedVariation
       );
-      newBlock.setTiming(nextGap);
-      this.addBlock(newBlock);
-      this.addBlockToSelection(newBlock);
     }
   };
 
@@ -226,10 +235,10 @@ export default class Store {
    */
   nextGap = (fromTime: number): { startTime: number; duration?: number } => {
     // no blocks
-    if (this.blocks.length === 0) return { startTime: fromTime };
+    if (this.patternBlocks.length === 0) return { startTime: fromTime };
 
     // fromTime is before first block
-    const firstBlock = this.blocks[0];
+    const firstBlock = this.patternBlocks[0];
     if (fromTime < firstBlock.startTime) {
       return {
         startTime: fromTime,
@@ -243,9 +252,9 @@ export default class Store {
     }
 
     // fromTime is in between start of first block and end of last block
-    for (let i = 0; i < this.blocks.length; i++) {
-      const block = this.blocks[i];
-      const nextBlock = this.blocks[i + 1];
+    for (let i = 0; i < this.patternBlocks.length; i++) {
+      const block = this.patternBlocks[i];
+      const nextBlock = this.patternBlocks[i + 1];
 
       // fromTime is in this block
       if (block.startTime <= fromTime && fromTime < block.endTime) {
@@ -301,7 +310,7 @@ export default class Store {
   nearestValidStartTimeDelta = (block: Block, desiredDeltaTime: number) => {
     const desiredStartTime = block.startTime + desiredDeltaTime;
     const desiredEndTime = block.endTime + desiredDeltaTime;
-    for (const otherBlock of this.blocks) {
+    for (const otherBlock of this.patternBlocks) {
       if (otherBlock === block) continue;
 
       // check if desired time span overlaps with other block
@@ -325,7 +334,8 @@ export default class Store {
     if (desiredStartTime >= block.endTime) return;
 
     // do not allow changing start of this block before end of prior block
-    const previousBlock = this.blocks[this.blocks.indexOf(block) - 1];
+    const previousBlock =
+      this.patternBlocks[this.patternBlocks.indexOf(block) - 1];
     if (previousBlock && desiredStartTime < previousBlock.endTime) {
       block.duration = block.endTime - previousBlock.endTime;
       block.startTime = previousBlock.endTime;
@@ -350,7 +360,7 @@ export default class Store {
     if (desiredEndTime <= block.startTime) return;
 
     // do not allow changing end of block past start of next block
-    const nextBlock = this.blocks[this.blocks.indexOf(block) + 1];
+    const nextBlock = this.patternBlocks[this.patternBlocks.indexOf(block) + 1];
     if (nextBlock && desiredEndTime > nextBlock.startTime) {
       block.duration = nextBlock.startTime - block.startTime;
       return;
@@ -359,13 +369,21 @@ export default class Store {
     block.duration += delta;
   };
 
-  selectVariation = (variation: Variation) => {
-    if (this.selectedVariationId === variation.id) {
-      this.selectedVariationId = "";
+  selectVariation = (
+    block: Block,
+    uniformName: string,
+    variation: Variation
+  ) => {
+    if (this.selectedVariation?.id === variation.id) {
+      this.selectedVariation = null;
+      this.selectedVariationUniformName = "";
+      this.selectedVariationBlock = null;
       return;
     }
 
-    this.selectedVariationId = variation.id;
+    this.selectedVariation = variation;
+    this.selectedVariationUniformName = uniformName;
+    this.selectedVariationBlock = block;
   };
 
   saveToLocalStorage = (key: string) => {
@@ -383,14 +401,14 @@ export default class Store {
 
   serialize = () => ({
     audioStore: this.audioStore.serialize(),
-    blocks: this.blocks.map((b) => b.serialize()),
+    blocks: this.patternBlocks.map((b) => b.serialize()),
     uiStore: this.uiStore.serialize(),
   });
 
   deserialize = (data: any) => {
     this.audioStore.deserialize(data.audioStore);
     this.uiStore.deserialize(data.uiStore);
-    this.blocks = data.blocks.map((b: any) => Block.deserialize(b));
+    this.patternBlocks = data.blocks.map((b: any) => Block.deserialize(b));
     this._lastComputedCurrentBlock = null;
   };
 }

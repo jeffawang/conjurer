@@ -12,7 +12,7 @@ type SerializedBlock = {
   parameterVariations: { [key: string]: any[] | undefined };
   startTime: number;
   duration: number;
-  blockEffects: SerializedBlock[];
+  effectBlocks: SerializedBlock[];
 };
 
 export default class Block<T extends ExtraParams = {}> {
@@ -20,8 +20,8 @@ export default class Block<T extends ExtraParams = {}> {
   pattern: Pattern<T>;
   parameterVariations: { [K in keyof T]?: Variation[] } = {};
 
-  parentBlock: Block | null = null; // if this is an effect block, this is the block that it is applied to
-  blockEffects: Block[] = [];
+  parentBlock: Block | null = null; // if this is an effect block, this is the pattern block that it is applied to
+  effectBlocks: Block[] = [];
 
   startTime: number = 0; // global time that block starts playing at in seconds
   duration: number = 5; // duration that block plays for in seconds
@@ -59,7 +59,7 @@ export default class Block<T extends ExtraParams = {}> {
       this.updateParameter(parameter, time);
     }
 
-    for (const effect of this.blockEffects) {
+    for (const effect of this.effectBlocks) {
       effect.updateParameters(time, globalTime);
     }
   };
@@ -120,10 +120,7 @@ export default class Block<T extends ExtraParams = {}> {
     if (!variations) return;
 
     const index = variations.indexOf(variation);
-    if (index > -1) {
-      variations.splice(index, 0, variation.clone());
-      this.triggerVariationReactions(uniformName);
-    }
+    if (index > -1) variations.splice(index, 0, variation.clone());
   };
 
   applyVariationDurationDelta = (
@@ -174,21 +171,21 @@ export default class Block<T extends ExtraParams = {}> {
     this.parameterVariations[uniformName as keyof T] = [...variations];
   };
 
-  reorderBlockEffect = (block: Block, delta: number) => {
-    const index = this.blockEffects.indexOf(block);
+  reorderEffectBlock = (block: Block, delta: number) => {
+    const index = this.effectBlocks.indexOf(block);
     if (index < 0) return;
 
     const newIndex = index + delta;
-    if (newIndex < 0 || newIndex >= this.blockEffects.length) return;
+    if (newIndex < 0 || newIndex >= this.effectBlocks.length) return;
 
-    this.blockEffects.splice(index, 1);
-    this.blockEffects.splice(newIndex, 0, block);
+    this.effectBlocks.splice(index, 1);
+    this.effectBlocks.splice(newIndex, 0, block);
   };
 
-  removeBlockEffect = (block: Block) => {
-    const index = this.blockEffects.indexOf(block);
+  removeEffectBlock = (block: Block) => {
+    const index = this.effectBlocks.indexOf(block);
     if (index > -1) {
-      this.blockEffects.splice(index, 1);
+      this.effectBlocks.splice(index, 1);
     }
   };
 
@@ -201,7 +198,7 @@ export default class Block<T extends ExtraParams = {}> {
   addCloneOfEffect = (effect: Pattern) => {
     const newBlock = new Block(effect.clone());
     newBlock.parentBlock = this;
-    this.blockEffects.push(newBlock);
+    this.effectBlocks.push(newBlock);
   };
 
   clone = () => new Block(this.pattern.clone());
@@ -221,8 +218,8 @@ export default class Block<T extends ExtraParams = {}> {
     startTime: this.startTime,
     duration: this.duration,
     parameterVariations: this.serializeParameterVariations(),
-    blockEffects: this.blockEffects.map((blockEffect) =>
-      blockEffect.serialize()
+    effectBlocks: this.effectBlocks.map((effectBlock) =>
+      effectBlock.serialize()
     ),
   });
 
@@ -245,8 +242,8 @@ export default class Block<T extends ExtraParams = {}> {
       ]?.map((variationData: any) => deserializeVariation(variationData));
     }
 
-    block.blockEffects = data.blockEffects.map((blockEffectData: any) =>
-      Block.deserialize(blockEffectData, true, block)
+    block.effectBlocks = data.effectBlocks.map((effectBlockData: any) =>
+      Block.deserialize(effectBlockData, true, block)
     );
 
     return block;

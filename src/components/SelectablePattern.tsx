@@ -51,7 +51,7 @@ export default memo(function SelectablePattern({
         borderWidth={1}
         zIndex={2}
         alignItems="center"
-        cursor="move"
+        cursor="grab"
         onDoubleClick={onInsert}
         role="button"
       >
