@@ -1,5 +1,5 @@
 import Block from "@/src/types/Block";
-import Pattern from "@/src/types/Pattern";
+import { Pattern } from "@/src/types/Pattern";
 import Timer from "@/src/types/Timer";
 import UIStore from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";

@@ -1,19 +1,10 @@
-import Clouds from "@/src/patterns/Clouds";
-import Disc from "@/src/patterns/Disc";
-import BlahPattern from "@/src/patterns/BlahPattern";
-import Rainbow from "@/src/patterns/Rainbow";
-import SunCycle from "@/src/patterns/SunCycle";
-import LogSpirals from "./LogSpirals";
-import Pattern from "@/src/types/Pattern";
+import { Clouds } from "@/src/patterns/Clouds";
+import { Disc } from "@/src/patterns/Disc";
+import { SunCycle } from "@/src/patterns/SunCycle";
+import { LogSpirals } from "./LogSpirals";
+import { Pattern } from "@/src/types/Pattern";
 
-const patterns: Pattern[] = [
-  LogSpirals(),
-  SunCycle(),
-  Disc(),
-  Rainbow(),
-  BlahPattern(),
-  Clouds(),
-];
+const patterns: Pattern[] = [LogSpirals(), SunCycle(), Disc(), Clouds()];
 
 const patternMap: { [key: string]: Pattern } = {};
 for (const pattern of patterns) {

@@ -1,4 +1,4 @@
-import Pattern from "@/src/types/Pattern";
+import { Pattern } from "@/src/types/Pattern";
 import colorTint from "./shaders/colorTint.frag";
 import { Vector4 } from "three";
 

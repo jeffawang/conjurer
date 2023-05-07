@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import Pattern from "./Pattern";
+import { Pattern } from "./Pattern";
 import { ExtraParams } from "./PatternParams";
 import Variation from "@/src/types/Variations/Variation";
 import { MINIMUM_VARIATION_DURATION } from "@/src/utils/time";

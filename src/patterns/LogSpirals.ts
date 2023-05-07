@@ -1,63 +1,8 @@
-import Pattern from "@/src/types/Pattern";
-import logSpiralsShader from "./shaders/logSpirals.frag";
+import { Pattern } from "@/src/types/Pattern";
+import logSpirals from "./shaders/logSpirals.frag";
 
-type LogSpiralsParams = {
-  u_spikeMotionTimeScalingFactor: {
-    name: "spikeMotionTimeScalingFactor";
-    value: number;
-  };
-  u_globalTimeFactor: {
-    name: "globalTimeFactor";
-    value: number;
-  };
-  u_repetitionsPerSpiralTurn: {
-    name: "repetitionsPerSpiralTurn";
-    value: number;
-  };
-  u_primaryOscPeriod: {
-    name: "primaryOscPeriod";
-    value: number;
-  };
-  u_distCutoff: {
-    name: "distCutoff";
-    value: number;
-  };
-  u_colorRangeStart: {
-    name: "colorRangeStart";
-    value: number;
-  };
-  u_colorRangeWidth: {
-    name: "colorRangeWidth";
-    value: number;
-  };
-  u_waveOffset: {
-    name: "waveOffset";
-    value: number;
-  };
-  u_baseAmplitude: {
-    name: "baseAmplitude";
-    value: number;
-  };
-  u_spiralGrowthFactor: {
-    name: "spiralGrowthFactor";
-    value: number;
-  };
-  u_spiralTightness: {
-    name: "spiralTightness";
-    value: number;
-  };
-  u_colorIterations: {
-    name: "colorIterations";
-    value: number;
-  };
-  u_spiralCount: {
-    name: "spiralCount";
-    value: number;
-  };
-};
-
-const LogSpirals = () =>
-  new Pattern<LogSpiralsParams>("Log Spirals", logSpiralsShader, {
+export const LogSpirals = () => {
+  const params = {
     u_spikeMotionTimeScalingFactor: {
       name: "spikeMotionTimeScalingFactor",
       value: -0.4,
@@ -110,6 +55,6 @@ const LogSpirals = () =>
       name: "spiralCount",
       value: 4,
     },
-  });
-
-export default LogSpirals;
+  };
+  return new Pattern<typeof params>("Log Spirals", logSpirals, params);
+};

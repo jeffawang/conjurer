@@ -1,4 +1,4 @@
-import Pattern from "@/src/types/Pattern";
+import { Pattern } from "@/src/types/Pattern";
 import shaper from "./shaders/shaper.frag";
 
 type ShaperParams = {
