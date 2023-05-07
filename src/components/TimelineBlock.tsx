@@ -35,7 +35,9 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
     setPosition({ x: data.x, y: 0 });
   }, []);
   // handle moving a block to a new start time
-  const handleDragStop = action(() => {
+  const handleDragStop = action((e: DraggableEvent, data: DraggableData) => {
+    if (Math.abs(position.x) < 1) return;
+
     // prevent block overlaps for now by snapping to nearest valid start time
     const validTimeDelta = store.nearestValidStartTimeDelta(
       block,
