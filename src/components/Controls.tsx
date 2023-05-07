@@ -118,7 +118,7 @@ export default observer(function Controls() {
         }
         onClick={action(() => uiStore.toggleWaveformOverlay())}
       />
-      <Popover
+      {/* <Popover
         placement="bottom"
         isLazy
         returnFocusOnClose={false}
@@ -138,7 +138,7 @@ export default observer(function Controls() {
             <TempoControls />
           </PopoverContent>
         </Portal>
-      </Popover>
+      </Popover> */}
 
       <Select
         size="xs"

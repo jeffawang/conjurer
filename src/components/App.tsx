@@ -20,7 +20,7 @@ export default function App() {
         templateAreas={`"patterns display"
                         "patterns arrangement"`}
         gridTemplateColumns="165px calc(100vw - 165px)"
-        gridTemplateRows="50vh 50vh"
+        gridTemplateRows="min-content 1fr"
         height="100vh"
         fontWeight="bold"
       >
