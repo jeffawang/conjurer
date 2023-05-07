@@ -16,25 +16,22 @@ import { memo } from "react";
 
 type TimelineBlockEffectsProps = {
   block: Block;
+  isSelected: boolean;
 };
 
 export default memo(function AddEffectButton({
   block,
+  isSelected,
 }: TimelineBlockEffectsProps) {
   return (
     <Box
       width="100%"
       borderTopWidth={2}
-      borderColor="gray.500"
+      borderColor={isSelected ? "blue.500" : "white"}
       borderStyle="solid"
     >
       <Menu>
-        <MenuButton
-          as={Button}
-          variant="ghost"
-          width="100%"
-          textAlign={"center"}
-        >
+        <MenuButton as={Button} variant="ghost" width="100%" textAlign="center">
           <HStack
             userSelect="none"
             textOverflow="clip"

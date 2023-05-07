@@ -9,7 +9,7 @@ import { useWheelZooming } from "@/src/hooks/wheelZooming";
 import ShaderWaveform from "@/src/components/ShaderWaveform";
 import WavesurferWaveform from "@/src/components/WavesurferWaveform";
 import { MAX_TIME } from "@/src/utils/time";
-import TimelineBlocks from "@/src/components/TimelineBlocks";
+import TimelineBlockStacks from "@/src/components/TimelineBlockStacks";
 
 export default observer(function Timeline() {
   const store = useStore();
@@ -61,7 +61,7 @@ export default observer(function Timeline() {
         <Ruler />
         <PlayHead />
       </Box>
-      <TimelineBlocks />
+      <TimelineBlockStacks />
     </Box>
   );
 });

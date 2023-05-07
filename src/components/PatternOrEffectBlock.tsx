@@ -9,21 +9,19 @@ import ParametersList from "@/src/components/ParametersList";
 import { RxCaretDown, RxCaretUp } from "react-icons/rx";
 import { FaTrashAlt } from "react-icons/fa";
 
-type TimelineBlockNodeProps = {
+type Props = {
   block: Block;
   handleBlockClick: (e: ReactMouseEvent) => void;
   isSelected: boolean;
   effectIndex?: number;
 };
 
-export default observer(function TimelineBlockNode({
+export default observer(function PatternOrEffectBlock({
   block,
   handleBlockClick,
   isSelected,
   effectIndex = -1,
-}: TimelineBlockNodeProps) {
-  // const store = useStore();
-
+}: Props) {
   const [expandMode, setExpandMode] = useState<"expanded" | "collapsed">(
     "expanded"
   );
@@ -33,6 +31,7 @@ export default observer(function TimelineBlockNode({
   const lastEffectIndex =
     (isEffect ? parentBlock : block).blockEffects.length - 1;
 
+  const color = isSelected ? "blue.500" : "white";
   return (
     <>
       <HStack
@@ -40,12 +39,13 @@ export default observer(function TimelineBlockNode({
         pt={1}
         width="100%"
         borderTopWidth={isEffect ? 2 : 0}
-        borderColor="gray.500"
+        borderColor={color}
         borderStyle="solid"
         className={isEffect ? "handle" : ""}
         justify="center"
         cursor="move"
         spacing={0}
+        color={color}
       >
         {!isEffect && <MdDragIndicator size={30} />}
         <Heading
@@ -54,7 +54,7 @@ export default observer(function TimelineBlockNode({
           textOverflow="clip"
           overflowWrap="anywhere"
           cursor="grab"
-          color={isSelected ? "blue.500" : "white"}
+          color={color}
           onClick={handleBlockClick}
           role="button"
         >

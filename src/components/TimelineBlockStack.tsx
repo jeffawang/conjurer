@@ -13,14 +13,14 @@ import {
 import Draggable from "react-draggable";
 import { DraggableData } from "react-draggable";
 import { DraggableEvent } from "react-draggable";
-import TimelineBlockNode from "@/src/components/TimelineBlockNode";
+import PatternOrEffectBlock from "@/src/components/PatternOrEffectBlock";
 import AddEffectButton from "@/src/components/AddEffectButton";
 
-type TimelineBlockProps = {
+type Props = {
   block: Block;
 };
 
-export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
+export default observer(function TimelineBlockStack({ block }: Props) {
   const store = useStore();
   const { selectedBlocks, uiStore } = store;
 
@@ -95,13 +95,13 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
         <TimelineBlockBound block={block} leftBound />
         <TimelineBlockBound block={block} rightBound />
 
-        <TimelineBlockNode
+        <PatternOrEffectBlock
           block={block}
           handleBlockClick={handleBlockClick}
           isSelected={isSelected}
         />
         {block.blockEffects.map((blockEffect, index) => (
-          <TimelineBlockNode
+          <PatternOrEffectBlock
             key={blockEffect.id}
             block={blockEffect}
             effectIndex={index}
@@ -109,7 +109,7 @@ export default observer(function TimelineBlock({ block }: TimelineBlockProps) {
             isSelected={isSelected}
           />
         ))}
-        <AddEffectButton block={block} />
+        <AddEffectButton block={block} isSelected={isSelected} />
       </Card>
     </Draggable>
   );
