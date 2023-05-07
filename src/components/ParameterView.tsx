@@ -25,7 +25,13 @@ export default observer(function ParameterView({
 
   const headerColor = variations.length ? "orange.400" : "gray.300";
   return (
-    <Box width="100%" mb={isExpanded ? 2 : 0}>
+    <Box
+      width="100%"
+      pb={isExpanded ? 2 : 0}
+      borderStyle="dashed"
+      borderBottomWidth={1}
+      borderColor="gray.500"
+    >
       <Button
         variant="ghost"
         width="100%"

@@ -2,19 +2,11 @@ import { useEffect } from "react";
 import { ListObjectsCommand, S3Client } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { observer } from "mobx-react-lite";
-import {
-  IconButton,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Portal,
-  Select,
-  Text,
-} from "@chakra-ui/react";
+import { HStack, IconButton, Select, Text } from "@chakra-ui/react";
 import { RiZoomInLine, RiZoomOutLine } from "react-icons/ri";
 import { BsSoundwave } from "react-icons/bs";
 import { BiTimer } from "react-icons/bi";
-import { FaFolderOpen, FaRegClipboard, FaDrum } from "react-icons/fa";
+import { FaFolderOpen, FaRegClipboard } from "react-icons/fa";
 import { FiSave } from "react-icons/fi";
 import { useStore } from "@/src/types/StoreContext";
 import { action, runInAction } from "mobx";
@@ -23,7 +15,8 @@ import {
   AUDIO_BUCKET_PREFIX,
   AUDIO_BUCKET_REGION,
 } from "@/src/utils/audio";
-import TempoControls from "@/src/components/TempoControls";
+import TimerControls from "@/src/components/TimerControls";
+import TimerReadout from "@/src/components/TimerReadout";
 
 export default observer(function Controls() {
   const store = useStore();
@@ -58,7 +51,9 @@ export default observer(function Controls() {
   }, [audioStore]);
 
   return (
-    <>
+    <HStack my={2} width="100%">
+      <TimerReadout />
+      <TimerControls />
       <IconButton
         aria-label="Copy to clipboard"
         title="Copy to clipboard"
@@ -155,6 +150,6 @@ export default observer(function Controls() {
         ))}
       </Select>
       <Text fontSize={12}>(contact Ben to have your music added!)</Text>
-    </>
+    </HStack>
   );
 });
