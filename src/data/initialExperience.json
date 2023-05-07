@@ -59,7 +59,7 @@
           }
         ]
       },
-      "blockEffects": [
+      "effectBlocks": [
         {
           "pattern": "Shaper",
           "startTime": 0,
@@ -134,7 +134,7 @@
             "u_box_smooth": [{ "type": "flat", "duration": 2, "value": 0.3 }],
             "u_circle_smooth": [{ "type": "flat", "duration": 2, "value": 0.2 }]
           },
-          "blockEffects": []
+          "effectBlocks": []
         }
       ]
     }

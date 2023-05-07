@@ -25,7 +25,7 @@ export default class Store {
   uiStore = new UIStore();
   audioStore = new AudioStore();
 
-  blocks: Block[] = [];
+  patternBlocks: Block[] = [];
   selectedBlocks: Set<Block> = new Set();
 
   selectedVariationBlock: Block | null = null;
@@ -50,17 +50,18 @@ export default class Store {
     }
 
     const currentBlockIndex = binarySearchForBlockAtTime(
-      this.blocks,
+      this.patternBlocks,
       this.timer.globalTime
     );
-    this._lastComputedCurrentBlock = this.blocks[currentBlockIndex] ?? null;
+    this._lastComputedCurrentBlock =
+      this.patternBlocks[currentBlockIndex] ?? null;
     return this._lastComputedCurrentBlock;
   }
 
   get endTime() {
-    if (this.blocks.length === 0) return 0;
+    if (this.patternBlocks.length === 0) return 0;
 
-    const lastBlock = this.blocks[this.blocks.length - 1];
+    const lastBlock = this.patternBlocks[this.patternBlocks.length - 1];
     return lastBlock.endTime;
   }
 
@@ -106,17 +107,19 @@ export default class Store {
 
   addBlock = (block: Block) => {
     // insert block in sorted order
-    const index = this.blocks.findIndex((b) => b.startTime > block.startTime);
+    const index = this.patternBlocks.findIndex(
+      (b) => b.startTime > block.startTime
+    );
     if (index === -1) {
-      this.blocks.push(block);
+      this.patternBlocks.push(block);
       return;
     }
 
-    this.blocks.splice(index, 0, block);
+    this.patternBlocks.splice(index, 0, block);
   };
 
   removeBlock = (block: Block) => {
-    this.blocks = this.blocks.filter((b) => b !== block);
+    this.patternBlocks = this.patternBlocks.filter((b) => b !== block);
   };
 
   /**
@@ -149,7 +152,7 @@ export default class Store {
   };
 
   selectAllBlocks = () => {
-    this.selectedBlocks = new Set(this.blocks);
+    this.selectedBlocks = new Set(this.patternBlocks);
   };
 
   deselectAllBlocks = () => {
@@ -159,7 +162,9 @@ export default class Store {
 
   deleteSelected = () => {
     if (this.selectedBlocks.size > 0) {
-      this.blocks = this.blocks.filter((b) => !this.selectedBlocks.has(b));
+      this.patternBlocks = this.patternBlocks.filter(
+        (b) => !this.selectedBlocks.has(b)
+      );
       this.selectedBlocks = new Set();
       return;
     }
@@ -230,10 +235,10 @@ export default class Store {
    */
   nextGap = (fromTime: number): { startTime: number; duration?: number } => {
     // no blocks
-    if (this.blocks.length === 0) return { startTime: fromTime };
+    if (this.patternBlocks.length === 0) return { startTime: fromTime };
 
     // fromTime is before first block
-    const firstBlock = this.blocks[0];
+    const firstBlock = this.patternBlocks[0];
     if (fromTime < firstBlock.startTime) {
       return {
         startTime: fromTime,
@@ -247,9 +252,9 @@ export default class Store {
     }
 
     // fromTime is in between start of first block and end of last block
-    for (let i = 0; i < this.blocks.length; i++) {
-      const block = this.blocks[i];
-      const nextBlock = this.blocks[i + 1];
+    for (let i = 0; i < this.patternBlocks.length; i++) {
+      const block = this.patternBlocks[i];
+      const nextBlock = this.patternBlocks[i + 1];
 
       // fromTime is in this block
       if (block.startTime <= fromTime && fromTime < block.endTime) {
@@ -305,7 +310,7 @@ export default class Store {
   nearestValidStartTimeDelta = (block: Block, desiredDeltaTime: number) => {
     const desiredStartTime = block.startTime + desiredDeltaTime;
     const desiredEndTime = block.endTime + desiredDeltaTime;
-    for (const otherBlock of this.blocks) {
+    for (const otherBlock of this.patternBlocks) {
       if (otherBlock === block) continue;
 
       // check if desired time span overlaps with other block
@@ -329,7 +334,8 @@ export default class Store {
     if (desiredStartTime >= block.endTime) return;
 
     // do not allow changing start of this block before end of prior block
-    const previousBlock = this.blocks[this.blocks.indexOf(block) - 1];
+    const previousBlock =
+      this.patternBlocks[this.patternBlocks.indexOf(block) - 1];
     if (previousBlock && desiredStartTime < previousBlock.endTime) {
       block.duration = block.endTime - previousBlock.endTime;
       block.startTime = previousBlock.endTime;
@@ -354,7 +360,7 @@ export default class Store {
     if (desiredEndTime <= block.startTime) return;
 
     // do not allow changing end of block past start of next block
-    const nextBlock = this.blocks[this.blocks.indexOf(block) + 1];
+    const nextBlock = this.patternBlocks[this.patternBlocks.indexOf(block) + 1];
     if (nextBlock && desiredEndTime > nextBlock.startTime) {
       block.duration = nextBlock.startTime - block.startTime;
       return;
@@ -395,14 +401,14 @@ export default class Store {
 
   serialize = () => ({
     audioStore: this.audioStore.serialize(),
-    blocks: this.blocks.map((b) => b.serialize()),
+    blocks: this.patternBlocks.map((b) => b.serialize()),
     uiStore: this.uiStore.serialize(),
   });
 
   deserialize = (data: any) => {
     this.audioStore.deserialize(data.audioStore);
     this.uiStore.deserialize(data.uiStore);
-    this.blocks = data.blocks.map((b: any) => Block.deserialize(b));
+    this.patternBlocks = data.blocks.map((b: any) => Block.deserialize(b));
     this._lastComputedCurrentBlock = null;
   };
 }

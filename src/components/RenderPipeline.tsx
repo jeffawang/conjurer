@@ -53,7 +53,7 @@ export default observer(function RenderPipeline({
     }
   }, 0);
 
-  const numberEffects = targetBlock?.blockEffects.length ?? 0;
+  const numberEffects = targetBlock?.effectBlocks.length ?? 0;
   const evenNumberOfEffects = numberEffects % 2 === 0;
   return (
     <>
@@ -64,7 +64,7 @@ export default observer(function RenderPipeline({
         fragmentShader={targetBlock?.pattern.src ?? black}
         renderTargetOut={evenNumberOfEffects ? renderTargetB : renderTargetA}
       />
-      {targetBlock?.blockEffects.map((effect, i) => {
+      {targetBlock?.effectBlocks.map((effect, i) => {
         const isEven = i % 2 === 0;
         const swap = isEven && evenNumberOfEffects;
         return (

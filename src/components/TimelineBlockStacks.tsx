@@ -5,12 +5,12 @@ import { Box } from "@chakra-ui/react";
 import { MAX_TIME } from "@/src/utils/time";
 
 export default observer(function TimelineBlockStacks() {
-  const { blocks, uiStore } = useStore();
+  const { patternBlocks, uiStore } = useStore();
 
   return (
     <Box position="relative" width={uiStore.timeToXPixels(MAX_TIME)}>
-      {blocks.map((block) => (
-        <TimelineBlockStack key={block.id} block={block} />
+      {patternBlocks.map((block) => (
+        <TimelineBlockStack key={block.id} patternBlock={block} />
       ))}
     </Box>
   );

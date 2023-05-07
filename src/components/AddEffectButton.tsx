@@ -14,15 +14,12 @@ import { FiPlusSquare } from "react-icons/fi";
 import { effects } from "@/src/effects/effects";
 import { memo } from "react";
 
-type TimelineBlockEffectsProps = {
+type Props = {
   block: Block;
   isSelected: boolean;
 };
 
-export default memo(function AddEffectButton({
-  block,
-  isSelected,
-}: TimelineBlockEffectsProps) {
+export default memo(function AddEffectButton({ block, isSelected }: Props) {
   return (
     <Box
       width="100%"

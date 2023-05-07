@@ -29,7 +29,7 @@ export default observer(function PatternOrEffectBlock({
   const parentBlock = block.parentBlock;
   const isEffect = parentBlock !== null;
   const lastEffectIndex =
-    (isEffect ? parentBlock : block).blockEffects.length - 1;
+    (isEffect ? parentBlock : block).effectBlocks.length - 1;
 
   const color = isSelected ? "blue.500" : "white";
   return (
@@ -88,7 +88,7 @@ export default observer(function PatternOrEffectBlock({
                 height={6}
                 _hover={{ color: "blue.500" }}
                 icon={<RxCaretDown size={28} />}
-                onClick={action(() => parentBlock.reorderBlockEffect(block, 1))}
+                onClick={action(() => parentBlock.reorderEffectBlock(block, 1))}
               />
             )}
             {effectIndex > 0 && (
@@ -100,7 +100,7 @@ export default observer(function PatternOrEffectBlock({
                 _hover={{ color: "blue.500" }}
                 icon={<RxCaretUp size={28} />}
                 onClick={action(() =>
-                  parentBlock.reorderBlockEffect(block, -1)
+                  parentBlock.reorderEffectBlock(block, -1)
                 )}
               />
             )}
@@ -111,7 +111,7 @@ export default observer(function PatternOrEffectBlock({
               height={6}
               _hover={{ color: "red.500" }}
               icon={<FaTrashAlt size={12} />}
-              onClick={action(() => parentBlock.removeBlockEffect(block))}
+              onClick={action(() => parentBlock.removeEffectBlock(block))}
             />
           </HStack>
         )}
