@@ -25,8 +25,25 @@ export default observer(function WaveSurferWaveform() {
     didInitialize.current = true;
 
     const create = async () => {
-      // Cannot be run on the server, so we need to use dynamic import
-      const WaveSurfer = (await import("wavesurfer.js")).default;
+      // Can't be run on the server, so we need to use dynamic imports
+      const [{ default: WaveSurfer }, { default: TimelinePlugin }] =
+        await Promise.all([
+          import("wavesurfer.js"),
+          import("wavesurfer.js/dist/plugins/timeline"),
+        ]);
+
+      const timeline = TimelinePlugin.create({
+        height: 40,
+        insertPosition: "beforebegin",
+        timeInterval: 0.25,
+        primaryLabelInterval: 5,
+        secondaryLabelInterval: 0,
+        style: {
+          fontSize: "12px",
+          color: "#000000",
+          zIndex: 10,
+        } as any,
+      });
 
       // https://wavesurfer-js.org/docs/options.html
       const options = {
@@ -35,13 +52,14 @@ export default observer(function WaveSurferWaveform() {
         progressColor: "#0178FF",
         cursorColor: "#00000000",
         responsive: true,
-        height: 32,
+        height: 40,
         normalize: true,
         partialRender: true,
         hideScrollbar: true,
         fillParent: false,
         interact: false,
         minPxPerSec: uiStore.pixelsPerSecond,
+        plugins: [timeline],
       };
       wavesurferRef.current = WaveSurfer.create(options);
       await wavesurferRef.current.load(
@@ -94,9 +112,5 @@ export default observer(function WaveSurferWaveform() {
     }
   }, [timer.lastCursor]);
 
-  return (
-    <Box position="absolute" top={1.5}>
-      <div id="waveform" ref={waveformRef} />
-    </Box>
-  );
+  return <Box position="absolute" top={0} id="waveform" ref={waveformRef} />;
 });

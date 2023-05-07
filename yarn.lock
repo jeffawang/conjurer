@@ -2446,13 +2446,6 @@
     fflate "~0.6.9"
     lil-gui "~0.17.0"
 
-"@types/typescript@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@types/typescript/-/typescript-2.0.0.tgz#c433539c98bae28682b307eaa7a0fd2115b83c28"
-  integrity sha512-WMEWfMISiJ2QKyk5/dSdgL0ZwP//PZj0jmDU0hMh51FmLq4WIYzjlngsUQZXejQL+QtkXJUOGjb3G3UCvgZuSQ==
-  dependencies:
-    typescript "*"
-
 "@types/use-sync-external-store@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@types/use-sync-external-store/-/use-sync-external-store-0.0.3.tgz#b6725d5f4af24ace33b36fafd295136e75509f43"
@@ -5303,7 +5296,7 @@ typed-array-length@^1.0.4:
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
 
-typescript@*, typescript@^5.0.3:
+typescript@^5.0.3:
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
   integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
@@ -5385,10 +5378,10 @@ victory-vendor@^36.6.8:
     d3-time "^3.0.0"
     d3-timer "^3.0.1"
 
-wavesurfer.js@^7.0.0-alpha.37:
-  version "7.0.0-alpha.37"
-  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-7.0.0-alpha.37.tgz#8f831de3176e6c93d562308df04a9c3a0938d798"
-  integrity sha512-qLdxQTrJ2OY4ZQU/IQSbR8UqivDEkKi2fvO0BUVGvdJx1JeBAn7RcTZFRbmYxCZXbGRelVrK/PymqosKMyOiiA==
+wavesurfer.js@^7.0.0-alpha.44:
+  version "7.0.0-alpha.44"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-7.0.0-alpha.44.tgz#774e3ad1e6ba320d0b070648267abc1a97cd16cd"
+  integrity sha512-/73dgNrvNlGUgAOX67FuljB0Mb26Me7CVHiEJyXjeEtcdT592YYu/fiJreCLzwnqx18Qyo4aqG5HF4Z3wdNr5Q==
 
 webgl-constants@^1.1.1:
   version "1.1.1"

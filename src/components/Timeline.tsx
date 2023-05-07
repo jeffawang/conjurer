@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import { Box } from "@chakra-ui/react";
-import Ruler from "@/src/components/Ruler";
 import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
 import PlayHead from "@/src/components/PlayHead";
@@ -58,7 +57,8 @@ export default observer(function Timeline() {
         zIndex={10}
       >
         {uiStore.usingWavesurfer ? <WavesurferWaveform /> : <ShaderWaveform />}
-        <Ruler />
+        {/* Can reimplement Ruler if we want more functionality than Wavesurfer provides */}
+        {/* <Ruler /> */}
         <PlayHead />
       </Box>
       <TimelineBlockStacks />
