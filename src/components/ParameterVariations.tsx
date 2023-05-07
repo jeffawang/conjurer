@@ -81,7 +81,7 @@ export default observer(function ParameterVariations({
                       cursor="move"
                       role="button"
                       onClick={(e) => {
-                        store.selectVariation(variation);
+                        store.selectVariation(block, uniformName, variation);
                         e.stopPropagation();
                       }}
                     >

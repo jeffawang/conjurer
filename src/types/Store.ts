@@ -5,12 +5,7 @@ import UIStore from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";
 import { DEFAULT_BLOCK_DURATION } from "@/src/utils/time";
 import { patterns } from "@/src/patterns/patterns";
-import {
-  makeAutoObservable,
-  configure,
-  runInAction,
-  getObserverTree,
-} from "mobx";
+import { makeAutoObservable, configure } from "mobx";
 import AudioStore from "@/src/types/AudioStore";
 import initialExperience from "@/src/data/initialExperience.json";
 import Variation from "@/src/types/Variations/Variation";
@@ -32,7 +27,10 @@ export default class Store {
 
   blocks: Block[] = [];
   selectedBlocks: Set<Block> = new Set();
-  selectedVariationId: string = "";
+
+  selectedVariationBlock: Block | null = null;
+  selectedVariationUniformName: string = "";
+  selectedVariation: Variation | null = null;
 
   patterns: Pattern[] = patterns;
   selectedPattern: Pattern = patterns[0];
@@ -166,8 +164,11 @@ export default class Store {
       return;
     }
 
-    if (this.selectedVariationId) {
-      // TODO: delete variation
+    if (this.selectedVariation) {
+      this.selectedVariationBlock?.removeVariation(
+        this.selectedVariationUniformName,
+        this.selectedVariation
+      );
     }
   };
 
@@ -355,13 +356,21 @@ export default class Store {
     block.duration += delta;
   };
 
-  selectVariation = (variation: Variation) => {
-    if (this.selectedVariationId === variation.id) {
-      this.selectedVariationId = "";
+  selectVariation = (
+    block: Block,
+    uniformName: string,
+    variation: Variation
+  ) => {
+    if (this.selectedVariation?.id === variation.id) {
+      this.selectedVariation = null;
+      this.selectedVariationUniformName = "";
+      this.selectedVariationBlock = null;
       return;
     }
 
-    this.selectedVariationId = variation.id;
+    this.selectedVariation = variation;
+    this.selectedVariationUniformName = uniformName;
+    this.selectedVariationBlock = block;
   };
 
   saveToLocalStorage = (key: string) => {
