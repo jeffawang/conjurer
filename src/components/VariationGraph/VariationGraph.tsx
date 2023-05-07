@@ -5,13 +5,13 @@ import {
   PopoverTrigger,
   Portal,
 } from "@chakra-ui/react";
-import Variation from "@/src/types/Variations/Variation";
-import Block from "@/src/types/Block";
+import { Variation } from "@/src/types/Variations/Variation";
+import { Block } from "@/src/types/Block";
 import VariationControls from "@/src/components/VariationControls";
-import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
+import { LinearVariation4 } from "@/src/types/Variations/LinearVariation4";
 import ScalarVariationGraph from "@/src/components/VariationGraph/ScalarVariationGraph";
 import LinearVariationGraph4 from "@/src/components/VariationGraph/LinearVariationGraph4";
-import SplineVariation from "@/src/types/Variations/SplineVariation";
+import { SplineVariation } from "@/src/types/Variations/SplineVariation";
 
 type VariationGraphProps = {
   uniformName: string;

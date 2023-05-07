@@ -1,4 +1,4 @@
-import Block from "../types/Block";
+import { Block } from "../types/Block";
 import { Canvas } from "@react-three/fiber";
 import { useStore } from "@/src/types/StoreContext";
 import { observer } from "mobx-react-lite";

@@ -1,4 +1,4 @@
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import { useStore } from "@/src/types/StoreContext";
 import TimelineBlockBound from "@/src/components/TimelineBlockBound";
 import { Card } from "@chakra-ui/react";

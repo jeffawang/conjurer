@@ -1,7 +1,7 @@
 import { MAX_TIME } from "@/src/utils/time";
 import { makeAutoObservable, runInAction } from "mobx";
 
-export default class Timer {
+export class Timer {
   private _lastStartedAtDateTime = 0;
   private _globalTime = 0;
   private _lastCursor = { position: 0 };

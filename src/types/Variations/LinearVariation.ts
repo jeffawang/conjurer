@@ -1,7 +1,7 @@
-import Variation from "@/src/types/Variations/Variation";
+import { Variation } from "@/src/types/Variations/Variation";
 import { lerp } from "three/src/math/MathUtils";
 
-export default class LinearVariation extends Variation<number> {
+export class LinearVariation extends Variation<number> {
   from: number;
   to: number;
 

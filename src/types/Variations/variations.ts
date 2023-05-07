@@ -1,9 +1,9 @@
-import FlatVariation from "@/src/types/Variations/FlatVariation";
-import LinearVariation from "@/src/types/Variations/LinearVariation";
-import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
-import SineVariation from "@/src/types/Variations/SineVariation";
-import SplineVariation from "@/src/types/Variations/SplineVariation";
-import Variation from "@/src/types/Variations/Variation";
+import { FlatVariation } from "@/src/types/Variations/FlatVariation";
+import { LinearVariation } from "@/src/types/Variations/LinearVariation";
+import { LinearVariation4 } from "@/src/types/Variations/LinearVariation4";
+import { SineVariation } from "@/src/types/Variations/SineVariation";
+import { SplineVariation } from "@/src/types/Variations/SplineVariation";
+import { Variation } from "@/src/types/Variations/Variation";
 
 export const deserializeVariation = (data: any): Variation => {
   switch (data.type) {

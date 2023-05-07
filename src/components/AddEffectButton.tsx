@@ -1,4 +1,4 @@
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import {
   Box,
   Button,

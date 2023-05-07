@@ -1,5 +1,5 @@
 import { HStack, Text } from "@chakra-ui/react";
-import Variation from "@/src/types/Variations/Variation";
+import { Variation } from "@/src/types/Variations/Variation";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import { MdDragIndicator } from "react-icons/md";

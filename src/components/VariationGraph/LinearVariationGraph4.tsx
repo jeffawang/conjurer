@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import Block from "@/src/types/Block";
-import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
+import { Block } from "@/src/types/Block";
+import { LinearVariation4 } from "@/src/types/Variations/LinearVariation4";
 import { memo } from "react";
 import { vector4ToHex } from "@/src/utils/color";
 import { VARIATION_BOUND_WIDTH } from "@/src/utils/layout";

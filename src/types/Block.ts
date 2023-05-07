@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { Pattern } from "./Pattern";
 import { ExtraParams } from "./PatternParams";
-import Variation from "@/src/types/Variations/Variation";
+import { Variation } from "@/src/types/Variations/Variation";
 import { MINIMUM_VARIATION_DURATION } from "@/src/utils/time";
 import { patternMap } from "@/src/patterns/patterns";
 import { deserializeVariation } from "@/src/types/Variations/variations";
@@ -15,7 +15,7 @@ type SerializedBlock = {
   effectBlocks: SerializedBlock[];
 };
 
-export default class Block<T extends ExtraParams = {}> {
+export class Block<T extends ExtraParams = {}> {
   id: string = Math.random().toString(16).slice(2); // unique id
   pattern: Pattern<T>;
   parameterVariations: { [K in keyof T]?: Variation[] } = {};

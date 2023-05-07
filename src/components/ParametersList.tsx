@@ -1,4 +1,4 @@
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import { ExtraParams } from "@/src/types/PatternParams";
 import ParameterView from "@/src/components/ParameterView";
 import { VStack } from "@chakra-ui/react";

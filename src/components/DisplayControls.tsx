@@ -1,4 +1,4 @@
-import { Box, IconButton, VStack } from "@chakra-ui/react";
+import { IconButton, VStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";

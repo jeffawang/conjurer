@@ -1,7 +1,7 @@
-import Variation from "@/src/types/Variations/Variation";
+import { Variation } from "@/src/types/Variations/Variation";
 import { Vector4 } from "three";
 
-export default class LinearVariation4 extends Variation<Vector4> {
+export class LinearVariation4 extends Variation<Vector4> {
   from: Vector4;
   to: Vector4;
 

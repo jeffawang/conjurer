@@ -10,7 +10,7 @@ const MIN_PIXELS_PER_SECOND = 4;
  * @export
  * @class UIStore
  */
-export default class UIStore {
+export class UIStore {
   showingPerformance = false;
   displayingCanopy = true;
   showingWaveformOverlay = false;

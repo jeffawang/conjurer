@@ -1,6 +1,6 @@
 import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 import { useMemo } from "react";
-import Block from "../types/Block";
+import { Block } from "../types/Block";
 import { LED_COUNTS } from "@/src/utils/size";
 import SelectablePattern from "@/src/components/SelectablePattern";
 import { useStore } from "@/src/types/StoreContext";

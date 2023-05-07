@@ -1,10 +1,10 @@
 import { Box, Text, useToken } from "@chakra-ui/react";
 import { LineChart, Line, Tooltip, YAxis } from "recharts";
-import Variation from "@/src/types/Variations/Variation";
-import Block from "@/src/types/Block";
+import { Variation } from "@/src/types/Variations/Variation";
+import { Block } from "@/src/types/Block";
 import { memo } from "react";
 import { VARIATION_BOUND_WIDTH } from "@/src/utils/layout";
-import SplineVariation from "@/src/types/Variations/SplineVariation";
+import { SplineVariation } from "@/src/types/Variations/SplineVariation";
 import SplineVariationGraph from "@/src/components/VariationGraph/SplineVariationGraph";
 
 type ScalarVariationGraphProps = {

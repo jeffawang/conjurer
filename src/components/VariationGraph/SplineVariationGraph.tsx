@@ -1,7 +1,7 @@
 import { Box, useToken } from "@chakra-ui/react";
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import { memo, useEffect, useRef } from "react";
-import SplineVariation from "@/src/types/Variations/SplineVariation";
+import { SplineVariation } from "@/src/types/Variations/SplineVariation";
 
 type ScalarVariationGraphProps = {
   uniformName: string;

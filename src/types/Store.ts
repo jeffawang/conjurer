@@ -1,14 +1,14 @@
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import { Pattern } from "@/src/types/Pattern";
-import Timer from "@/src/types/Timer";
-import UIStore from "@/src/types/UIStore";
+import { Timer } from "@/src/types/Timer";
+import { UIStore } from "@/src/types/UIStore";
 import { binarySearchForBlockAtTime } from "@/src/utils/algorithm";
 import { DEFAULT_BLOCK_DURATION } from "@/src/utils/time";
 import { patterns } from "@/src/patterns/patterns";
 import { makeAutoObservable, configure } from "mobx";
-import AudioStore from "@/src/types/AudioStore";
+import { AudioStore } from "@/src/types/AudioStore";
 import initialExperience from "@/src/data/initialExperience.json";
-import Variation from "@/src/types/Variations/Variation";
+import { Variation } from "@/src/types/Variations/Variation";
 
 // Enforce MobX strict mode, which can make many noisy console warnings, but can help use learn MobX better.
 // Feel free to comment out the following if you want to silence the console messages.
@@ -19,7 +19,7 @@ configure({
   observableRequiresReaction: false, // This will trigger false positives sometimes, so turning off
 });
 
-export default class Store {
+export class Store {
   initialized = false;
   timer = new Timer();
   uiStore = new UIStore();

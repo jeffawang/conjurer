@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 
-export default class AudioStore {
+export class AudioStore {
   audioInitialized = false;
   availableAudioFiles: string[] = [];
   selectedAudioFile: string = "cloudkicker-explorebecurious.mp3";

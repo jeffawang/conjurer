@@ -1,4 +1,4 @@
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import { HStack, Heading, IconButton } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
