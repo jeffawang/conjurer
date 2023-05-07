@@ -2,9 +2,9 @@ import { ExtraParams, PatternParam } from "@/src/types/PatternParams";
 import { Box, Button, HStack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
-import Block from "@/src/types/Block";
-import NewVariationButtons from "@/src/components/NewVariationButtons";
-import ParameterVariations from "@/src/components/ParameterVariations";
+import { Block } from "@/src/types/Block";
+import { NewVariationButtons } from "@/src/components/NewVariationButtons";
+import { ParameterVariations } from "@/src/components/ParameterVariations";
 import { observer } from "mobx-react-lite";
 
 type ParameterProps = {
@@ -14,7 +14,7 @@ type ParameterProps = {
   expandMode: "expanded" | "collapsed";
 };
 
-export default observer(function ParameterView({
+export const ParameterView = observer(function ParameterView({
   uniformName,
   patternParam,
   block,

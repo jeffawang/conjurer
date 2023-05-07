@@ -8,7 +8,9 @@ type CartesianViewProps = {
   renderTarget: WebGLRenderTarget;
 };
 
-export default function CartesianView({ renderTarget }: CartesianViewProps) {
+export const CartesianView = function CartesianView({
+  renderTarget,
+}: CartesianViewProps) {
   const outputMesh = useRef<THREE.Mesh>(null);
   const outputUniforms = useRef({ u_texture: { value: renderTarget.texture } });
 
@@ -30,4 +32,4 @@ export default function CartesianView({ renderTarget }: CartesianViewProps) {
       />
     </mesh>
   );
-}
+};

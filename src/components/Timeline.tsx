@@ -2,14 +2,14 @@ import { observer } from "mobx-react-lite";
 import { Box } from "@chakra-ui/react";
 import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
-import PlayHead from "@/src/components/PlayHead";
+import { PlayHead } from "@/src/components/PlayHead";
 import { useRef } from "react";
 import { useWheelZooming } from "@/src/hooks/wheelZooming";
-import WavesurferWaveform from "@/src/components/WavesurferWaveform";
+import { WavesurferWaveform } from "@/src/components/WavesurferWaveform";
 import { MAX_TIME } from "@/src/utils/time";
-import TimelineBlockStacks from "@/src/components/TimelineBlockStacks";
+import { TimelineBlockStacks } from "@/src/components/TimelineBlockStacks";
 
-export default observer(function Timeline() {
+export const Timeline = observer(function Timeline() {
   const store = useStore();
   const { timer, uiStore } = store;
   const rulerBoxRef = useRef<HTMLDivElement>(null);

@@ -1,4 +1,4 @@
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import { useStore } from "@/src/types/StoreContext";
 import { Box } from "@chakra-ui/react";
 import { action } from "mobx";
@@ -12,7 +12,7 @@ type TimelineBlockProps = {
   rightBound?: boolean;
 };
 
-export default observer(function TimelineBlockBound({
+export const TimelineBlockBound = observer(function TimelineBlockBound({
   block,
   leftBound,
   rightBound,

@@ -1,6 +1,6 @@
-import Variation from "@/src/types/Variations/Variation";
+import { Variation } from "@/src/types/Variations/Variation";
 
-export default class SineVariation extends Variation<number> {
+export class SineVariation extends Variation<number> {
   amplitude: number;
   frequency: number;
   phase: number;

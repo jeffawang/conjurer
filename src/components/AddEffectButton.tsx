@@ -1,4 +1,4 @@
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import {
   Box,
   Button,
@@ -19,7 +19,10 @@ type Props = {
   isSelected: boolean;
 };
 
-export default memo(function AddEffectButton({ block, isSelected }: Props) {
+export const AddEffectButton = memo(function AddEffectButton({
+  block,
+  isSelected,
+}: Props) {
   return (
     <Box
       width="100%"

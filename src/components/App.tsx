@@ -1,11 +1,11 @@
-import Arrangement from "@/src/components/Arrangement";
+import { Arrangement } from "@/src/components/Arrangement";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
-import Display from "@/src/components/Display";
-import PatternList from "@/src/components/PatternList";
+import { Display } from "@/src/components/Display";
+import { PatternList } from "@/src/components/PatternList";
 import { useEffect, useRef } from "react";
 import { useStore } from "@/src/types/StoreContext";
 
-export default function App() {
+export const App = function App() {
   const store = useStore();
   const didInitialize = useRef(false);
   useEffect(() => {
@@ -37,4 +37,4 @@ export default function App() {
       </Grid>
     </Box>
   );
-}
+};

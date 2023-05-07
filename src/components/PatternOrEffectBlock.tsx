@@ -1,11 +1,11 @@
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import { HStack, Heading, IconButton } from "@chakra-ui/react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { MouseEvent as ReactMouseEvent, useState } from "react";
 import { MdDragIndicator } from "react-icons/md";
 import { BsArrowsCollapse, BsArrowsExpand } from "react-icons/bs";
-import ParametersList from "@/src/components/ParametersList";
+import { ParametersList } from "@/src/components/ParametersList";
 import { RxCaretDown, RxCaretUp } from "react-icons/rx";
 import { FaTrashAlt } from "react-icons/fa";
 
@@ -16,7 +16,7 @@ type Props = {
   effectIndex?: number;
 };
 
-export default observer(function PatternOrEffectBlock({
+export const PatternOrEffectBlock = observer(function PatternOrEffectBlock({
   block,
   handleBlockClick,
   isSelected,

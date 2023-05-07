@@ -1,6 +1,6 @@
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import { useStore } from "@/src/types/StoreContext";
-import TimelineBlockBound from "@/src/components/TimelineBlockBound";
+import { TimelineBlockBound } from "@/src/components/TimelineBlockBound";
 import { Card } from "@chakra-ui/react";
 import { action, computed } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -13,14 +13,16 @@ import {
 import Draggable from "react-draggable";
 import { DraggableData } from "react-draggable";
 import { DraggableEvent } from "react-draggable";
-import PatternOrEffectBlock from "@/src/components/PatternOrEffectBlock";
-import AddEffectButton from "@/src/components/AddEffectButton";
+import { PatternOrEffectBlock } from "@/src/components/PatternOrEffectBlock";
+import { AddEffectButton } from "@/src/components/AddEffectButton";
 
 type Props = {
   patternBlock: Block;
 };
 
-export default observer(function TimelineBlockStack({ patternBlock }: Props) {
+export const TimelineBlockStack = observer(function TimelineBlockStack({
+  patternBlock,
+}: Props) {
   const store = useStore();
   const { selectedBlocks, uiStore } = store;
 

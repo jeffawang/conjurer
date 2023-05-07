@@ -12,7 +12,7 @@ type RenderNodeProps = {
   renderTargetOut: WebGLRenderTarget;
 };
 
-export default memo(function RenderNode({
+export const RenderNode = memo(function RenderNode({
   shaderMaterialKey,
   uniforms = {},
   fragmentShader = "void main() { gl_FragColor = vec4(1.0); }",

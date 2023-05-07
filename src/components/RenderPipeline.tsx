@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import black from "@/src/patterns/shaders/black.frag";
-import RenderNode from "@/src/components/RenderNode";
-import Block from "@/src/types/Block";
+import { RenderNode } from "@/src/components/RenderNode";
+import { Block } from "@/src/types/Block";
 
 // This size greatly affects performance. Somewhat arbitrarily chosen for now. We can lower this as
 // needed in the future.
@@ -17,7 +17,7 @@ type RenderPipelineProps = {
   children: (renderTarget: WebGLRenderTarget) => JSX.Element;
 };
 
-export default observer(function RenderPipeline({
+export const RenderPipeline = observer(function RenderPipeline({
   autorun,
   block,
   children,

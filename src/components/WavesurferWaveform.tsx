@@ -11,7 +11,7 @@ import {
   AUDIO_BUCKET_REGION,
 } from "@/src/utils/audio";
 
-export default observer(function WaveSurferWaveform() {
+export const WavesurferWaveform = observer(function WavesurferWaveform() {
   const didInitialize = useRef(false);
   const ready = useRef(false);
   const wavesurferRef = useRef<WaveSurfer | null>(null);

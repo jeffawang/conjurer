@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   HStack,
-  IconButton,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -12,19 +11,18 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import Variation from "@/src/types/Variations/Variation";
+import { Variation } from "@/src/types/Variations/Variation";
 import { action } from "mobx";
 import { FaTrashAlt } from "react-icons/fa";
 import { BiDuplicate } from "react-icons/bi";
-import Block from "@/src/types/Block";
-import FlatVariation from "@/src/types/Variations/FlatVariation";
-import LinearVariation from "@/src/types/Variations/LinearVariation";
-import SineVariation from "@/src/types/Variations/SineVariation";
-import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
+import { Block } from "@/src/types/Block";
+import { FlatVariation } from "@/src/types/Variations/FlatVariation";
+import { LinearVariation } from "@/src/types/Variations/LinearVariation";
+import { SineVariation } from "@/src/types/Variations/SineVariation";
+import { LinearVariation4 } from "@/src/types/Variations/LinearVariation4";
 import { HexColorPicker } from "react-colorful";
 import { hexToRgb, vector4ToHex } from "@/src/utils/color";
 import { HexColorInput } from "react-colorful";
-import SplineVariation from "@/src/types/Variations/SplineVariation";
 
 type VariationControlsProps = {
   uniformName: string;
@@ -32,7 +30,9 @@ type VariationControlsProps = {
   block: Block;
 };
 
-export default (function VariationControls(props: VariationControlsProps) {
+export const VariationControls = function VariationControls(
+  props: VariationControlsProps
+) {
   const { uniformName, variation, block } = props;
 
   let controls = <Text>Needs implementation!</Text>;
@@ -60,14 +60,6 @@ export default (function VariationControls(props: VariationControlsProps) {
         variation={variation}
       />
     );
-    // } else if (variation instanceof SplineVariation) {
-    //   controls = (
-    //     <SplineVariationControls
-    //       uniformName={uniformName}
-    //       block={block}
-    //       variation={variation}
-    //     />
-    //   );
   } else if (variation instanceof LinearVariation4) {
     controls = (
       <LinearVariation4Controls
@@ -107,7 +99,7 @@ export default (function VariationControls(props: VariationControlsProps) {
       </HStack>
     </VStack>
   );
-});
+};
 
 type FlatVariationControlsProps = {
   uniformName: string;

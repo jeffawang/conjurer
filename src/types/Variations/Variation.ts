@@ -6,7 +6,7 @@ type VariationType = "flat" | "linear" | "sine" | "spline" | "linear4";
 // | "square"
 // | "triangle";
 
-export default abstract class Variation<T extends ParamType = ParamType> {
+export abstract class Variation<T extends ParamType = ParamType> {
   id: string = Math.random().toString(16).slice(2); // unique id
   type: VariationType;
   duration: number;

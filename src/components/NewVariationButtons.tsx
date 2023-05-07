@@ -4,15 +4,15 @@ import { memo } from "react";
 import { BsArrowUpRight } from "react-icons/bs";
 import { TbWaveSine, TbVectorSpline } from "react-icons/tb";
 import { MdTrendingFlat, MdColorLens } from "react-icons/md";
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import { action } from "mobx";
-import FlatVariation from "@/src/types/Variations/FlatVariation";
-import LinearVariation from "@/src/types/Variations/LinearVariation";
-import SineVariation from "@/src/types/Variations/SineVariation";
+import { FlatVariation } from "@/src/types/Variations/FlatVariation";
+import { LinearVariation } from "@/src/types/Variations/LinearVariation";
+import { SineVariation } from "@/src/types/Variations/SineVariation";
 import { Vector4 } from "three";
-import LinearVariation4 from "@/src/types/Variations/LinearVariation4";
+import { LinearVariation4 } from "@/src/types/Variations/LinearVariation4";
 import { DEFAULT_VARIATION_DURATION } from "@/src/utils/time";
-import SplineVariation from "@/src/types/Variations/SplineVariation";
+import { SplineVariation } from "@/src/types/Variations/SplineVariation";
 import { isVector4 } from "@/src/utils/object";
 
 type NewVariationButtonsProps = {
@@ -20,7 +20,7 @@ type NewVariationButtonsProps = {
   block: Block<ExtraParams>;
 };
 
-export default memo(function NewVariationButtons({
+export const NewVariationButtons = memo(function NewVariationButtons({
   uniformName,
   block,
 }: NewVariationButtonsProps) {

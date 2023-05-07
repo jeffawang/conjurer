@@ -6,7 +6,7 @@ import styles from "@/styles/TimeMarker.module.css";
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
 
-export default observer(function PlayHead() {
+export const PlayHead = observer(function PlayHead() {
   const { timer, uiStore } = useStore();
 
   const playHead = useRef<HTMLDivElement>(null);

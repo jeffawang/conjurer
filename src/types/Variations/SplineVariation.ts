@@ -1,7 +1,7 @@
-import Variation from "@/src/types/Variations/Variation";
+import { Variation } from "@/src/types/Variations/Variation";
 import { CubicSpline } from "splines";
 
-export default class SplineVariation extends Variation<number> {
+export class SplineVariation extends Variation<number> {
   private _points: { x: number; y: number }[] = [];
   spline: any;
 

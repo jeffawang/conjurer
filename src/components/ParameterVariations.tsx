@@ -1,6 +1,6 @@
 import { ExtraParams } from "@/src/types/PatternParams";
 import { HStack, VStack } from "@chakra-ui/react";
-import VariationGraph from "@/src/components/VariationGraph/VariationGraph";
+import { VariationGraph } from "@/src/components/VariationGraph/VariationGraph";
 import {
   DragDropContext,
   Draggable,
@@ -8,21 +8,21 @@ import {
   OnDragEndResponder,
 } from "@hello-pangea/dnd";
 import { reorder } from "@/src/utils/algorithm";
-import Block from "@/src/types/Block";
+import { Block } from "@/src/types/Block";
 import { action } from "mobx";
-import VariationBound from "@/src/components/VariationBound";
-import NewVariationButtons from "@/src/components/NewVariationButtons";
+import { VariationBound } from "@/src/components/VariationBound";
+import { NewVariationButtons } from "@/src/components/NewVariationButtons";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import { Fragment } from "react";
-import VariationHandle from "@/src/components/VariationHandle";
+import { VariationHandle } from "@/src/components/VariationHandle";
 
 type ParameterVariationsProps = {
   uniformName: string;
   block: Block<ExtraParams>;
 };
 
-export default observer(function ParameterVariations({
+export const ParameterVariations = observer(function ParameterVariations({
   uniformName,
   block,
 }: ParameterVariationsProps) {

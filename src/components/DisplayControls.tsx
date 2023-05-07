@@ -1,4 +1,4 @@
-import { Box, IconButton, VStack } from "@chakra-ui/react";
+import { IconButton, VStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import { action } from "mobx";
@@ -6,7 +6,7 @@ import { FaDotCircle } from "react-icons/fa";
 import { TbRectangleFilled } from "react-icons/tb";
 import { AiOutlineLineChart } from "react-icons/ai";
 
-export default observer(function DisplayControls() {
+export const DisplayControls = observer(function DisplayControls() {
   const { uiStore } = useStore();
   return (
     <VStack p={2} position="absolute" top={0} left={0} zIndex={1}>

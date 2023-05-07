@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 
-export default memo(function ThreeEffects() {
+export const ThreeEffects = memo(function ThreeEffects() {
   return (
     <EffectComposer>
       {/* EffectComposer upon initializing causes the warning: WebGL context was lost. */}

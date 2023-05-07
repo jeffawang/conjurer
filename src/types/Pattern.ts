@@ -6,7 +6,7 @@ import {
   StandardParams,
 } from "./PatternParams";
 
-export default class Pattern<T extends ExtraParams = ExtraParams> {
+export class Pattern<T extends ExtraParams = ExtraParams> {
   name: string;
   src: string;
   params: StandardParams & T;
