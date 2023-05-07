@@ -41,9 +41,9 @@ export default observer(function PatternOrEffectBlock({
         borderTopWidth={isEffect ? 2 : 0}
         borderColor={color}
         borderStyle="solid"
-        className={isEffect ? "handle" : ""}
+        className={isEffect ? "" : "handle"}
         justify="center"
-        cursor="grab"
+        cursor={isEffect ? "pointer" : "grab"}
         spacing={0}
         color={color}
         role="button"

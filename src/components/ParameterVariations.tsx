@@ -76,7 +76,7 @@ export default observer(function ParameterVariations({
                       width={uiStore.timeToXPixels(variation.duration)}
                       justify="center"
                       spacing={0}
-                      cursor="move"
+                      cursor="grab"
                       role="button"
                       onClick={(e) => {
                         store.selectVariation(block, uniformName, variation);
