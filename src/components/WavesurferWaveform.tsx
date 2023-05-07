@@ -5,17 +5,38 @@ import { useRef, useEffect } from "react";
 import { clamp } from "three/src/math/MathUtils";
 import { useDebouncedCallback } from "use-debounce";
 import type WaveSurfer from "wavesurfer.js";
+import type { GenericPlugin } from "wavesurfer.js/dist/base-plugin";
+import type TimelinePlugin from "wavesurfer.js/dist/plugins/timeline";
 import {
   AUDIO_BUCKET_NAME,
   AUDIO_BUCKET_PREFIX,
   AUDIO_BUCKET_REGION,
 } from "@/src/utils/audio";
 
+const TIMELINE_OPTIONS = {
+  height: 40,
+  insertPosition: "beforebegin" as const,
+  timeInterval: 0.25,
+  primaryLabelInterval: 5,
+  secondaryLabelInterval: 0,
+  style: {
+    fontSize: "12px",
+    color: "#000000",
+    zIndex: 10,
+  } as any,
+};
+
 export const WavesurferWaveform = observer(function WavesurferWaveform() {
   const didInitialize = useRef(false);
   const ready = useRef(false);
+
+  const wavesurferConstructors = useRef<{
+    WaveSurfer: typeof WaveSurfer | null;
+    TimelinePlugin: typeof TimelinePlugin | null;
+  }>({ WaveSurfer: null, TimelinePlugin: null });
+
   const wavesurferRef = useRef<WaveSurfer | null>(null);
-  const waveformRef = useRef(null);
+  const waveformRef = useRef<HTMLDivElement>(null);
   const overlayCanvas = useRef<HTMLCanvasElement>(null);
 
   const { audioStore, timer, uiStore } = useStore();
@@ -31,19 +52,9 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
           import("wavesurfer.js"),
           import("wavesurfer.js/dist/plugins/timeline"),
         ]);
+      wavesurferConstructors.current = { WaveSurfer, TimelinePlugin };
 
-      const timeline = TimelinePlugin.create({
-        height: 40,
-        insertPosition: "beforebegin",
-        timeInterval: 0.25,
-        primaryLabelInterval: 5,
-        secondaryLabelInterval: 0,
-        style: {
-          fontSize: "12px",
-          color: "#000000",
-          zIndex: 10,
-        } as any,
-      });
+      const timeline = TimelinePlugin.create(TIMELINE_OPTIONS);
 
       // https://wavesurfer-js.org/docs/options.html
       const options = {
@@ -60,6 +71,8 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
         interact: false,
         minPxPerSec: uiStore.pixelsPerSecond,
         plugins: [timeline],
+        autoScroll: false,
+        autoCenter: false,
       };
       wavesurferRef.current = WaveSurfer.create(options);
       await wavesurferRef.current.load(
@@ -78,16 +91,32 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
     if (!didInitialize.current || !ready.current) return;
 
     const changeAudioFile = async () => {
-      if (didInitialize.current) {
-        await wavesurferRef.current?.load(
+      if (
+        didInitialize.current &&
+        wavesurferRef.current &&
+        wavesurferConstructors.current.TimelinePlugin
+      ) {
+        wavesurferRef.current.stop();
+
+        const plugins = wavesurferRef.current.getActivePlugins();
+        plugins.forEach((plugin: GenericPlugin) => plugin.destroy?.());
+        // TODO: we destroy the plugin, but it remains in the array. Small memory leak here
+
+        const { TimelinePlugin } = wavesurferConstructors.current;
+
+        const timeline = TimelinePlugin.create(TIMELINE_OPTIONS);
+        wavesurferRef.current.registerPlugin(timeline);
+        await wavesurferRef.current.load(
           `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
         );
-        wavesurferRef.current?.seekTo(0);
+        wavesurferRef.current.seekTo(0);
+        timer.lastCursorPosition = 0;
+        console.log(wavesurferRef.current.getActivePlugins());
       }
     };
     changeAudioFile();
     cloneCanvas();
-  }, [audioStore.selectedAudioFile]);
+  }, [audioStore.selectedAudioFile, timer]);
 
   useEffect(() => {
     if (timer.playing) {
