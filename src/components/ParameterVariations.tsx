@@ -21,17 +21,16 @@ import VariationHandle from "@/src/components/VariationHandle";
 type ParameterVariationsProps = {
   uniformName: string;
   block: Block<ExtraParams>;
-  variations: Variation[];
 };
 
 export default observer(function ParameterVariations({
   uniformName,
   block,
-  variations,
 }: ParameterVariationsProps) {
   const store = useStore();
   const { uiStore } = store;
   const width = uiStore.timeToX(block.duration);
+  const variations = block.parameterVariations[uniformName] ?? [];
 
   const domain: [number, number] = [0, 1];
   for (const variation of variations) {

@@ -197,20 +197,27 @@ export default class Store {
   };
 
   duplicateSelected = () => {
-    // TODO: implement duplicating variations
-    if (this.selectedBlocks.size === 0) return;
+    if (this.selectedBlocks.size > 0) {
+      const selectedBlocks = Array.from(this.selectedBlocks);
+      this.selectedBlocks = new Set();
+      for (const selectedBlock of selectedBlocks) {
+        const newBlock = selectedBlock.clone();
+        const nextGap = this.nextFiniteGap(
+          selectedBlock.endTime,
+          selectedBlock.duration
+        );
+        newBlock.setTiming(nextGap);
+        this.addBlock(newBlock);
+        this.addBlockToSelection(newBlock);
+      }
+      return;
+    }
 
-    const selectedBlocks = Array.from(this.selectedBlocks);
-    this.selectedBlocks = new Set();
-    for (const selectedBlock of selectedBlocks) {
-      const newBlock = selectedBlock.clone();
-      const nextGap = this.nextFiniteGap(
-        selectedBlock.endTime,
-        selectedBlock.duration
+    if (this.selectedVariation) {
+      this.selectedVariationBlock?.duplicateVariation(
+        this.selectedVariationUniformName,
+        this.selectedVariation
       );
-      newBlock.setTiming(nextGap);
-      this.addBlock(newBlock);
-      this.addBlockToSelection(newBlock);
     }
   };
 

@@ -8,15 +8,21 @@ const uniformNamesToExclude = ["u_time", "u_global_time", "u_texture"];
 
 type ParametersListProps = {
   block: Block<ExtraParams>;
+  expandMode: "expanded" | "collapsed";
 };
 
-export default memo(function ParametersList({ block }: ParametersListProps) {
+export default memo(function ParametersList({
+  block,
+  expandMode,
+}: ParametersListProps) {
   return (
     <VStack spacing={0} width="100%">
       {Object.entries(block.pattern.params).map(([uniformName, patternParam]) =>
         uniformNamesToExclude.includes(uniformName) ? null : (
           <ParameterView
-            key={uniformName}
+            // if the expandMode changes, we want to re-render all the ParameterViews
+            key={uniformName + expandMode}
+            expandMode={expandMode}
             uniformName={uniformName}
             patternParam={patternParam}
             block={block}

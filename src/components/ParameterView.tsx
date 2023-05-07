@@ -11,23 +11,17 @@ type ParameterProps = {
   uniformName: string;
   patternParam: PatternParam;
   block: Block<ExtraParams>;
+  expandMode: "expanded" | "collapsed";
 };
 
 export default observer(function ParameterView({
   uniformName,
   patternParam,
   block,
+  expandMode,
 }: ParameterProps) {
-  const didInitialize = useRef(false);
   const variations = block.parameterVariations[uniformName] ?? [];
-  const [isExpanded, setExpanded] = useState(false);
-
-  // only expand once we are on the client, otherwise dnd hydration errors occur
-  useEffect(() => {
-    if (didInitialize.current) return;
-    didInitialize.current = true;
-    setExpanded(variations.length > 0);
-  }, [setExpanded, variations.length]);
+  const [isExpanded, setExpanded] = useState(expandMode === "expanded");
 
   const headerColor = variations.length ? "orange.400" : "gray.300";
   return (
@@ -65,11 +59,7 @@ export default observer(function ParameterView({
             <NewVariationButtons uniformName={uniformName} block={block} />
           </HStack>
         ) : (
-          <ParameterVariations
-            uniformName={uniformName}
-            block={block}
-            variations={variations}
-          />
+          <ParameterVariations uniformName={uniformName} block={block} />
         ))}
     </Box>
   );

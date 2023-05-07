@@ -120,10 +120,7 @@ export default class Block<T extends ExtraParams = {}> {
     if (!variations) return;
 
     const index = variations.indexOf(variation);
-    if (index > -1) {
-      variations.splice(index, 0, variation.clone());
-      this.triggerVariationReactions(uniformName);
-    }
+    if (index > -1) variations.splice(index, 0, variation.clone());
   };
 
   applyVariationDurationDelta = (
