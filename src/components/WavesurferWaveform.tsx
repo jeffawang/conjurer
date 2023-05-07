@@ -13,7 +13,7 @@ import {
 } from "@/src/utils/audio";
 
 export default observer(function WaveSurferWaveform() {
-  const initialized = useRef(false);
+  const didInitialize = useRef(false);
   const ready = useRef(false);
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const waveformRef = useRef(null);
@@ -21,6 +21,9 @@ export default observer(function WaveSurferWaveform() {
   const { audioStore, timer, uiStore } = useStore();
 
   useEffect(() => {
+    if (didInitialize.current) return;
+    didInitialize.current = true;
+
     const create = async () => {
       // Cannot be run on the server, so we need to use dynamic import
       const WaveSurfer = (await import("wavesurfer.js")).default;
@@ -38,30 +41,31 @@ export default observer(function WaveSurferWaveform() {
         hideScrollbar: true,
         fillParent: false,
         interact: false,
-        minPxPerSec: INITIAL_PIXELS_PER_SECOND,
+        minPxPerSec: uiStore.pixelsPerSecond,
       };
       wavesurferRef.current = WaveSurfer.create(options);
       await wavesurferRef.current.load(
         `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
       );
+      wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
       ready.current = true;
     };
 
+    create();
+  }, [audioStore.selectedAudioFile, uiStore.pixelsPerSecond]);
+
+  useEffect(() => {
+    if (!didInitialize.current || !ready.current) return;
+
     const changeAudioFile = async () => {
-      if (initialized.current) {
+      if (didInitialize.current) {
         await wavesurferRef.current?.load(
           `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
         );
         wavesurferRef.current?.seekTo(0);
       }
     };
-
-    if (initialized.current) {
-      changeAudioFile();
-    } else {
-      initialized.current = true;
-      create();
-    }
+    changeAudioFile();
   }, [audioStore.selectedAudioFile]);
 
   useEffect(() => {

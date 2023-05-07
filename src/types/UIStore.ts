@@ -67,7 +67,7 @@ export default class UIStore {
     this.showingPerformance =
       data?.showingPerformance ?? this.showingPerformance;
     this.displayingCanopy = data?.displayingCanopy ?? this.displayingCanopy;
-    this.pixelsPerSecond = data?.pixelsPerSecond ?? this.pixelsPerSecond;
     this.beatLength = data?.beatLength ?? 1;
+    this.pixelsPerSecond = data?.pixelsPerSecond ?? this.pixelsPerSecond;
   };
 }
