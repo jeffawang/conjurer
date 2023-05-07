@@ -43,9 +43,11 @@ export default observer(function PatternOrEffectBlock({
         borderStyle="solid"
         className={isEffect ? "handle" : ""}
         justify="center"
-        cursor="move"
+        cursor="grab"
         spacing={0}
         color={color}
+        role="button"
+        onClick={handleBlockClick}
       >
         {!isEffect && <MdDragIndicator size={30} />}
         <Heading
@@ -53,10 +55,7 @@ export default observer(function PatternOrEffectBlock({
           userSelect="none"
           textOverflow="clip"
           overflowWrap="anywhere"
-          cursor="grab"
           color={color}
-          onClick={handleBlockClick}
-          role="button"
         >
           {isEffect ? "Effect" : "Pattern"}: {block.pattern.name}
         </Heading>

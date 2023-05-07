@@ -12,7 +12,6 @@ export default observer(function VariationHandle({
   variation,
 }: VariationHandleProps) {
   const { selectedVariation } = useStore();
-
   return (
     <HStack
       spacing={0}

@@ -49,5 +49,4 @@ Captured in the "Road to Minimum Viable Magical Product" [issue](https://github.
 
 ### Performance notes
 
-- I think the number of shaders can go up over time? Probably related to the performance issues.
 - In general, be wary of memory leaks. They can be caused by nextjs hot reloading.

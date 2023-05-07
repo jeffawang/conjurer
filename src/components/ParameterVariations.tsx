@@ -1,6 +1,5 @@
 import { ExtraParams } from "@/src/types/PatternParams";
 import { HStack, VStack } from "@chakra-ui/react";
-import Variation from "@/src/types/Variations/Variation";
 import VariationGraph from "@/src/components/VariationGraph/VariationGraph";
 import {
   DragDropContext,
