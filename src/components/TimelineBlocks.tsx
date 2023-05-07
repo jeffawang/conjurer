@@ -4,7 +4,7 @@ import { useStore } from "@/src/types/StoreContext";
 import { Box } from "@chakra-ui/react";
 import { MAX_TIME } from "@/src/utils/time";
 
-export default observer(function PatternBlocks() {
+export default observer(function TimelineBlocks() {
   const { blocks, uiStore } = useStore();
 
   return (
