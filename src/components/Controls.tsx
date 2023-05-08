@@ -18,6 +18,7 @@ import {
 } from "@/src/utils/audio";
 import { TimerControls } from "@/src/components/TimerControls";
 import { TimerReadout } from "@/src/components/TimerReadout";
+import { UserPicker } from "@/src/components/UserPicker";
 
 export const Controls = observer(function Controls() {
   const store = useStore();
@@ -155,6 +156,7 @@ export const Controls = observer(function Controls() {
           <HiOutlineInformationCircle />
         </span>
       </Tooltip>
+      <UserPicker />
     </HStack>
   );
 });

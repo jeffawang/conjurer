@@ -25,6 +25,8 @@ export class Store {
   uiStore = new UIStore();
   audioStore = new AudioStore();
 
+  user = "anon";
+
   patternBlocks: Block[] = [];
   selectedBlocks: Set<Block> = new Set();
 
@@ -403,6 +405,7 @@ export class Store {
     audioStore: this.audioStore.serialize(),
     blocks: this.patternBlocks.map((b) => b.serialize()),
     uiStore: this.uiStore.serialize(),
+    user: this.user,
   });
 
   deserialize = (data: any) => {
