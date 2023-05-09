@@ -28,7 +28,7 @@
     "glslify-loader": "^2.0.0",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",
-    "next": "13.3.2",
+    "next": "13.4.1",
     "postprocessing": "^6.31.0",
     "raw-loader": "^4.0.2",
     "react": "18.2.0",
