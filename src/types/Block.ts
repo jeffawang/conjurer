@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import { Pattern } from "./Pattern";
-import { ExtraParams } from "./PatternParams";
+import { Pattern } from "@/src/types/Pattern";
+import { ExtraParams, ParamType } from "@/src/types/PatternParams";
 import { Variation } from "@/src/types/Variations/Variation";
 import { MINIMUM_VARIATION_DURATION } from "@/src/utils/time";
 import { patternMap } from "@/src/patterns/patterns";
@@ -92,6 +92,14 @@ export class Block<T extends ExtraParams = {}> {
     this.pattern.paramValues[parameter] = lastVariation.valueAtTime(
       lastVariation.duration
     );
+  };
+
+  getLastParameterValue = (uniformName: string): ParamType => {
+    const variations = this.parameterVariations[uniformName];
+    if (!variations) return null;
+
+    const lastVariation = variations[variations.length - 1];
+    return lastVariation.valueAtTime(lastVariation.duration);
   };
 
   addVariation = (uniformName: string, variation: Variation) => {
