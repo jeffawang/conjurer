@@ -5,7 +5,6 @@ import { observer } from "mobx-react-lite";
 import { RenderPipeline } from "@/src/components/RenderPipeline";
 import { RenderingGate } from "@/src/components/RenderingGate";
 import { Canopy } from "@/src/components/Canopy";
-import { ThreeEffects } from "@/src/components/ThreeEffects";
 import { CameraControls } from "@/src/components/CameraControls";
 
 type PreviewCanvasProps = {
@@ -24,7 +23,6 @@ export const PreviewCanvas = observer(function PreviewCanvas({
       <RenderPipeline block={block} autorun>
         {(renderTarget) => <Canopy renderTarget={renderTarget} />}
       </RenderPipeline>
-      <ThreeEffects />
     </Canvas>
   );
 });
