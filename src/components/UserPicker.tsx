@@ -12,6 +12,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -48,13 +49,15 @@ export const UserPicker = memo(function UserPicker() {
   return (
     <>
       <Button
+        variant="ghost"
         onClick={() => {
           refetch();
           onOpen();
         }}
         leftIcon={<FaUser />}
+        size="xs"
       >
-        {store.user}
+        {store.user || "Log in"}
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -64,19 +67,23 @@ export const UserPicker = memo(function UserPicker() {
           <ModalCloseButton />
           <ModalBody>
             <VStack alignItems="center">
-              {users.map((user) => (
-                <Button
-                  key={user}
-                  leftIcon={<FaUser />}
-                  width="100%"
-                  onClick={action(() => {
-                    store.user = user;
-                    onClose();
-                  })}
-                >
-                  {user}
-                </Button>
-              ))}
+              {loading ? (
+                <Spinner />
+              ) : (
+                users.map((user) => (
+                  <Button
+                    key={user}
+                    leftIcon={<FaUser />}
+                    width="100%"
+                    onClick={action(() => {
+                      store.user = user;
+                      onClose();
+                    })}
+                  >
+                    {user}
+                  </Button>
+                ))
+              )}
             </VStack>
 
             <Text my={4}>Click a name above or type a new name:</Text>

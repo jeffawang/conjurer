@@ -25,7 +25,7 @@ export class Store {
   uiStore = new UIStore();
   audioStore = new AudioStore();
 
-  user = "anon";
+  user = "";
 
   patternBlocks: Block[] = [];
   selectedBlocks: Set<Block> = new Set();
