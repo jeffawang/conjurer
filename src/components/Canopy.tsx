@@ -21,7 +21,7 @@ type CanopyViewProps = {
 };
 
 export const Canopy = function Canopy({ renderTarget }: CanopyViewProps) {
-  const canopyMesh = useRef<THREE.Points>(null);
+  const scene = useRef<Scene>(null);
   const canopyUniforms = useRef({ u_texture: { value: renderTarget.texture } });
 
   const bufferGeometry = useMemo(() => {
@@ -39,38 +39,43 @@ export const Canopy = function Canopy({ renderTarget }: CanopyViewProps) {
 
   const { gl, camera } = useThree();
 
+  // build an EffectComposer with imperative style three js because of shortcomings of
+  // Drei <EffectComposer> (lack of render priority, ability to specify scene/singular mesh to render)
   const effectComposer = useMemo(() => {
     const effectComposer = new EffectComposer(gl);
-    effectComposer.setSize(gl.domElement.width, gl.domElement.height);
-    if (canopyMesh.current) {
-      const scene = new Scene();
-      scene.add(canopyMesh.current);
-      effectComposer.addPass(new RenderPass(scene, camera));
-      effectComposer.addPass(
-        new EffectPass(
-          camera,
-          new BloomEffect({
-            luminanceThreshold: 0.001,
-            intensity: 0.2,
-          })
-        )
-      );
-    }
+    effectComposer.setSize(
+      gl.domElement.clientWidth,
+      gl.domElement.clientHeight
+    );
 
+    if (!scene.current) return effectComposer;
+
+    effectComposer.addPass(new RenderPass(scene.current, camera));
+    effectComposer.addPass(
+      new EffectPass(
+        camera,
+        new BloomEffect({
+          luminanceThreshold: 0.001,
+          intensity: 0.2,
+        })
+      )
+    );
     return effectComposer;
-  }, [gl, camera, canopyMesh]);
+  }, [gl, camera]);
 
   // render the effect composer, including the canopy render pass and bloom effect
   useFrame(() => effectComposer.render(), 100);
 
   return (
-    <points ref={canopyMesh}>
-      <primitive attach="geometry" object={bufferGeometry} />
-      <shaderMaterial
-        uniforms={canopyUniforms.current}
-        fragmentShader={fromTexture}
-        vertexShader={canopyVert}
-      />
-    </points>
+    <scene ref={scene}>
+      <points>
+        <primitive attach="geometry" object={bufferGeometry} />
+        <shaderMaterial
+          uniforms={canopyUniforms.current}
+          fragmentShader={fromTexture}
+          vertexShader={canopyVert}
+        />
+      </points>
+    </scene>
   );
 };
