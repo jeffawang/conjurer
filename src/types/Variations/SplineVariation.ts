@@ -1,6 +1,14 @@
 import { Variation } from "@/src/types/Variations/Variation";
 import { CubicSpline } from "splines";
 
+export const DEFAULT_SPLINE_POINTS = [
+  { x: 0, y: 0 },
+  { x: 0.1, y: 0.4 },
+  { x: 0.3, y: 0.45 },
+  { x: 0.6, y: 1 },
+  { x: 1, y: 0.6 },
+];
+
 export class SplineVariation extends Variation<number> {
   private _points: { x: number; y: number }[] = [];
   spline: any;
@@ -17,13 +25,7 @@ export class SplineVariation extends Variation<number> {
   constructor(duration: number, points?: { x: number; y: number }[]) {
     super("spline", duration);
 
-    this.points = points ?? [
-      { x: 0, y: 0 },
-      { x: 0.1, y: 0.4 },
-      { x: 0.3, y: 0.45 },
-      { x: 0.6, y: 1 },
-      { x: 1, y: 0.6 },
-    ];
+    this.points = points ?? DEFAULT_SPLINE_POINTS;
   }
 
   private _computeSpline = () => {
@@ -37,7 +39,10 @@ export class SplineVariation extends Variation<number> {
   };
 
   valueAtTime = (time: number) => {
-    const value = this.spline.interpolate(time / this.duration);
+    const value = this.spline.interpolate(
+      // if you pass a value of 1 to interpolate, you get NaN, so we clamp it to 0.99999
+      Math.min(time / this.duration, 0.99999)
+    );
     return value;
   };
 

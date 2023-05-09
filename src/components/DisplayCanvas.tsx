@@ -5,7 +5,6 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "@/src/types/StoreContext";
 import { RenderPipeline } from "@/src/components/RenderPipeline";
 import { CartesianView } from "@/src/components/CartesianView";
-import { ThreeEffects } from "@/src/components/ThreeEffects";
 import { CameraControls } from "@/src/components/CameraControls";
 
 export const DisplayCanvas = observer(function DisplayCanvas() {
@@ -24,7 +23,6 @@ export const DisplayCanvas = observer(function DisplayCanvas() {
           )
         }
       </RenderPipeline>
-      {uiStore.displayingCanopy && <ThreeEffects />}
     </Canvas>
   );
 });

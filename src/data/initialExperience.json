@@ -1,5 +1,7 @@
 {
-  "audioStore": { "selectedAudioFile": "cloudkicker-explorebecurious.mp3" },
+  "audioStore": {
+    "selectedAudioFile": "Ott. - Skylon - 02 The Queen Of All Everything.mp3"
+  },
   "blocks": [
     {
       "pattern": "Disc",
@@ -140,7 +142,7 @@
     }
   ],
   "uiStore": {
-    "showingPerformance": true,
+    "showingPerformance": false,
     "displayingCanopy": true,
     "pixelsPerSecond": 16,
     "beatLength": 1

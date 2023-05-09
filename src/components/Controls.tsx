@@ -55,6 +55,7 @@ export const Controls = observer(function Controls() {
     <HStack my={2} width="100%">
       <TimerReadout />
       <TimerControls />
+      {/* <ExperienceTitle /> */}
       <IconButton
         aria-label="Copy to clipboard"
         title="Copy to clipboard"
@@ -138,7 +139,7 @@ export const Controls = observer(function Controls() {
 
       <Select
         size="xs"
-        width={60}
+        width={40}
         value={audioStore.selectedAudioFile}
         onChange={action((e) => {
           audioStore.selectedAudioFile = e.target.value;

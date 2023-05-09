@@ -25,6 +25,8 @@ export class Store {
   uiStore = new UIStore();
   audioStore = new AudioStore();
 
+  user = "";
+
   patternBlocks: Block[] = [];
   selectedBlocks: Set<Block> = new Set();
 
@@ -233,12 +235,15 @@ export class Store {
    * @param {number} fromTime
    * @memberof Store
    */
-  nextGap = (fromTime: number): { startTime: number; duration?: number } => {
+  nextGap = (
+    fromTime: number,
+    blocks: Block[] = this.patternBlocks
+  ): { startTime: number; duration?: number } => {
     // no blocks
-    if (this.patternBlocks.length === 0) return { startTime: fromTime };
+    if (blocks.length === 0) return { startTime: fromTime };
 
     // fromTime is before first block
-    const firstBlock = this.patternBlocks[0];
+    const firstBlock = blocks[0];
     if (fromTime < firstBlock.startTime) {
       return {
         startTime: fromTime,
@@ -252,9 +257,9 @@ export class Store {
     }
 
     // fromTime is in between start of first block and end of last block
-    for (let i = 0; i < this.patternBlocks.length; i++) {
-      const block = this.patternBlocks[i];
-      const nextBlock = this.patternBlocks[i + 1];
+    for (let i = 0; i < blocks.length; i++) {
+      const block = blocks[i];
+      const nextBlock = blocks[i + 1];
 
       // fromTime is in this block
       if (block.startTime <= fromTime && fromTime < block.endTime) {
@@ -284,7 +289,8 @@ export class Store {
       }
     }
 
-    return { startTime: this.endTime };
+    const lastBlock = blocks[blocks.length - 1];
+    return { startTime: lastBlock.endTime };
   };
 
   /**
@@ -296,9 +302,10 @@ export class Store {
    */
   nextFiniteGap = (
     fromTime: number,
-    maxDuration: number = DEFAULT_BLOCK_DURATION
+    maxDuration: number = DEFAULT_BLOCK_DURATION,
+    blocks: Block[] = this.patternBlocks
   ): { startTime: number; duration: number } => {
-    const gap = this.nextGap(fromTime);
+    const gap = this.nextGap(fromTime, blocks);
     return {
       startTime: gap.startTime,
       duration: gap.duration
@@ -310,21 +317,56 @@ export class Store {
   nearestValidStartTimeDelta = (block: Block, desiredDeltaTime: number) => {
     const desiredStartTime = block.startTime + desiredDeltaTime;
     const desiredEndTime = block.endTime + desiredDeltaTime;
+
+    let leftOverlappingBlock = null;
+    let rightOverlappingBlock = null;
     for (const otherBlock of this.patternBlocks) {
       if (otherBlock === block) continue;
 
-      // check if desired time span overlaps with other block
+      // check if desired start time span overlaps with other block
       if (
-        (desiredStartTime >= otherBlock.startTime &&
-          desiredStartTime < otherBlock.endTime) ||
-        (desiredEndTime > otherBlock.startTime &&
-          desiredEndTime <= otherBlock.endTime)
+        desiredStartTime >= otherBlock.startTime &&
+        desiredStartTime < otherBlock.endTime
       )
-        // TODO: actually find the nearest valid delta time
-        return 0;
+        leftOverlappingBlock = otherBlock;
+
+      // check if desired end time span overlaps with other block
+      if (
+        desiredEndTime > otherBlock.startTime &&
+        desiredEndTime <= otherBlock.endTime
+      )
+        rightOverlappingBlock = otherBlock;
     }
 
-    return desiredDeltaTime;
+    // if there is no overlap, return the desired delta time
+    if (!leftOverlappingBlock && !rightOverlappingBlock) {
+      // make sure that there is not a block entirely inside of the desired time span
+      const { startTime, duration } = this.nextFiniteGap(
+        desiredStartTime,
+        block.duration,
+        this.patternBlocks.filter((b) => b !== block)
+      );
+      return startTime === desiredStartTime && duration >= block.duration
+        ? desiredDeltaTime
+        : 0;
+    }
+
+    // if there is overlap on both sides, return 0
+    if (leftOverlappingBlock && rightOverlappingBlock) return 0;
+
+    let potentialStartTime = 0;
+    if (leftOverlappingBlock) potentialStartTime = leftOverlappingBlock.endTime;
+    if (rightOverlappingBlock)
+      potentialStartTime = rightOverlappingBlock.startTime - block.duration;
+
+    const { startTime, duration } = this.nextFiniteGap(
+      potentialStartTime,
+      block.duration,
+      this.patternBlocks.filter((b) => b !== block)
+    );
+    return potentialStartTime === startTime && duration >= block.duration
+      ? potentialStartTime - block.startTime
+      : 0;
   };
 
   resizeBlockLeftBound = (block: Block, delta: number) => {
@@ -403,6 +445,7 @@ export class Store {
     audioStore: this.audioStore.serialize(),
     blocks: this.patternBlocks.map((b) => b.serialize()),
     uiStore: this.uiStore.serialize(),
+    user: this.user,
   });
 
   deserialize = (data: any) => {
