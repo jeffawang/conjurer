@@ -111,7 +111,6 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
         );
         wavesurferRef.current.seekTo(0);
         timer.lastCursorPosition = 0;
-        console.log(wavesurferRef.current.getActivePlugins());
       }
     };
     changeAudioFile();

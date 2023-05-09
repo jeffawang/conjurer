@@ -12,6 +12,17 @@ export const App = function App() {
     if (didInitialize.current) return;
     didInitialize.current = true;
     store.initialize();
+
+    const autosave = () => {
+      store.saveToLocalStorage("autosave");
+    };
+
+    // TODO: not actually working...
+    addEventListener("onbeforeunload", autosave);
+
+    return () => {
+      removeEventListener("onbeforeunload", autosave);
+    };
   }, [store]);
 
   return (
