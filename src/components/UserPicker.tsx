@@ -1,4 +1,3 @@
-// TODO: maybe use swr instead of axios
 import useAxios from "axios-hooks";
 import { memo, useState } from "react";
 import {
@@ -36,7 +35,7 @@ export const UserPicker = memo(function UserPicker() {
   );
 
   let users: string[] = [];
-  if (data) users = data.users.rows.map((row: any) => row.name);
+  if (data) users = data.users.map((row: any) => row.name);
 
   const [, createUser] = useAxios(
     {

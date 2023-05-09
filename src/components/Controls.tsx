@@ -55,6 +55,7 @@ export const Controls = observer(function Controls() {
     <HStack my={2} width="100%">
       <TimerReadout />
       <TimerControls />
+      {/* <ExperienceTitle /> */}
       <IconButton
         aria-label="Copy to clipboard"
         title="Copy to clipboard"

@@ -17,7 +17,7 @@ export default async function handler(
       const result = await client.sql`
         INSERT INTO users (name)
         VALUES (${name})
-        RETURNING *;
+        ON CONFLICT DO NOTHING;
       `;
       const user = result.rows[0];
       return response.status(200).json({ user });
@@ -29,7 +29,7 @@ export default async function handler(
   try {
     await client.sql`CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
+      name VARCHAR(255) NOT NULL UNIQUE,
       "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );`;
   } catch (error) {
@@ -37,5 +37,5 @@ export default async function handler(
   }
 
   const users = await client.sql`SELECT * FROM users;`;
-  return response.status(200).json({ users });
+  return response.status(200).json({ users: users.rows });
 }

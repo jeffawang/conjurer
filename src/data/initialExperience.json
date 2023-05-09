@@ -142,7 +142,7 @@
     }
   ],
   "uiStore": {
-    "showingPerformance": true,
+    "showingPerformance": false,
     "displayingCanopy": true,
     "pixelsPerSecond": 16,
     "beatLength": 1
