@@ -43,6 +43,10 @@ yarn dev
 - We use [`react-icons`](https://react-icons.github.io/react-icons/search) - just search for what you want and import the icon from the correct place.
 - We use [`recharts`](https://recharts.org/en-US/api) to do some simple graphs.
 
+### Scripts
+
+`yarn generateCanopy` generates canopy geometry data and stores it in `src/data/canopyGeometry.json`
+
 ## Todos
 
 Captured in the "Road to Minimum Viable Magical Product" [issue](https://github.com/SotSF/conjurer/issues/26).
