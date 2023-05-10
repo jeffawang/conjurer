@@ -1,7 +1,8 @@
-#define PI 3.14159265359
+#ifdef GL_ES
+precision mediump float;
+#endif
 
-uniform float u_time;
-uniform float u_global_time;
+#define PI 3.14159265359
 
 uniform float u_radius;
 uniform float u_fuzziness;

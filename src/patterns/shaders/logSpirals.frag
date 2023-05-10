@@ -1,3 +1,7 @@
+#ifdef GL_ES
+precision mediump float;
+#endif
+
 #define tau 6.2831853
 
 uniform float u_globalTimeFactor;

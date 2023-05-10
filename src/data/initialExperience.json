@@ -4,6 +4,21 @@
   },
   "blocks": [
     {
+      "pattern": "Log Spirals",
+      "startTime": 0,
+      "duration": 38.375,
+      "parameterVariations": {},
+      "effectBlocks": [
+        {
+          "pattern": "Leaf",
+          "startTime": 0,
+          "duration": 5,
+          "parameterVariations": {},
+          "effectBlocks": []
+        }
+      ]
+    },
+    {
       "pattern": "Clouds",
       "startTime": 38.375,
       "duration": 23.375,
