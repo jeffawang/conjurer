@@ -1,9 +1,15 @@
 import { CartesianProjection } from "@/src/effects/CartesianProjection";
 import { ColorTint } from "@/src/effects/ColorTint";
 import { Shaper } from "@/src/effects/Shaper";
+import { Leaf } from "@/src/effects/Leaf";
 import { Pattern } from "@/src/types/Pattern";
 
-const effects: Pattern[] = [ColorTint(), CartesianProjection(), Shaper()];
+const effects: Pattern[] = [
+  ColorTint(),
+  CartesianProjection(),
+  Shaper(),
+  Leaf(),
+];
 
 const effectMap: { [key: string]: Pattern } = {};
 for (const effect of effects) {
