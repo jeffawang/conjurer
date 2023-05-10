@@ -96,7 +96,7 @@ export class Block<T extends ExtraParams = {}> {
 
   getLastParameterValue = (uniformName: string): ParamType => {
     const variations = this.parameterVariations[uniformName];
-    if (!variations) return null;
+    if (!variations || variations.length === 0) return null;
 
     const lastVariation = variations[variations.length - 1];
     return lastVariation.valueAtTime(lastVariation.duration);
