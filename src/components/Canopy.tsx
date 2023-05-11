@@ -7,7 +7,7 @@ import {
 import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import canopyVert from "@/src/patterns/shaders/canopy.vert";
-import fromTexture from "@/src/patterns/shaders/fromTexture.frag";
+import fromTextureWithIntensity from "@/src/patterns/shaders/fromTextureWithIntensity.frag";
 import canopyGeometry from "@/src/data/canopyGeometry.json";
 import {
   BloomEffect,
@@ -21,8 +21,13 @@ type CanopyViewProps = {
 };
 
 export const Canopy = function Canopy({ renderTarget }: CanopyViewProps) {
+  const { gl, camera } = useThree();
   const scene = useRef<Scene>(null);
-  const canopyUniforms = useRef({ u_texture: { value: renderTarget.texture } });
+
+  const canopyUniforms = useRef({
+    u_view_vector: { value: camera.position },
+    u_texture: { value: renderTarget.texture },
+  });
 
   const bufferGeometry = useMemo(() => {
     const geometry = new BufferGeometry();
@@ -34,10 +39,12 @@ export const Canopy = function Canopy({ renderTarget }: CanopyViewProps) {
       "uv",
       new BufferAttribute(new Float32Array(canopyGeometry.uv), 2)
     );
+    geometry.setAttribute(
+      "normal",
+      new BufferAttribute(new Float32Array(canopyGeometry.normal), 3)
+    );
     return geometry;
   }, []);
-
-  const { gl, camera } = useThree();
 
   // build an EffectComposer with imperative style three js because of shortcomings of
   // Drei <EffectComposer> (lack of render priority, ability to specify scene/singular mesh to render)
@@ -72,7 +79,7 @@ export const Canopy = function Canopy({ renderTarget }: CanopyViewProps) {
         <primitive attach="geometry" object={bufferGeometry} />
         <shaderMaterial
           uniforms={canopyUniforms.current}
-          fragmentShader={fromTexture}
+          fragmentShader={fromTextureWithIntensity}
           vertexShader={canopyVert}
         />
       </points>
