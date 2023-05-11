@@ -4,16 +4,26 @@
   },
   "blocks": [
     {
-      "pattern": "Log Spirals",
+      "pattern": "Barcode",
       "startTime": 0,
-      "duration": 38.375,
-      "parameterVariations": {},
+      "duration": 38,
+      "parameterVariations": {
+        "u_saturation_start": [
+          { "type": "flat", "duration": 2, "value": 0 },
+          { "type": "linear", "duration": 36, "from": 0, "to": 1 }
+        ],
+        "u_hue_start": [{ "type": "flat", "duration": 2, "value": 0 }],
+        "u_hue_width": [
+          { "type": "flat", "duration": 2, "value": 0 },
+          { "type": "linear", "duration": 36, "from": 0, "to": 1 }
+        ]
+      },
       "effectBlocks": []
     },
     {
       "pattern": "Clouds",
-      "startTime": 38.375,
-      "duration": 23.375,
+      "startTime": 38,
+      "duration": 23.75,
       "parameterVariations": {
         "u_color": [
           {
@@ -151,7 +161,7 @@
     }
   ],
   "uiStore": {
-    "showingPerformance": true,
+    "showingPerformance": false,
     "displayingCanopy": true,
     "pixelsPerSecond": 32,
     "beatLength": 1

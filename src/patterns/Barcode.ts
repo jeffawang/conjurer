@@ -16,6 +16,18 @@ export const Barcode = () => {
       name: "Go Nuts",
       value: 0,
     },
+    u_saturation_start: {
+      name: "Saturation Start",
+      value: 1.0,
+    },
+    u_hue_start: {
+      name: "Hue Start",
+      value: 0.05,
+    },
+    u_hue_width: {
+      name: "Hue Width",
+      value: 0.55,
+    },
   };
   return new Pattern<typeof params>("Barcode", barcode, params);
 };
