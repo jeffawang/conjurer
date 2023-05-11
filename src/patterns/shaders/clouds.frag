@@ -1,9 +1,12 @@
+#ifdef GL_ES
+precision mediump float;
+#endif
+
 // (sqrt(5) - 1)/4 = F4, used once below
 #define F4 0.309016994374947451
 #define PI 3.14159265359
 
 uniform float u_time;
-uniform float u_global_time;
 
 uniform float u_scale;
 uniform float u_speed;
@@ -141,8 +144,16 @@ float surface(vec4 coord) {
 }
 
 void main() {
-    float s = v_uv.x * u_scale;
-    float t = v_uv.y * u_scale;
+    vec2 st = v_uv;
+
+    // Cartesian projection
+    float theta = st.x * 2.0 * 3.1415926;
+    float r = st.y * 0.88888888 + 0.111111111;
+    st.x = r * cos(theta) * 0.5;
+    st.y = r * sin(theta) * 0.5;
+
+    float s = st.x * u_scale;
+    float t = st.y * u_scale;
 
     // Tiling 4d noise based on
     // https://gamedev.stackexchange.com/questions/23625/how-do-you-generate-tileable-perlin-noise/23639#23639

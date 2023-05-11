@@ -23,7 +23,7 @@ export const PatternOrEffectBlock = observer(function PatternOrEffectBlock({
   effectIndex = -1,
 }: Props) {
   const [expandMode, setExpandMode] = useState<"expanded" | "collapsed">(
-    "expanded"
+    "collapsed"
   );
 
   const parentBlock = block.parentBlock;

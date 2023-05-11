@@ -7,6 +7,7 @@ import {
 } from "../utils/size";
 import { catenary } from "../utils/catenary";
 import * as fs from "fs";
+import { Vector2 } from "three";
 
 export const saveJson = (filename: string, data: any) =>
   fs.writeFileSync(filename, JSON.stringify(data));
@@ -22,24 +23,50 @@ const main = async () => {
     STRIP_LENGTH,
     LED_COUNTS.y
   );
-  const ledPositions = [];
+  const catenaryNormal = [];
+  for (let i = 0; i < catenaryCoordinates.length; i++) {
+    const point1Index = i === 0 ? 0 : i - 1;
+    const point2Index = i === catenaryCoordinates.length - 1 ? i : i + 1;
+
+    const x1 = catenaryCoordinates[point1Index][0];
+    const y1 = catenaryCoordinates[point1Index][1];
+    const x2 = catenaryCoordinates[point2Index][0];
+    const y2 = catenaryCoordinates[point2Index][1];
+
+    const slope = (y2 - y1) / (x2 - x1);
+    const normalSlope = -1 / slope;
+    const normal = new Vector2(1, normalSlope).normalize().toArray();
+    if (normal[1] > 0) {
+      normal[0] = -normal[0];
+      normal[1] = -normal[1];
+    }
+    catenaryNormal.push(normal);
+  }
+
   const uv = [];
+  const position = [];
+  const normal = [];
   for (let x = 0; x < LED_COUNTS.x; x++) {
     for (let y = 0; y < LED_COUNTS.y; y++) {
       const normalizedX = x / (LED_COUNTS.x - 1);
       const normalizedY = y / (LED_COUNTS.y - 1);
-      const theta = normalizedX * 2 * Math.PI;
+      const theta = (x / LED_COUNTS.x) * 2 * Math.PI;
 
       uv.push(normalizedX, normalizedY);
-      ledPositions.push(
+      position.push(
         catenaryCoordinates[y][0] * Math.cos(theta),
         catenaryCoordinates[y][0] * Math.sin(theta),
         -catenaryCoordinates[y][1]
       );
+      normal.push(
+        catenaryNormal[y][0] * Math.cos(theta),
+        catenaryNormal[y][0] * Math.sin(theta),
+        -catenaryNormal[y][1]
+      );
     }
   }
 
-  saveJson(CANOPY_GEOMETRY_OUTPUT_PATH, { position: ledPositions, uv });
+  saveJson(CANOPY_GEOMETRY_OUTPUT_PATH, { position, uv, normal });
   console.log("Complete!", CANOPY_GEOMETRY_OUTPUT_PATH);
 };
 
