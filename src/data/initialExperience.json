@@ -8,15 +8,7 @@
       "startTime": 0,
       "duration": 38.375,
       "parameterVariations": {},
-      "effectBlocks": [
-        {
-          "pattern": "Leaf",
-          "startTime": 0,
-          "duration": 5,
-          "parameterVariations": {},
-          "effectBlocks": []
-        }
-      ]
+      "effectBlocks": []
     },
     {
       "pattern": "Clouds",

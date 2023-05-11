@@ -5,10 +5,10 @@ import { Leaf } from "@/src/effects/Leaf";
 import { Pattern } from "@/src/types/Pattern";
 
 const effects: Pattern[] = [
-  ColorTint(),
-  CartesianProjection(),
   Shaper(),
   Leaf(),
+  ColorTint(),
+  CartesianProjection(),
 ];
 
 const effectMap: { [key: string]: Pattern } = {};
