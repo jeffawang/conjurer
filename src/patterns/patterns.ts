@@ -4,8 +4,10 @@ import { SunCycle } from "@/src/patterns/SunCycle";
 import { LogSpirals } from "./LogSpirals";
 import { Pattern } from "@/src/types/Pattern";
 import { Barcode } from "@/src/patterns/Barcode";
+import { Pulse } from "@/src/patterns/Pulse";
 
 const patterns: Pattern[] = [
+  Pulse(),
   Barcode(),
   LogSpirals(),
   Clouds(),
