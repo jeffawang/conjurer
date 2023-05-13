@@ -7,10 +7,11 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Switch,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Variation } from "@/src/types/Variations/Variation";
 import { action } from "mobx";
 import { FaTrashAlt } from "react-icons/fa";
@@ -269,28 +270,112 @@ function SineVariationControls({
   const [phase, setPhase] = useState(variation.phase.toString());
   const [offset, setOffset] = useState(variation.offset.toString());
 
+  const [min, setMin] = useState(variation.min.toString());
+  const [max, setMax] = useState(variation.max.toString());
+
+  const [showingMinMax, setShowingMinMax] = useState(true);
+
   return (
     <>
       <Text>Sine</Text>
       <HStack m={1}>
-        <Text>Amplitude:</Text>
-        <NumberInput
-          size="md"
-          step={0.1}
-          onChange={(valueString) => {
-            variation.amplitude = parseFloat(valueString);
-            setAmplitude(valueString);
-            block.triggerVariationReactions(uniformName);
+        <Text>Min/max mode:</Text>
+        <Switch
+          m={1}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            setShowingMinMax(event.target.checked);
+            // re sync the min/max/amplitude/offset
+            setAmplitude(variation.amplitude.toString());
+            setOffset(variation.offset.toString());
+            setMin(variation.min.toString());
+            setMax(variation.max.toString());
           }}
-          value={amplitude}
-        >
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
+          isChecked={showingMinMax}
+        />
       </HStack>
+      {showingMinMax ? (
+        <>
+          <HStack m={1}>
+            <Text>Min:</Text>
+            <NumberInput
+              size="md"
+              step={0.1}
+              onChange={(valueString) => {
+                variation.min = parseFloat(valueString);
+                setMin(valueString);
+                block.triggerVariationReactions(uniformName);
+              }}
+              value={min}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </HStack>
+          <HStack m={1}>
+            <Text>Max:</Text>
+            <NumberInput
+              size="md"
+              step={0.1}
+              onChange={(valueString) => {
+                variation.max = parseFloat(valueString);
+                setMax(valueString);
+                block.triggerVariationReactions(uniformName);
+              }}
+              value={max}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </HStack>
+        </>
+      ) : (
+        <>
+          <HStack m={1}>
+            <Text>Offset:</Text>
+            <NumberInput
+              size="md"
+              step={0.1}
+              onChange={(valueString) => {
+                variation.offset = parseFloat(valueString);
+                setOffset(valueString);
+                block.triggerVariationReactions(uniformName);
+              }}
+              value={offset}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </HStack>
+          <HStack m={1}>
+            <Text>Amplitude:</Text>
+            <NumberInput
+              size="md"
+              step={0.1}
+              onChange={(valueString) => {
+                variation.amplitude = parseFloat(valueString);
+                setAmplitude(valueString);
+                block.triggerVariationReactions(uniformName);
+              }}
+              value={amplitude}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </HStack>
+        </>
+      )}
       <HStack m={1}>
         <Text>Frequency:</Text>
         <NumberInput
@@ -321,25 +406,6 @@ function SineVariationControls({
             block.triggerVariationReactions(uniformName);
           }}
           value={phase}
-        >
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-      </HStack>
-      <HStack m={1}>
-        <Text>Offset:</Text>
-        <NumberInput
-          size="md"
-          step={0.1}
-          onChange={(valueString) => {
-            variation.offset = parseFloat(valueString);
-            setOffset(valueString);
-            block.triggerVariationReactions(uniformName);
-          }}
-          value={offset}
         >
           <NumberInputField />
           <NumberInputStepper>

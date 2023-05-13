@@ -6,6 +6,26 @@ export class SineVariation extends Variation<number> {
   phase: number;
   offset: number;
 
+  get min() {
+    return -this.amplitude + this.offset;
+  }
+
+  set min(newMin: number) {
+    const oldMax = this.max;
+    this.amplitude = (oldMax - newMin) / 2;
+    this.offset = newMin + this.amplitude;
+  }
+
+  get max() {
+    return this.amplitude + this.offset;
+  }
+
+  set max(newMax: number) {
+    const oldMin = this.min;
+    this.amplitude = (newMax - oldMin) / 2;
+    this.offset = oldMin + this.amplitude;
+  }
+
   constructor(
     duration: number,
     amplitude: number,
