@@ -1,7 +1,9 @@
 import { AudioRegion } from "@/src/types/AudioRegion";
+import { Timer } from "@/src/types/Timer";
 import { makeAutoObservable } from "mobx";
 
 export class AudioStore {
+  timer: Timer;
   audioInitialized = false;
   availableAudioFiles: string[] = [];
   selectedAudioFile: string = "cloudkicker-explorebecurious.mp3";
@@ -11,8 +13,10 @@ export class AudioStore {
 
   selectedRegion: AudioRegion | null = null;
 
-  constructor() {
+  constructor(timer: Timer) {
     makeAutoObservable(this);
+    this.timer = timer;
+    this.timer.addTickListener(this.onTick);
   }
 
   toggleAudioMuted = () => {
@@ -24,7 +28,10 @@ export class AudioStore {
   };
 
   onTick = (time: number) => {
-    console.log("testing");
+    if (!this.selectedRegion || !this.audioLooping) return;
+    if (time > this.selectedRegion.end) {
+      this.timer.setTime(this.selectedRegion.start);
+    }
   };
 
   serialize = () => ({

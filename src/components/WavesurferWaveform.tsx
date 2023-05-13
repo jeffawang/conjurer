@@ -102,8 +102,8 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
       wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
 
       const region = new AudioRegion({
-        start: 4,
-        end: 17,
+        start: 1,
+        end: 3,
         content: "",
         color: "rgba(255,0,0,0.1)",
       });
@@ -176,6 +176,7 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
       const duration = wavesurferRef.current.getDuration();
       const progress = duration > 0 ? timer.lastCursor.position / duration : 0;
       wavesurferRef.current.seekTo(clamp(progress, 0, 1));
+      console.log(progress);
     }
   }, [timer.lastCursor]);
 
