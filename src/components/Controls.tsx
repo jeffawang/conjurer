@@ -6,7 +6,7 @@ import { HStack, IconButton, Select, Tooltip } from "@chakra-ui/react";
 import { RiZoomInLine, RiZoomOutLine } from "react-icons/ri";
 import { BsSoundwave } from "react-icons/bs";
 import { BiTimer } from "react-icons/bi";
-import { FaFolderOpen, FaRegClipboard } from "react-icons/fa";
+import { FaFolderOpen, FaRegClipboard, FaVolumeMute } from "react-icons/fa";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { FiSave } from "react-icons/fi";
 import { useStore } from "@/src/types/StoreContext";
@@ -55,6 +55,21 @@ export const Controls = observer(function Controls() {
     <HStack my={2} width="100%">
       <TimerReadout />
       <TimerControls />
+      <IconButton
+        aria-label="Mute/unmute audio"
+        title="Mute/unmute audio"
+        height={6}
+        icon={<FaVolumeMute size={17} />}
+        bgColor={audioStore.audioMuted ? "orange.700" : undefined}
+        _hover={
+          audioStore.audioMuted
+            ? {
+                bgColor: "orange.600",
+              }
+            : undefined
+        }
+        onClick={action(() => audioStore.toggleAudioMuted())}
+      />
       {/* <ExperienceTitle /> */}
       <IconButton
         aria-label="Copy to clipboard"

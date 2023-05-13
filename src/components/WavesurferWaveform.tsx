@@ -125,6 +125,11 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
     }
   }, [timer.playing]);
 
+  useEffect(() => {
+    if (!wavesurferRef.current) return;
+    wavesurferRef.current.setMuted(audioStore.audioMuted);
+  }, [audioStore.audioMuted]);
+
   const zoomDebounced = useDebouncedCallback((pixelsPerSecond: number) => {
     wavesurferRef.current?.zoom(pixelsPerSecond);
     cloneCanvas();
