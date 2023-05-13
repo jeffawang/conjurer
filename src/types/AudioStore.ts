@@ -1,3 +1,4 @@
+import { AudioRegion } from "@/src/types/AudioRegion";
 import { makeAutoObservable } from "mobx";
 
 export class AudioStore {
@@ -7,6 +8,8 @@ export class AudioStore {
 
   audioMuted = false;
   audioLooping = false;
+
+  selectedRegion: AudioRegion | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -18,6 +21,10 @@ export class AudioStore {
 
   toggleAudioLooping = () => {
     this.audioLooping = !this.audioLooping;
+  };
+
+  onTick = (time: number) => {
+    console.log("testing");
   };
 
   serialize = () => ({

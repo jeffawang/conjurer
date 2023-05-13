@@ -15,6 +15,7 @@ import {
   AUDIO_BUCKET_PREFIX,
   AUDIO_BUCKET_REGION,
 } from "@/src/utils/audio";
+import { AudioRegion } from "@/src/types/AudioRegion";
 
 // https://wavesurfer-js.org/docs/options.html
 const DEFAULT_WAVESURFER_OPTIONS: Partial<WaveSurferOptions> = {
@@ -64,6 +65,7 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
 
     const create = async () => {
       // Can't be run on the server, so we need to use dynamic imports
+      // Lazy load all wave surfer dependencies
       const [
         { default: WaveSurfer },
         { default: TimelinePlugin },
@@ -79,9 +81,11 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
         RegionsPlugin,
       };
 
+      // Instantiate plugins
       const timeline = TimelinePlugin.create(DEFAULT_TIMELINE_OPTIONS);
       const regions = RegionsPlugin.create();
 
+      // Instantiate wavesurfer
       // https://wavesurfer-js.org/docs/options.html
       const options: WaveSurferOptions = {
         ...DEFAULT_WAVESURFER_OPTIONS,
@@ -90,17 +94,21 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
         plugins: [timeline, regions],
       };
       wavesurferRef.current = WaveSurfer.create(options);
+
+      // Load selected audio file
       await wavesurferRef.current.load(
         `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
       );
       wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
 
-      regions.addRegion({
+      const region = new AudioRegion({
         start: 4,
         end: 17,
-        content: "test region",
+        content: "",
         color: "rgba(255,0,0,0.1)",
       });
+      audioStore.selectedRegion = region;
+      regions.addRegion(region);
 
       ready.current = true;
 
@@ -108,7 +116,7 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
     };
 
     create();
-  }, [audioStore.selectedAudioFile, uiStore.pixelsPerSecond]);
+  }, [audioStore.selectedAudioFile, uiStore.pixelsPerSecond, audioStore]);
 
   useEffect(() => {
     if (!didInitialize.current || !ready.current) return;
@@ -179,10 +187,12 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
     if (!overlayCanvas.current) return;
 
     // This is all a bit brittle...
-    const shadowRoot = document.querySelector("#waveform div")!.shadowRoot!;
-    const sourceCanvas = shadowRoot.querySelector(
+    const shadowRoot = document.querySelector("#waveform div")?.shadowRoot;
+    const sourceCanvas = shadowRoot?.querySelector(
       "canvas"
     ) as HTMLCanvasElement;
+
+    if (!sourceCanvas) return;
 
     const destinationCanvas = overlayCanvas.current;
     destinationCanvas.width = sourceCanvas.width;

@@ -83,6 +83,8 @@ export class Store {
       if (!this.timer.playing) this.saveToLocalStorage("autosave");
     }, 60 * 1000);
 
+    this.timer.addTickListener(this.audioStore.onTick);
+
     this.initialized = true;
   };
 
