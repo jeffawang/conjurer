@@ -53,7 +53,7 @@ export class Block<T extends ExtraParams = {}> {
   };
 
   updateParameters = (time: number, globalTime: number) => {
-    this.pattern.paramValues.u_time = time;
+    this.pattern.params.u_time.value = time;
 
     for (const parameter of Object.keys(this.parameterVariations)) {
       this.updateParameter(parameter, time);
@@ -76,7 +76,7 @@ export class Block<T extends ExtraParams = {}> {
         // this is the variation that is active at this time
         time < variationTime + variation.duration
       ) {
-        this.pattern.paramValues[parameter] = variation.valueAtTime(
+        this.pattern.params[parameter].value = variation.valueAtTime(
           time - variationTime
         );
         return;
@@ -89,7 +89,7 @@ export class Block<T extends ExtraParams = {}> {
 
     // if the current time is beyond the end of the last variation, use the last variation's last value
     const lastVariation = variations[variations.length - 1];
-    this.pattern.paramValues[parameter] = lastVariation.valueAtTime(
+    this.pattern.params[parameter].value = lastVariation.valueAtTime(
       lastVariation.duration
     );
   };
