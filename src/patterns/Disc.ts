@@ -6,7 +6,6 @@ export const Disc = () => {
   const params = {
     u_color: {
       name: "Color",
-
       value: new Vector4(1, 1, 1, 1),
     },
     u_radius: {
