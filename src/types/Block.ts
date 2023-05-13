@@ -95,8 +95,13 @@ export class Block<T extends ExtraParams = {}> {
   };
 
   getLastParameterValue = (uniformName: string): ParamType => {
+    // makes sure that uniform exists
+    if (!this.pattern.params[uniformName]) return null;
+
+    // if there are no variations, returned the currently set value
     const variations = this.parameterVariations[uniformName];
-    if (!variations || variations.length === 0) return null;
+    if (!variations || variations.length === 0)
+      return this.pattern.params[uniformName].value;
 
     const lastVariation = variations[variations.length - 1];
     return lastVariation.valueAtTime(lastVariation.duration);
