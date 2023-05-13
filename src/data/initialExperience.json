@@ -4,21 +4,22 @@
   },
   "blocks": [
     {
-      "pattern": "Barcode",
+      "pattern": "Pulse",
       "startTime": 0,
       "duration": 38,
       "parameterVariations": {
-        "u_saturation_start": [
-          { "type": "flat", "duration": 2, "value": 0 },
-          { "type": "linear", "duration": 36, "from": 0, "to": 1 }
-        ],
-        "u_hue_start": [{ "type": "flat", "duration": 2, "value": 0 }],
-        "u_hue_width": [
-          { "type": "flat", "duration": 2, "value": 0 },
-          { "type": "linear", "duration": 36, "from": 0, "to": 1 }
-        ]
+        "u_wave_amplitude": [{ "type": "flat", "duration": 2, "value": 0.4 }],
+        "u_wave_period": [{ "type": "flat", "duration": 2, "value": 0.125 }]
       },
-      "effectBlocks": []
+      "effectBlocks": [
+        {
+          "pattern": "Rotate",
+          "startTime": 0,
+          "duration": 5,
+          "parameterVariations": {},
+          "effectBlocks": []
+        }
+      ]
     },
     {
       "pattern": "Clouds",
@@ -158,12 +159,36 @@
           "effectBlocks": []
         }
       ]
+    },
+    {
+      "pattern": "Barcode",
+      "startTime": 148.75,
+      "duration": 38,
+      "parameterVariations": {
+        "u_saturation_start": [
+          { "type": "flat", "duration": 2, "value": 0 },
+          { "type": "linear", "duration": 36, "from": 0, "to": 1 }
+        ],
+        "u_hue_start": [{ "type": "flat", "duration": 2, "value": 0 }],
+        "u_hue_width": [
+          { "type": "flat", "duration": 2, "value": 0 },
+          {
+            "type": "sine",
+            "duration": 19.25,
+            "amplitude": 0.7,
+            "frequency": 0.5,
+            "phase": 0,
+            "offset": 1
+          }
+        ]
+      },
+      "effectBlocks": []
     }
   ],
   "uiStore": {
     "showingPerformance": false,
     "displayingCanopy": true,
-    "pixelsPerSecond": 32,
+    "pixelsPerSecond": 38,
     "beatLength": 1
   },
   "user": ""

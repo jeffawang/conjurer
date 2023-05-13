@@ -7,28 +7,23 @@ precision mediump float;
 
 #define PI 3.14159265358979323846
 
-uniform float u_segments;
-uniform float u_stutter_frequency;
-uniform float u_go_nuts;
-uniform float u_saturation_start;
 uniform float u_hue_start;
 uniform float u_hue_width;
+uniform float u_duty_cycle;
+uniform float u_time_factor;
+uniform float u_time_offset;
+uniform float u_wave_period;
+uniform float u_wave_amplitude;
+uniform float u_number_colors;
 
-// #define u_segments 4.5
-// #define u_stutter_frequency .8
-// #define u_go_nuts 0.0
-// #define u_saturation_start 1.0
-
-#define u_pulses .
-#define u_hue_start 0.
-#define u_hue_width 0.8
-
-#define u_duty_cycle .5
-#define u_time_factor 0.4
-#define u_time_offset 0.0
-#define u_wave_period 1.
-#define u_wave_amplitude 0.0
-#define u_number_colors 5.
+// #define u_hue_start 0.
+// #define u_hue_width 0.8
+// #define u_duty_cycle .5
+// #define u_time_factor 0.4
+// #define u_time_offset 0.0
+// #define u_wave_period 1.
+// #define u_wave_amplitude 0.0
+// #define u_number_colors 5.
 
 uniform vec2 u_resolution;
 uniform float u_time;

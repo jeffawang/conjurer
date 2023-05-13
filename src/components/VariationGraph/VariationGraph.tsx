@@ -1,6 +1,7 @@
 import {
   Box,
   Popover,
+  PopoverArrow,
   PopoverContent,
   PopoverTrigger,
   Portal,
@@ -62,6 +63,7 @@ export const VariationGraph = function VariationGraph({
       </PopoverTrigger>
       <Portal>
         <PopoverContent>
+          <PopoverArrow />
           <VariationControls
             variation={variation}
             uniformName={uniformName}
