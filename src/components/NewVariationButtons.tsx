@@ -28,7 +28,7 @@ export const NewVariationButtons = memo(function NewVariationButtons({
   block,
 }: NewVariationButtonsProps) {
   const newVariationButtons = isVector4(
-    block.pattern.paramValues[uniformName]
+    block.pattern.params[uniformName].value
   ) ? (
     <>
       <IconButton
