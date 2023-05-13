@@ -8,6 +8,7 @@ import type WaveSurfer from "wavesurfer.js";
 import type { WaveSurferOptions } from "wavesurfer.js";
 import type TimelinePlugin from "wavesurfer.js/dist/plugins/timeline";
 import type { TimelinePluginOptions } from "wavesurfer.js/dist/plugins/timeline";
+import type RegionsPlugin from "wavesurfer.js/dist/plugins/regions";
 import type { GenericPlugin } from "wavesurfer.js/dist/base-plugin";
 import {
   AUDIO_BUCKET_NAME,
@@ -15,7 +16,20 @@ import {
   AUDIO_BUCKET_REGION,
 } from "@/src/utils/audio";
 
-const TIMELINE_OPTIONS: TimelinePluginOptions = {
+// https://wavesurfer-js.org/docs/options.html
+const DEFAULT_WAVESURFER_OPTIONS: Partial<WaveSurferOptions> = {
+  waveColor: "#ddd",
+  progressColor: "#0178FF",
+  cursorColor: "#00000000",
+  height: 40,
+  hideScrollbar: true,
+  fillParent: false,
+  interact: false,
+  autoScroll: false,
+  autoCenter: false,
+};
+
+const DEFAULT_TIMELINE_OPTIONS: TimelinePluginOptions = {
   height: 40,
   insertPosition: "beforebegin" as const,
   timeInterval: 0.25,
@@ -25,7 +39,6 @@ const TIMELINE_OPTIONS: TimelinePluginOptions = {
     fontSize: "14px",
     color: "#000000",
     zIndex: 10,
-    // webkitTextStroke: "1px #000000",
   } as any,
 };
 
@@ -36,7 +49,8 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
   const wavesurferConstructors = useRef<{
     WaveSurfer: typeof WaveSurfer | null;
     TimelinePlugin: typeof TimelinePlugin | null;
-  }>({ WaveSurfer: null, TimelinePlugin: null });
+    RegionsPlugin: typeof RegionsPlugin | null;
+  }>({ WaveSurfer: null, TimelinePlugin: null, RegionsPlugin: null });
 
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const waveformRef = useRef<HTMLDivElement>(null);
@@ -50,35 +64,44 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
 
     const create = async () => {
       // Can't be run on the server, so we need to use dynamic imports
-      const [{ default: WaveSurfer }, { default: TimelinePlugin }] =
-        await Promise.all([
-          import("wavesurfer.js"),
-          import("wavesurfer.js/dist/plugins/timeline"),
-        ]);
-      wavesurferConstructors.current = { WaveSurfer, TimelinePlugin };
+      const [
+        { default: WaveSurfer },
+        { default: TimelinePlugin },
+        { default: RegionsPlugin },
+      ] = await Promise.all([
+        import("wavesurfer.js"),
+        import("wavesurfer.js/dist/plugins/timeline"),
+        import("wavesurfer.js/dist/plugins/regions"),
+      ]);
+      wavesurferConstructors.current = {
+        WaveSurfer,
+        TimelinePlugin,
+        RegionsPlugin,
+      };
 
-      const timeline = TimelinePlugin.create(TIMELINE_OPTIONS);
+      const timeline = TimelinePlugin.create(DEFAULT_TIMELINE_OPTIONS);
+      const regions = RegionsPlugin.create();
 
       // https://wavesurfer-js.org/docs/options.html
       const options: WaveSurferOptions = {
+        ...DEFAULT_WAVESURFER_OPTIONS,
         container: waveformRef.current!,
-        waveColor: "#ddd",
-        progressColor: "#0178FF",
-        cursorColor: "#00000000",
-        height: 40,
-        hideScrollbar: true,
-        fillParent: false,
-        interact: false,
         minPxPerSec: uiStore.pixelsPerSecond,
-        plugins: [timeline],
-        autoScroll: false,
-        autoCenter: false,
+        plugins: [timeline, regions],
       };
       wavesurferRef.current = WaveSurfer.create(options);
       await wavesurferRef.current.load(
         `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
       );
       wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
+
+      regions.addRegion({
+        start: 4,
+        end: 17,
+        content: "test region",
+        color: "rgba(255,0,0,0.1)",
+      });
+
       ready.current = true;
 
       cloneCanvas();
@@ -104,7 +127,7 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
 
         const { TimelinePlugin } = wavesurferConstructors.current;
 
-        const timeline = TimelinePlugin.create(TIMELINE_OPTIONS);
+        const timeline = TimelinePlugin.create(DEFAULT_TIMELINE_OPTIONS);
         wavesurferRef.current.registerPlugin(timeline);
         await wavesurferRef.current.load(
           `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`

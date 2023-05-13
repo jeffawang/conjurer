@@ -6,6 +6,7 @@ export class AudioStore {
   selectedAudioFile: string = "cloudkicker-explorebecurious.mp3";
 
   audioMuted = false;
+  audioLooping = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -13,6 +14,10 @@ export class AudioStore {
 
   toggleAudioMuted = () => {
     this.audioMuted = !this.audioMuted;
+  };
+
+  toggleAudioLooping = () => {
+    this.audioLooping = !this.audioLooping;
   };
 
   serialize = () => ({
