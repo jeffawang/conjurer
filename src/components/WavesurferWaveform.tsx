@@ -8,6 +8,8 @@ import type WaveSurfer from "wavesurfer.js";
 import type { WaveSurferOptions } from "wavesurfer.js";
 import type TimelinePlugin from "wavesurfer.js/dist/plugins/timeline";
 import type { TimelinePluginOptions } from "wavesurfer.js/dist/plugins/timeline";
+import type RegionsPlugin from "wavesurfer.js/dist/plugins/regions";
+import type { RegionParams } from "wavesurfer.js/dist/plugins/regions";
 import type { GenericPlugin } from "wavesurfer.js/dist/base-plugin";
 import {
   AUDIO_BUCKET_NAME,
@@ -15,7 +17,20 @@ import {
   AUDIO_BUCKET_REGION,
 } from "@/src/utils/audio";
 
-const TIMELINE_OPTIONS: TimelinePluginOptions = {
+// https://wavesurfer-js.org/docs/options.html
+const DEFAULT_WAVESURFER_OPTIONS: Partial<WaveSurferOptions> = {
+  waveColor: "#ddd",
+  progressColor: "#0178FF",
+  cursorColor: "#00000000",
+  height: 40,
+  hideScrollbar: true,
+  fillParent: false,
+  interact: false,
+  autoScroll: false,
+  autoCenter: false,
+};
+
+const DEFAULT_TIMELINE_OPTIONS: TimelinePluginOptions = {
   height: 40,
   insertPosition: "beforebegin" as const,
   timeInterval: 0.25,
@@ -25,7 +40,6 @@ const TIMELINE_OPTIONS: TimelinePluginOptions = {
     fontSize: "14px",
     color: "#000000",
     zIndex: 10,
-    // webkitTextStroke: "1px #000000",
   } as any,
 };
 
@@ -36,7 +50,8 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
   const wavesurferConstructors = useRef<{
     WaveSurfer: typeof WaveSurfer | null;
     TimelinePlugin: typeof TimelinePlugin | null;
-  }>({ WaveSurfer: null, TimelinePlugin: null });
+    RegionsPlugin: typeof RegionsPlugin | null;
+  }>({ WaveSurfer: null, TimelinePlugin: null, RegionsPlugin: null });
 
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const waveformRef = useRef<HTMLDivElement>(null);
@@ -50,42 +65,66 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
 
     const create = async () => {
       // Can't be run on the server, so we need to use dynamic imports
-      const [{ default: WaveSurfer }, { default: TimelinePlugin }] =
-        await Promise.all([
-          import("wavesurfer.js"),
-          import("wavesurfer.js/dist/plugins/timeline"),
-        ]);
-      wavesurferConstructors.current = { WaveSurfer, TimelinePlugin };
+      // Lazy load all wave surfer dependencies
+      const [
+        { default: WaveSurfer },
+        { default: TimelinePlugin },
+        { default: RegionsPlugin },
+      ] = await Promise.all([
+        import("wavesurfer.js"),
+        import("wavesurfer.js/dist/plugins/timeline"),
+        import("wavesurfer.js/dist/plugins/regions"),
+      ]);
+      wavesurferConstructors.current = {
+        WaveSurfer,
+        TimelinePlugin,
+        RegionsPlugin,
+      };
 
-      const timeline = TimelinePlugin.create(TIMELINE_OPTIONS);
+      // Instantiate plugins
+      const timeline = TimelinePlugin.create(DEFAULT_TIMELINE_OPTIONS);
+      const regions = RegionsPlugin.create();
 
+      // Instantiate wavesurfer
       // https://wavesurfer-js.org/docs/options.html
       const options: WaveSurferOptions = {
+        ...DEFAULT_WAVESURFER_OPTIONS,
         container: waveformRef.current!,
-        waveColor: "#ddd",
-        progressColor: "#0178FF",
-        cursorColor: "#00000000",
-        height: 40,
-        hideScrollbar: true,
-        fillParent: false,
-        interact: false,
         minPxPerSec: uiStore.pixelsPerSecond,
-        plugins: [timeline],
-        autoScroll: false,
-        autoCenter: false,
+        plugins: [timeline, regions],
       };
       wavesurferRef.current = WaveSurfer.create(options);
+
+      // Load selected audio file
       await wavesurferRef.current.load(
         `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
       );
       wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
+
+      // TODO: implement regions
+      // const region: RegionParams = {
+      //   start: 1,
+      //   end: 3,
+      //   content: "",
+      //   color: "rgba(255,0,0,0.1)",
+      //   drag: true,
+      //   resize: true,
+      // };
+      // audioStore.selectedRegion = region;
+      // regions.addRegion(region);
+      // regions.enableDragSelection({
+      //   color: "rgba(255, 0, 0, 0.1)",
+      //   resize: true,
+      //   drag: true,
+      // });
+
       ready.current = true;
 
       cloneCanvas();
     };
 
     create();
-  }, [audioStore.selectedAudioFile, uiStore.pixelsPerSecond]);
+  }, [audioStore.selectedAudioFile, uiStore.pixelsPerSecond, audioStore]);
 
   useEffect(() => {
     if (!didInitialize.current || !ready.current) return;
@@ -104,7 +143,7 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
 
         const { TimelinePlugin } = wavesurferConstructors.current;
 
-        const timeline = TimelinePlugin.create(TIMELINE_OPTIONS);
+        const timeline = TimelinePlugin.create(DEFAULT_TIMELINE_OPTIONS);
         wavesurferRef.current.registerPlugin(timeline);
         await wavesurferRef.current.load(
           `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
@@ -124,6 +163,11 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
       wavesurferRef.current?.pause();
     }
   }, [timer.playing]);
+
+  useEffect(() => {
+    if (!wavesurferRef.current) return;
+    wavesurferRef.current.setMuted(audioStore.audioMuted);
+  }, [audioStore.audioMuted]);
 
   const zoomDebounced = useDebouncedCallback((pixelsPerSecond: number) => {
     wavesurferRef.current?.zoom(pixelsPerSecond);
@@ -151,10 +195,12 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
     if (!overlayCanvas.current) return;
 
     // This is all a bit brittle...
-    const shadowRoot = document.querySelector("#waveform div")!.shadowRoot!;
-    const sourceCanvas = shadowRoot.querySelector(
+    const shadowRoot = document.querySelector("#waveform div")?.shadowRoot;
+    const sourceCanvas = shadowRoot?.querySelector(
       "canvas"
     ) as HTMLCanvasElement;
+
+    if (!sourceCanvas) return;
 
     const destinationCanvas = overlayCanvas.current;
     destinationCanvas.width = sourceCanvas.width;

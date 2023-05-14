@@ -5,6 +5,7 @@ export class Timer {
   private _lastStartedAtDateTime = 0;
   private _globalTime = 0;
   private _lastCursor = { position: 0 };
+  private _tickListeners: ((time: number) => void)[] = [];
 
   playing = false;
 
@@ -50,6 +51,10 @@ export class Timer {
     requestAnimationFrame(this.tick);
   };
 
+  addTickListener = (listener: (time: number) => void) => {
+    this._tickListeners.push(listener);
+  };
+
   togglePlaying = () => {
     this.playing = !this.playing;
 
@@ -75,6 +80,7 @@ export class Timer {
     this.globalTime =
       this.lastCursorPosition +
       (Date.now() - this._lastStartedAtDateTime) / 1000;
+    this._tickListeners.forEach((listener) => listener(this.globalTime));
   };
 
   setTime = (time: number) => {
