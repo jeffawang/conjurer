@@ -12,6 +12,8 @@ export const DEFAULT_SPLINE_POINTS = [
 export class SplineVariation extends Variation<number> {
   private _points: { x: number; y: number }[] = [];
   spline: any;
+  domainMin: number;
+  domainMax: number;
 
   get points() {
     return this._points;
@@ -22,10 +24,17 @@ export class SplineVariation extends Variation<number> {
     this._computeSpline();
   }
 
-  constructor(duration: number, points?: { x: number; y: number }[]) {
+  constructor(
+    duration: number,
+    points?: { x: number; y: number }[],
+    domainMin?: number,
+    domainMax?: number
+  ) {
     super("spline", duration);
 
     this.points = points ?? DEFAULT_SPLINE_POINTS;
+    this.domainMin = domainMin ?? 0;
+    this.domainMax = domainMax ?? 1;
   }
 
   private _computeSpline = () => {
@@ -43,7 +52,7 @@ export class SplineVariation extends Variation<number> {
       // if you pass a value of 1 to interpolate, you get NaN, so we clamp it to 0.99999
       Math.min(time / this.duration, 0.99999)
     );
-    return value;
+    return this.domainMin + value * (this.domainMax - this.domainMin);
   };
 
   computeDomain = () => [0, 1] as [number, number];
@@ -60,14 +69,27 @@ export class SplineVariation extends Variation<number> {
     return data;
   };
 
-  clone = () => new SplineVariation(this.duration, this.points);
+  clone = () =>
+    new SplineVariation(
+      this.duration,
+      this.points,
+      this.domainMin,
+      this.domainMax
+    );
 
   serialize = () => ({
     type: this.type,
     duration: this.duration,
     points: this.points,
+    domainMin: this.domainMin,
+    domainMax: this.domainMax,
   });
 
   static deserialize = (data: any) =>
-    new SplineVariation(data.duration, data.points);
+    new SplineVariation(
+      data.duration,
+      data.points,
+      data.domainMin,
+      data.domainMax
+    );
 }
