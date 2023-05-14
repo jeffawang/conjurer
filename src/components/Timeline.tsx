@@ -56,8 +56,6 @@ export const Timeline = observer(function Timeline() {
         zIndex={10}
       >
         <WavesurferWaveform />
-        {/* Can reimplement Ruler if we want more functionality than Wavesurfer provides */}
-        {/* <Ruler /> */}
         <PlayHead />
       </Box>
       <TimelineBlockStacks />
