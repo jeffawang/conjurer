@@ -1,4 +1,3 @@
-import { AudioRegion } from "@/src/types/AudioRegion";
 import { Timer } from "@/src/types/Timer";
 import { makeAutoObservable } from "mobx";
 import type { RegionParams } from "wavesurfer.js/dist/plugins/regions";

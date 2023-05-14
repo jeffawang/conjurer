@@ -16,7 +16,6 @@ import {
   AUDIO_BUCKET_PREFIX,
   AUDIO_BUCKET_REGION,
 } from "@/src/utils/audio";
-import { AudioRegion } from "@/src/types/AudioRegion";
 
 // https://wavesurfer-js.org/docs/options.html
 const DEFAULT_WAVESURFER_OPTIONS: Partial<WaveSurferOptions> = {
@@ -102,22 +101,22 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
       );
       wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
 
-      const region: RegionParams = {
-        start: 1,
-        end: 3,
-        content: "",
-        color: "rgba(255,0,0,0.1)",
-        drag: true,
-        resize: true,
-      };
-
-      audioStore.selectedRegion = region;
-      regions.addRegion(region);
-      regions.enableDragSelection({
-        color: "rgba(255, 0, 0, 0.1)",
-        resize: true,
-        drag: true,
-      });
+      // TODO: implement regions
+      // const region: RegionParams = {
+      //   start: 1,
+      //   end: 3,
+      //   content: "",
+      //   color: "rgba(255,0,0,0.1)",
+      //   drag: true,
+      //   resize: true,
+      // };
+      // audioStore.selectedRegion = region;
+      // regions.addRegion(region);
+      // regions.enableDragSelection({
+      //   color: "rgba(255, 0, 0, 0.1)",
+      //   resize: true,
+      //   drag: true,
+      // });
 
       ready.current = true;
 
@@ -185,7 +184,6 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
       const duration = wavesurferRef.current.getDuration();
       const progress = duration > 0 ? timer.lastCursor.position / duration : 0;
       wavesurferRef.current.seekTo(clamp(progress, 0, 1));
-      console.log(progress);
     }
   }, [timer.lastCursor]);
 
