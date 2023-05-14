@@ -1,6 +1,7 @@
 import { AudioRegion } from "@/src/types/AudioRegion";
 import { Timer } from "@/src/types/Timer";
 import { makeAutoObservable } from "mobx";
+import type { RegionParams } from "wavesurfer.js/dist/plugins/regions";
 
 export class AudioStore {
   timer: Timer;
@@ -11,7 +12,7 @@ export class AudioStore {
   audioMuted = false;
   audioLooping = false;
 
-  selectedRegion: AudioRegion | null = null;
+  selectedRegion: RegionParams | null = null;
 
   constructor(timer: Timer) {
     makeAutoObservable(this);
@@ -28,10 +29,11 @@ export class AudioStore {
   };
 
   onTick = (time: number) => {
-    if (!this.selectedRegion || !this.audioLooping) return;
-    if (time > this.selectedRegion.end) {
+    if (!this.audioLooping || !this.selectedRegion || !this.selectedRegion.end)
+      return;
+
+    if (time > this.selectedRegion.end)
       this.timer.setTime(this.selectedRegion.start);
-    }
   };
 
   serialize = () => ({

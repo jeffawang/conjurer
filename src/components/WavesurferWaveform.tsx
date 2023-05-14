@@ -9,6 +9,7 @@ import type { WaveSurferOptions } from "wavesurfer.js";
 import type TimelinePlugin from "wavesurfer.js/dist/plugins/timeline";
 import type { TimelinePluginOptions } from "wavesurfer.js/dist/plugins/timeline";
 import type RegionsPlugin from "wavesurfer.js/dist/plugins/regions";
+import type { RegionParams } from "wavesurfer.js/dist/plugins/regions";
 import type { GenericPlugin } from "wavesurfer.js/dist/base-plugin";
 import {
   AUDIO_BUCKET_NAME,
@@ -101,14 +102,22 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
       );
       wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
 
-      const region = new AudioRegion({
+      const region: RegionParams = {
         start: 1,
         end: 3,
         content: "",
         color: "rgba(255,0,0,0.1)",
-      });
+        drag: true,
+        resize: true,
+      };
+
       audioStore.selectedRegion = region;
       regions.addRegion(region);
+      regions.enableDragSelection({
+        color: "rgba(255, 0, 0, 0.1)",
+        resize: true,
+        drag: true,
+      });
 
       ready.current = true;
 
