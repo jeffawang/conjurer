@@ -16,6 +16,7 @@ import {
   AUDIO_BUCKET_PREFIX,
   AUDIO_BUCKET_REGION,
 } from "@/src/utils/audio";
+import { action } from "mobx";
 
 // https://wavesurfer-js.org/docs/options.html
 const DEFAULT_WAVESURFER_OPTIONS: Partial<WaveSurferOptions> = {
@@ -25,7 +26,6 @@ const DEFAULT_WAVESURFER_OPTIONS: Partial<WaveSurferOptions> = {
   height: 40,
   hideScrollbar: true,
   fillParent: false,
-  interact: false,
   autoScroll: false,
   autoCenter: false,
 };
@@ -39,8 +39,7 @@ const DEFAULT_TIMELINE_OPTIONS: TimelinePluginOptions = {
   style: {
     fontSize: "14px",
     color: "#000000",
-    zIndex: 10,
-  } as any,
+  } as CSSStyleDeclaration,
 };
 
 export const WavesurferWaveform = observer(function WavesurferWaveform() {
@@ -101,22 +100,30 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
       );
       wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
 
-      // TODO: implement regions
-      // const region: RegionParams = {
-      //   start: 1,
-      //   end: 3,
-      //   content: "",
-      //   color: "rgba(255,0,0,0.1)",
-      //   drag: true,
-      //   resize: true,
-      // };
-      // audioStore.selectedRegion = region;
-      // regions.addRegion(region);
-      // regions.enableDragSelection({
-      //   color: "rgba(255, 0, 0, 0.1)",
-      //   resize: true,
-      //   drag: true,
-      // });
+      regions.enableDragSelection({
+        color: "rgba(237, 137, 54, 0.4)",
+      } as RegionParams);
+
+      // TODO: figure out how/when to clear region selection
+      regions.on(
+        "region-created",
+        action((newRegion: RegionParams) => {
+          // Remove all other regions, we only allow one region at a time
+          regions
+            .getRegions()
+            .forEach((region) => region !== newRegion && region.remove());
+          audioStore.selectedRegion = newRegion;
+        })
+      );
+      regions.on(
+        "region-updated",
+        action((region: RegionParams) => (audioStore.selectedRegion = region))
+      );
+
+      wavesurferRef.current.on("interaction", () => {
+        if (!wavesurferRef.current) return;
+        timer.setTime(Math.max(0, wavesurferRef.current.getCurrentTime()));
+      });
 
       ready.current = true;
 
@@ -124,7 +131,7 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
     };
 
     create();
-  }, [audioStore.selectedAudioFile, uiStore.pixelsPerSecond, audioStore]);
+  }, [audioStore, audioStore.selectedAudioFile, uiStore.pixelsPerSecond, timer]);
 
   useEffect(() => {
     if (!didInitialize.current || !ready.current) return;
