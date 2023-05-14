@@ -6,7 +6,6 @@ import { SelectablePattern } from "@/src/components/SelectablePattern";
 import { useStore } from "@/src/types/StoreContext";
 import { observer } from "mobx-react-lite";
 import { Keyboard } from "@/src/components/Keyboard";
-import { effects } from "@/src/effects/effects";
 import { action } from "mobx";
 import { PreviewCanvas } from "@/src/components/PreviewCanvas";
 
@@ -44,21 +43,6 @@ export const PatternList = observer(function PatternList() {
             pattern={p}
             selected={p === selectedPattern}
             onInsert={action(() => store.insertCloneOfPattern(p))}
-          />
-        ))}
-      </VStack>
-
-      <Text userSelect="none" fontSize="xs">
-        Effects
-      </Text>
-
-      <VStack>
-        {effects.map((effect) => (
-          <SelectablePattern
-            key={effect.name}
-            pattern={effect}
-            selected={effect === selectedPattern}
-            onInsert={action(() => store.insertCloneOfEffect(effect))}
           />
         ))}
       </VStack>

@@ -6,6 +6,8 @@ import { RenderPipeline } from "@/src/components/RenderPipeline";
 import { RenderingGate } from "@/src/components/RenderingGate";
 import { Canopy } from "@/src/components/Canopy";
 import { CameraControls } from "@/src/components/CameraControls";
+import { useMemo } from "react";
+import { Vector3 } from "three";
 
 type PreviewCanvasProps = {
   block: Block;
@@ -16,10 +18,12 @@ export const PreviewCanvas = observer(function PreviewCanvas({
 }: PreviewCanvasProps) {
   const { timer } = useStore();
 
+  const initialPosition = useMemo(() => new Vector3(0, 0, 32), []);
+
   return (
     <Canvas frameloop="demand">
       <RenderingGate shouldRender={!timer.playing} />
-      <CameraControls />
+      <CameraControls initialPosition={initialPosition} />
       <RenderPipeline block={block} autorun>
         {(renderTarget) => <Canopy renderTarget={renderTarget} />}
       </RenderPipeline>
