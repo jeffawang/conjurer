@@ -69,12 +69,5 @@ export const SplineVariationGraph = memo(function SplineVariationGraph({
     create();
   }, [variation, id, width, orange, blue]);
 
-  return (
-    <Box
-      className="spline-container"
-      id={id}
-      bgColor="gray.600"
-      // _hover={{ bgColor: "gray.500" }}
-    />
-  );
+  return <Box className="spline-container" id={id} bgColor="gray.600" />;
 });
