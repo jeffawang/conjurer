@@ -432,7 +432,12 @@ export class Store {
 
   saveToLocalStorage = (key: string) => {
     if (typeof window === "undefined") return;
-    window.localStorage.setItem(key, JSON.stringify(this.serialize()));
+    window.localStorage.setItem(
+      key,
+      JSON.stringify(this.serialize(), (key, val) =>
+        val.toFixed ? Number(val.toFixed(4)) : val
+      )
+    );
   };
 
   loadFromLocalStorage = (key: string) => {
