@@ -10,7 +10,12 @@ import * as fs from "fs";
 import { Vector2 } from "three";
 
 export const saveJson = (filename: string, data: any) =>
-  fs.writeFileSync(filename, JSON.stringify(data));
+  fs.writeFileSync(
+    filename,
+    JSON.stringify(data, (key, val) =>
+      val.toFixed ? Number(val.toFixed(3)) : val
+    )
+  );
 
 const CANOPY_GEOMETRY_OUTPUT_PATH = "./src/data/canopyGeometry.json";
 
