@@ -10,7 +10,6 @@ import type TimelinePlugin from "wavesurfer.js/dist/plugins/timeline";
 import type { TimelinePluginOptions } from "wavesurfer.js/dist/plugins/timeline";
 import type RegionsPlugin from "wavesurfer.js/dist/plugins/regions";
 import type { RegionParams } from "wavesurfer.js/dist/plugins/regions";
-import type { GenericPlugin } from "wavesurfer.js/dist/base-plugin";
 import {
   AUDIO_BUCKET_NAME,
   AUDIO_BUCKET_PREFIX,
@@ -42,6 +41,7 @@ const DEFAULT_TIMELINE_OPTIONS: TimelinePluginOptions = {
   } as CSSStyleDeclaration,
 };
 
+// TODO: factor some of this logic out into hooks
 export const WavesurferWaveform = observer(function WavesurferWaveform() {
   const didInitialize = useRef(false);
   const ready = useRef(false);
@@ -51,6 +51,9 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
     TimelinePlugin: typeof TimelinePlugin | null;
     RegionsPlugin: typeof RegionsPlugin | null;
   }>({ WaveSurfer: null, TimelinePlugin: null, RegionsPlugin: null });
+
+  const timelinePlugin = useRef<TimelinePlugin | null>(null);
+  const regionsPlugin = useRef<RegionsPlugin | null>(null);
 
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const waveformRef = useRef<HTMLDivElement>(null);
@@ -81,8 +84,8 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
       };
 
       // Instantiate plugins
-      const timeline = TimelinePlugin.create(DEFAULT_TIMELINE_OPTIONS);
-      const regions = RegionsPlugin.create();
+      timelinePlugin.current = TimelinePlugin.create(DEFAULT_TIMELINE_OPTIONS);
+      regionsPlugin.current = RegionsPlugin.create();
 
       // Instantiate wavesurfer
       // https://wavesurfer-js.org/docs/options.html
@@ -90,7 +93,7 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
         ...DEFAULT_WAVESURFER_OPTIONS,
         container: waveformRef.current!,
         minPxPerSec: uiStore.pixelsPerSecond,
-        plugins: [timeline, regions],
+        plugins: [timelinePlugin.current, regionsPlugin.current],
       };
       wavesurferRef.current = WaveSurfer.create(options);
 
@@ -99,26 +102,6 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
         `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
       );
       wavesurferRef.current?.zoom(uiStore.pixelsPerSecond);
-
-      regions.enableDragSelection({
-        color: "rgba(237, 137, 54, 0.4)",
-      } as RegionParams);
-
-      // TODO: figure out how/when to clear region selection
-      regions.on(
-        "region-created",
-        action((newRegion: RegionParams) => {
-          // Remove all other regions, we only allow one region at a time
-          regions
-            .getRegions()
-            .forEach((region) => region !== newRegion && region.remove());
-          audioStore.selectedRegion = newRegion;
-        })
-      );
-      regions.on(
-        "region-updated",
-        action((region: RegionParams) => (audioStore.selectedRegion = region))
-      );
 
       wavesurferRef.current.on("interaction", () => {
         if (!wavesurferRef.current) return;
@@ -144,14 +127,17 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
       ) {
         wavesurferRef.current.stop();
 
-        const plugins = wavesurferRef.current.getActivePlugins();
-        plugins.forEach((plugin: GenericPlugin) => plugin.destroy?.());
-        // TODO: we destroy the plugin, but it remains in the array. Small memory leak here
+        // Destroy the old timeline plugin
+        timelinePlugin.current?.destroy();
+        // TODO: we destroy the plugin, but it remains in the array of wavesurfer plugins. Small
+        // memory leak here, and it generally feels like there is a better way to do this
 
+        // Create a new timeline plugin
         const { TimelinePlugin } = wavesurferConstructors.current;
-
-        const timeline = TimelinePlugin.create(DEFAULT_TIMELINE_OPTIONS);
-        wavesurferRef.current.registerPlugin(timeline);
+        timelinePlugin.current = TimelinePlugin.create(
+          DEFAULT_TIMELINE_OPTIONS
+        );
+        wavesurferRef.current.registerPlugin(timelinePlugin.current);
         await wavesurferRef.current.load(
           `https://${AUDIO_BUCKET_NAME}.s3.${AUDIO_BUCKET_REGION}.amazonaws.com/${AUDIO_BUCKET_PREFIX}${audioStore.selectedAudioFile}`
         );
@@ -162,6 +148,51 @@ export const WavesurferWaveform = observer(function WavesurferWaveform() {
     changeAudioFile();
     cloneCanvas();
   }, [audioStore.selectedAudioFile, timer]);
+
+  useEffect(() => {
+    if (!didInitialize.current || !ready.current) return;
+
+    let disableDragSelection = () => {};
+    const toggleLoopingMode = action(async () => {
+      if (!didInitialize.current || !regionsPlugin.current) return;
+
+      if (!audioStore.audioLooping) {
+        regionsPlugin.current.unAll();
+        regionsPlugin.current.clearRegions();
+        audioStore.selectedRegion = null;
+        return;
+      }
+
+      const regions = regionsPlugin.current;
+      disableDragSelection = regions.enableDragSelection({
+        color: "rgba(237, 137, 54, 0.4)",
+      } as RegionParams);
+
+      // TODO: figure out how/when to clear region selection
+      regions.on(
+        "region-created",
+        action((newRegion: RegionParams) => {
+          // Remove all other regions, we only allow one region at a time
+          regions
+            .getRegions()
+            .forEach((region) => region !== newRegion && region.remove());
+          audioStore.selectedRegion = newRegion;
+          if (!wavesurferRef.current) return;
+          timer.setTime(Math.max(0, newRegion.start));
+        })
+      );
+      regions.on(
+        "region-updated",
+        action((region: RegionParams) => {
+          audioStore.selectedRegion = region;
+          if (!wavesurferRef.current) return;
+          timer.setTime(Math.max(0, region.start));
+        })
+      );
+    });
+    toggleLoopingMode();
+    return disableDragSelection;
+  }, [audioStore, audioStore.audioLooping, timer]);
 
   useEffect(() => {
     if (timer.playing) {
