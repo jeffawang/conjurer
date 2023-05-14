@@ -5693,10 +5693,10 @@ vscode-textmate@^8.0.0:
   resolved "https://registry.yarnpkg.com/vscode-textmate/-/vscode-textmate-8.0.0.tgz#2c7a3b1163ef0441097e0b5d6389cd5504b59e5d"
   integrity sha512-AFbieoL7a5LMqcnOF04ji+rpXadgOXnZsxQr//r83kLPr7biP7am3g9zbaZIaBGwBRWeSvoMD4mgPdX3e4NWBg==
 
-wavesurfer.js@^7.0.0-alpha.47:
-  version "7.0.0-alpha.47"
-  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-7.0.0-alpha.47.tgz#e595f0f6867f8b31f46e36ab3b9e27de7d80fc92"
-  integrity sha512-MGClB9B9UO01IaYCErexrAuixF/tm+SE2NkND9evqqJfcXMF1cNuNf7UbeYMGy6wJr7kincWf4Mp8RNIQrg1kw==
+wavesurfer.js@^7.0.0-alpha.48:
+  version "7.0.0-alpha.48"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-7.0.0-alpha.48.tgz#666bb7372bee79742807dcf21ccb07258826c8d2"
+  integrity sha512-8Who6+8rBJOFnH8zBBlgR2owGJXzC1BJzxP19EV4mJNKnDh+J9+8j6AtNwxE3K9hy9gPTld1uhAsO1nC7DY9jA==
   dependencies:
     typedoc "^0.24.6"
 
