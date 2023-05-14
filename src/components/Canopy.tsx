@@ -5,7 +5,7 @@ import {
   WebGLRenderTarget,
 } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import canopyVert from "@/src/patterns/shaders/canopy.vert";
 import fromTextureWithIntensity from "@/src/patterns/shaders/fromTextureWithIntensity.frag";
 import canopyGeometry from "@/src/data/canopyGeometry.json";
@@ -54,8 +54,11 @@ export const Canopy = function Canopy({ renderTarget }: CanopyViewProps) {
       gl.domElement.clientWidth,
       gl.domElement.clientHeight
     );
+    return effectComposer;
+  }, [gl]);
 
-    if (!scene.current) return effectComposer;
+  useEffect(() => {
+    if (!scene.current) return;
 
     effectComposer.addPass(new RenderPass(scene.current, camera));
     effectComposer.addPass(
@@ -67,8 +70,7 @@ export const Canopy = function Canopy({ renderTarget }: CanopyViewProps) {
         })
       )
     );
-    return effectComposer;
-  }, [gl, camera]);
+  }, [effectComposer, camera]);
 
   // render the effect composer, including the canopy render pass and bloom effect
   useFrame(() => effectComposer.render(), 100);

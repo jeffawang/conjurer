@@ -22,7 +22,7 @@ uniform float u_number_colors;
 // #define u_time_factor 0.4
 // #define u_time_offset 0.0
 // #define u_wave_period 1.
-// #define u_wave_amplitude 0.0
+// #define u_wave_amplitude 0.5
 // #define u_number_colors 5.
 
 uniform vec2 u_resolution;
@@ -81,11 +81,13 @@ void main() {
     vec3 color = HSVtoRGB(hsv);
 
     // make the wavefront white
-    // color = mix(color, vec3(1.), 0.);
     color = mix(color, vec3(1.), st.y * st.y);
 
     // only display this color if this is the first duty cell in the duty cycle
-    color = mix(color, vec3(0.0), step(1.0, duty_cell));
+    color = mix(color, vec3(0.0), step(1., duty_cell));
+
+    // do additional blending if we are the second duty cell in the duty cycle
+    color = mix(color, vec3(duty_cell + 1. - pow(st.y, 5.)), step(1., duty_cell));
 
     gl_FragColor = vec4(color, 1.0);
 }

@@ -11,8 +11,9 @@ const MIN_PIXELS_PER_SECOND = 4;
  * @class UIStore
  */
 export class UIStore {
-  showingPerformance = false;
+  horizontalLayout = true;
   displayingCanopy = true;
+  showingPerformance = false;
   showingWaveformOverlay = false;
 
   pixelsPerSecond = INITIAL_PIXELS_PER_SECOND; // the zoom of the timeline
@@ -44,12 +45,16 @@ export class UIStore {
     }
   };
 
-  togglePerformance = () => {
-    this.showingPerformance = !this.showingPerformance;
+  toggleLayout = () => {
+    this.horizontalLayout = !this.horizontalLayout;
   };
 
   toggleCanopyDisplay = () => {
     this.displayingCanopy = !this.displayingCanopy;
+  };
+
+  togglePerformance = () => {
+    this.showingPerformance = !this.showingPerformance;
   };
 
   toggleWaveformOverlay = () => {
@@ -57,17 +62,19 @@ export class UIStore {
   };
 
   serialize = () => ({
-    showingPerformance: this.showingPerformance,
+    horizontalLayout: this.horizontalLayout,
     displayingCanopy: this.displayingCanopy,
+    showingPerformance: this.showingPerformance,
     pixelsPerSecond: this.pixelsPerSecond,
     beatLength: this.beatLength,
   });
 
   deserialize = (data: any) => {
+    this.horizontalLayout = data?.horizontalLayout ?? this.horizontalLayout;
+    this.displayingCanopy = data?.displayingCanopy ?? this.displayingCanopy;
     this.showingPerformance =
       data?.showingPerformance ?? this.showingPerformance;
-    this.displayingCanopy = data?.displayingCanopy ?? this.displayingCanopy;
-    this.beatLength = data?.beatLength ?? 1;
     this.pixelsPerSecond = data?.pixelsPerSecond ?? this.pixelsPerSecond;
+    this.beatLength = data?.beatLength ?? 1;
   };
 }
