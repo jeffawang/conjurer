@@ -11,7 +11,10 @@ export const DisplayCanvas = observer(function DisplayCanvas() {
   const { uiStore } = useStore();
 
   return (
-    <Canvas>
+    <Canvas
+      // trigger a re-render of the canvas when the layout changes
+      key={`canopy-${uiStore.horizontalLayout ? "horizontal" : "vertical"}`}
+    >
       {uiStore.showingPerformance && <Perf />}
       <CameraControls />
       <RenderPipeline>

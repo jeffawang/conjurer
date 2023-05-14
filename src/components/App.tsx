@@ -45,7 +45,7 @@ export const App = observer(function App() {
       ) : (
         <Grid
           templateAreas={`"patterns arrangement display"`}
-          gridTemplateColumns="165px calc(50vw - 165px) calc(50vw)"
+          gridTemplateColumns="165px calc(60vw - 165px) calc(40vw)"
           gridTemplateRows="100vh"
           height="100vh"
         >

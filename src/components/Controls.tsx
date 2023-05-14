@@ -15,7 +15,7 @@ export const Controls = observer(function Controls() {
   const { uiStore } = store;
 
   return (
-    <HStack my={2} width="100%">
+    <HStack my={2} width="100%" overflowX="clip">
       <TimerReadout />
       <TimerControls />
       <AudioControls />
