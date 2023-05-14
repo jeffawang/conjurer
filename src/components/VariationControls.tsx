@@ -24,6 +24,7 @@ import { LinearVariation4 } from "@/src/types/Variations/LinearVariation4";
 import { HexColorPicker } from "react-colorful";
 import { hexToRgb, vector4ToHex } from "@/src/utils/color";
 import { HexColorInput } from "react-colorful";
+import { SplineVariation } from "@/src/types/Variations/SplineVariation";
 
 type VariationControlsProps = {
   uniformName: string;
@@ -56,6 +57,14 @@ export const VariationControls = function VariationControls(
   } else if (variation instanceof SineVariation) {
     controls = (
       <SineVariationControls
+        uniformName={uniformName}
+        block={block}
+        variation={variation}
+      />
+    );
+  } else if (variation instanceof SplineVariation) {
+    controls = (
+      <SplineVariationControls
         uniformName={uniformName}
         block={block}
         variation={variation}
@@ -406,6 +415,65 @@ function SineVariationControls({
             block.triggerVariationReactions(uniformName);
           }}
           value={phase}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </HStack>
+    </>
+  );
+}
+
+type SplineVariationControlsProps = {
+  uniformName: string;
+  variation: SplineVariation;
+  block: Block;
+};
+
+function SplineVariationControls({
+  uniformName,
+  variation,
+  block,
+}: SplineVariationControlsProps) {
+  const [min, setMin] = useState(variation.domainMin.toString());
+  const [max, setMax] = useState(variation.domainMax.toString());
+
+  return (
+    <>
+      <Text>Spline</Text>
+      <HStack m={1}>
+        <Text>Min:</Text>
+        <NumberInput
+          size="md"
+          step={0.1}
+          onChange={(valueString) => {
+            variation.domainMin = parseFloat(valueString);
+            setMin(valueString);
+            block.triggerVariationReactions(uniformName);
+          }}
+          value={min}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </HStack>
+      <HStack m={1}>
+        <Text>Max:</Text>
+        <NumberInput
+          size="md"
+          step={0.1}
+          onChange={(valueString) => {
+            variation.domainMax = parseFloat(valueString);
+            setMax(valueString);
+            block.triggerVariationReactions(uniformName);
+          }}
+          value={max}
         >
           <NumberInputField />
           <NumberInputStepper>

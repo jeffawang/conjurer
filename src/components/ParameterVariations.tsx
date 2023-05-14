@@ -83,7 +83,11 @@ export const ParameterVariations = observer(function ParameterVariations({
                         e.stopPropagation();
                       }}
                     >
-                      <VariationHandle variation={variation} />
+                      <VariationHandle
+                        block={block}
+                        uniformName={uniformName}
+                        variation={variation}
+                      />
                     </HStack>
                   )}
                 </Draggable>
@@ -96,19 +100,17 @@ export const ParameterVariations = observer(function ParameterVariations({
       <HStack width="100%" justify="start" spacing={0}>
         {variations.map((variation) => (
           <Fragment key={variation.id}>
-            <VStack>
-              <VariationGraph
-                uniformName={uniformName}
-                variation={variation}
-                width={
-                  variation.duration < 0
-                    ? width
-                    : (variation.duration / block.duration) * width
-                }
-                domain={domain}
-                block={block}
-              />
-            </VStack>
+            <VariationGraph
+              uniformName={uniformName}
+              variation={variation}
+              width={
+                variation.duration < 0
+                  ? width
+                  : (variation.duration / block.duration) * width
+              }
+              domain={domain}
+              block={block}
+            />
             <VariationBound
               uniformName={uniformName}
               block={block}

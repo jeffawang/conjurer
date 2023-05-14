@@ -55,7 +55,7 @@ export class SplineVariation extends Variation<number> {
     return this.domainMin + value * (this.domainMax - this.domainMin);
   };
 
-  computeDomain = () => [0, 1] as [number, number];
+  computeDomain = () => [this.domainMin, this.domainMax] as [number, number];
 
   computeSampledData = (duration: number) => {
     const totalSamples = Math.ceil(duration * 4);
