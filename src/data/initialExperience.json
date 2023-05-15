@@ -1,12 +1,20 @@
 {
   "audioStore": {
-    "selectedAudioFile": "Ott. - Skylon - 02 The Queen Of All Everything.mp3"
+    "selectedAudioFile": "Ott. - Skylon - 02 The Queen Of All Everything.mp3",
+    "audioMuted": false
   },
   "blocks": [
     {
-      "pattern": "Pulse",
+      "pattern": "Fire",
       "startTime": 0,
-      "duration": 38,
+      "duration": 29.026315789473685,
+      "parameterVariations": {},
+      "effectBlocks": []
+    },
+    {
+      "pattern": "Pulse",
+      "startTime": 29.026315789473685,
+      "duration": 8.973684210526315,
       "parameterVariations": {
         "u_wave_amplitude": [{ "type": "flat", "duration": 2, "value": 0.4 }],
         "u_wave_period": [{ "type": "flat", "duration": 2, "value": 0.125 }]
@@ -102,7 +110,9 @@
                   { "x": 0.5809727144725026, "y": 0.20517283472521552 },
                   { "x": 0.8053888887551541, "y": 0.3172418002424569 },
                   { "x": 1, "y": 0.06551703091325431 }
-                ]
+                ],
+                "domainMin": 0,
+                "domainMax": 1
               },
               { "type": "flat", "duration": 2, "value": 0 }
             ],
@@ -126,7 +136,9 @@
                   { "x": 0.7931296789339607, "y": 0.903448696794181 },
                   { "x": 0.8296073910518567, "y": 0.6620693864493534 },
                   { "x": 1, "y": 0.6 }
-                ]
+                ],
+                "domainMin": 0,
+                "domainMax": 1
               }
             ],
             "u_brick_offset_x": [
@@ -186,8 +198,9 @@
     }
   ],
   "uiStore": {
-    "showingPerformance": false,
+    "horizontalLayout": true,
     "displayingCanopy": true,
+    "showingPerformance": false,
     "pixelsPerSecond": 38,
     "beatLength": 1
   },
