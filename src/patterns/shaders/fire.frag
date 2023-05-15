@@ -1,3 +1,4 @@
+// Based on the work of:
 // Author: Trisomie21 (https://www.shadertoy.com/user/Trisomie21)
 // License: Creative Commons Attribution-NonCommercial-ShareAlike
 // License URL: http://creativecommons.org/licenses/by-nc-sa/3.0/

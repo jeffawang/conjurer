@@ -6,6 +6,7 @@ import { Pattern } from "@/src/types/Pattern";
 import { Barcode } from "@/src/patterns/Barcode";
 import { Pulse } from "@/src/patterns/Pulse";
 import { Fire } from "@/src/patterns/Fire";
+import { Melt } from "@/src/patterns/Melt";
 
 const patterns: Pattern[] = [
   Pulse(),
@@ -14,6 +15,7 @@ const patterns: Pattern[] = [
   Clouds(),
   SunCycle(),
   Fire(),
+  Melt(),
   Disc(),
 ];
 
