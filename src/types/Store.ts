@@ -124,6 +124,7 @@ export class Store {
 
   removeBlock = (block: Block) => {
     this.patternBlocks = this.patternBlocks.filter((b) => b !== block);
+    this._lastComputedCurrentBlock = null;
   };
 
   /**
@@ -166,9 +167,7 @@ export class Store {
 
   deleteSelected = () => {
     if (this.selectedBlocks.size > 0) {
-      this.patternBlocks = this.patternBlocks.filter(
-        (b) => !this.selectedBlocks.has(b)
-      );
+      Array.from(this.selectedBlocks).forEach(this.removeBlock);
       this.selectedBlocks = new Set();
       return;
     }

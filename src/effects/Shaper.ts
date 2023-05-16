@@ -1,8 +1,8 @@
 import { Pattern } from "@/src/types/Pattern";
 import shaper from "./shaders/shaper.frag";
 
-export const Shaper = () => {
-  const params = {
+export const Shaper = () =>
+  new Pattern("Shaper", shaper, {
     u_tiling: {
       name: "Tiling",
       value: 8,
@@ -35,6 +35,4 @@ export const Shaper = () => {
       name: "Brick Offset Y",
       value: 0.0,
     },
-  };
-  return new Pattern<typeof params>("Shaper", shaper, params);
-};
+  });

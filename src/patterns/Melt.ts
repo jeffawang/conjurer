@@ -1,8 +1,8 @@
 import { Pattern } from "@/src/types/Pattern";
 import melt from "./shaders/melt.frag";
 
-export const Melt = () => {
-  const params = {
+export const Melt = () =>
+  new Pattern("Melt", melt, {
     u_time_factor: {
       name: "Time Factor",
       value: 1,
@@ -11,6 +11,8 @@ export const Melt = () => {
       name: "Time Offset",
       value: 0,
     },
-  };
-  return new Pattern<typeof params>("Melt", melt, params);
-};
+    u_rotation_speed: {
+      name: "Rotation Speed",
+      value: 4,
+    },
+  });

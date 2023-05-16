@@ -1,8 +1,8 @@
 import { Pattern } from "@/src/types/Pattern";
 import barcode from "./shaders/barcode.frag";
 
-export const Barcode = () => {
-  const params = {
+export const Barcode = () =>
+  new Pattern("Barcode", barcode, {
     u_segments: {
       name: "Segments",
 
@@ -28,6 +28,4 @@ export const Barcode = () => {
       name: "Hue Width",
       value: 0.55,
     },
-  };
-  return new Pattern<typeof params>("Barcode", barcode, params);
-};
+  });

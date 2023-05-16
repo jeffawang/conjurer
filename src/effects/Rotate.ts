@@ -1,12 +1,10 @@
 import { Pattern } from "@/src/types/Pattern";
 import rotate from "./shaders/rotate.frag";
 
-export const Rotate = () => {
-  const params = {
+export const Rotate = () =>
+  new Pattern("Rotate", rotate, {
     u_speed: {
       name: "Speed",
       value: 5,
     },
-  };
-  return new Pattern<typeof params>("Rotate", rotate, params);
-};
+  });

@@ -1,8 +1,8 @@
 import { Pattern } from "@/src/types/Pattern";
 import sunCycle from "./shaders/sunCycle.frag";
 
-export const SunCycle = () => {
-  const params = {
+export const SunCycle = () =>
+  new Pattern("Sun Cycle", sunCycle, {
     u_time_factor: {
       name: "Time Factor",
       value: 1,
@@ -11,6 +11,4 @@ export const SunCycle = () => {
       name: "Time Offset",
       value: 0,
     },
-  };
-  return new Pattern<typeof params>("Sun Cycle", sunCycle, params);
-};
+  });
