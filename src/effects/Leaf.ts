@@ -1,8 +1,8 @@
 import { Pattern } from "@/src/types/Pattern";
 import leaf from "./shaders/leaf.frag";
 
-export const Leaf = () => {
-  const params = {
+export const Leaf = () =>
+  new Pattern("Leaf", leaf, {
     u_tiling: {
       name: "Tiling",
       value: 1,
@@ -19,6 +19,4 @@ export const Leaf = () => {
       name: "Time Offset",
       value: 0,
     },
-  };
-  return new Pattern<typeof params>("Leaf", leaf, params);
-};
+  });

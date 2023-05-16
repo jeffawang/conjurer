@@ -1,8 +1,8 @@
 import { Pattern } from "@/src/types/Pattern";
 import fire from "./shaders/fire.frag";
 
-export const Fire = () => {
-  const params = {
+export const Fire = () =>
+  new Pattern("Fire", fire, {
     u_fire_power: {
       name: "Fire Power",
       value: 0.5,
@@ -15,6 +15,4 @@ export const Fire = () => {
       name: "Time Offset",
       value: 0,
     },
-  };
-  return new Pattern<typeof params>("Fire", fire, params);
-};
+  });

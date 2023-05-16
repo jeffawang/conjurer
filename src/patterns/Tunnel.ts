@@ -1,8 +1,8 @@
 import { Pattern } from "@/src/types/Pattern";
 import tunnel from "./shaders/tunnel.frag";
 
-export const Tunnel = () => {
-  const params = {
+export const Tunnel = () =>
+  new Pattern("Tunnel", tunnel, {
     u_time_factor: {
       name: "Time Factor",
       value: 1,
@@ -31,6 +31,4 @@ export const Tunnel = () => {
       name: "Gap Factor",
       value: 1,
     },
-  };
-  return new Pattern<typeof params>("Tunnel", tunnel, params);
-};
+  });

@@ -1,8 +1,8 @@
 import { Pattern } from "@/src/types/Pattern";
 import pulse from "./shaders/pulse.frag";
 
-export const Pulse = () => {
-  const params = {
+export const Pulse = () =>
+  new Pattern("Pulse", pulse, {
     u_hue_start: {
       name: "Hue Start",
       value: 0,
@@ -35,6 +35,4 @@ export const Pulse = () => {
       name: "Number of Colors",
       value: 4,
     },
-  };
-  return new Pattern<typeof params>("Pulse", pulse, params);
-};
+  });
