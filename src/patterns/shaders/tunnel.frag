@@ -2,6 +2,22 @@
 precision mediump float;
 #endif
 
+// float u_time_factor = 1.;
+// float u_time_offset = 0.;
+// float u_max_space = 0.;
+// float u_max_depth_spacing = 0.0;
+// float u_nucleus_size = 0.5;
+// float u_permanent_gap = .0;
+// float u_gap_factor = 1.;
+
+uniform float u_time_factor;
+uniform float u_time_offset;
+uniform float u_max_space;
+uniform float u_max_depth_spacing;
+uniform float u_nucleus_size;
+uniform float u_permanent_gap;
+uniform float u_gap_factor;
+
 uniform vec2 u_resolution;
 uniform float u_time;
 varying vec2 v_uv;
@@ -12,7 +28,7 @@ vec3 palette(float i) {
             if (i < 1.0)
                 return vec3(0.0, 0.0, 0.0);
             else
-                return vec3(1.0, 3.0, 31.0);
+                return vec3(1.0, 3.0, 1.0);
         } else {
             if (i < 3.0)
                 return vec3(1.0, 3.0, 53.0);
@@ -39,11 +55,11 @@ vec3 palette(float i) {
                 return vec3(253.0, 173.0, 81.0);
         } else if (i < 12.0) {
             if (i < 11.0)
-                return vec3(254.0, 244.0, 139.0);
+                return 0.8 * vec3(254.0, 244.0, 139.0);
             else
-                return vec3(239.0, 254.0, 203.0);
+                return 0.8 * vec3(239.0, 254.0, 203.0);
         } else {
-            return vec3(242.0, 255.0, 236.0);
+            return 0.8 * vec3(242.0, 255.0, 236.0);
         }
     }
 }
@@ -65,26 +81,24 @@ float pcount(float x, float period) {
     return floor(x / period);
 }
 
-float distfunc(vec3 pos) {
+float distfunc(vec3 pos, in float time) {
     vec3 gridpos = pos - floor(pos) - 0.5;
     float r = length(pos.xy);
     float a = atan(pos.y, pos.x);
-    a += u_time * 0.3 * sin(pcount(r, 3.0) + 1.0) * sin(pcount(pos.z, 1.0) * 13.73);
-    return min(max(max(periodic(r, 3.0, 0.2), periodic(pos.z, 1.0, 0.7 + 0.3 * cos(u_time / 3.0))), periodic(a * r, 3.141592 * 2.0 / 6.0 * r, 0.7 + 0.3 * cos(u_time / 3.0))), 0.25);
-	//return max(length(gridpos)-0.5,
-	//	  abs(r-floor(r)-0.5)-0.1);
+    a += time * 0.3 * sin(pcount(r, 3.0) + 1.0) * sin(pcount(pos.z, 1.0) * 13.73);
+    return min(max(max(u_max_depth_spacing * 0.2 + periodic(r, 3.0, 0.2), u_max_space * 0.2 + periodic(pos.z, 1.0, 0.7 + 0.3 * cos(time / 3.0))), u_permanent_gap * 0.3 + u_gap_factor * periodic(a * r, 3.141592 * 2.0 / 6.0 * r, 0.7 + 0.3 * cos(time / 3.0))), 0.25);
 }
 
-vec4 mainVR(in vec2 fragCoord, in vec3 pos, in vec3 dir) {
+vec4 mainVR(in vec3 pos, in vec3 dir, in float time) {
     vec3 ray_dir = - dir;
     vec3 ray_pos = pos;
 
-    float a = cos(u_time) * 0.0 * 0.4;
+    float a = cos(time) * 0.0 * 0.4;
     ray_dir = ray_dir * mat3(cos(a), 0.0, sin(a), 0.0, 1.0, 0.0, - sin(a), 0.0, cos(a));
 
     float i = 192.0;
     for (int j = 0; j < 192; j ++) {
-        float dist = distfunc(ray_pos);
+        float dist = distfunc(ray_pos, time);
         ray_pos += dist * ray_dir;
 
         if (abs(dist) < 0.001) {
@@ -99,20 +113,26 @@ vec4 mainVR(in vec2 fragCoord, in vec3 pos, in vec3 dir) {
 
 void main() {
 
-    vec2 st = gl_FragCoord.xy / u_resolution.xy;
-    st = st * 2.0 - 1.;
+    // vec2 st = gl_FragCoord.xy / u_resolution.xy;
+    // st = st * 2.0 - 1.;
 
-    // vec2 st = v_uv;
-    // st -= 0.15;
-    // // Convert from canopy space to cartesian
-    // float theta = st.x * 2.0 * 3.1415926;
-    // float r = st.y * 0.88888888 + 0.111111111;
-    // float x = r * cos(theta) * 0.5 + 0.5;
-    // float y = r * sin(theta) * 0.5 + 0.5;
-    // st = vec2(x, y) * 2.0 - 1.0;
+    vec2 st = v_uv;
+    st -= 0.15;
+    // Convert from canopy space to cartesian
+    float theta = st.x * 2.0 * 3.1415926;
+    float r = st.y * 0.88888888 + 0.111111111;
+    float x = r * cos(theta) * 0.5 + 0.5;
+    float y = r * sin(theta) * 0.5 + 0.5;
+    st = vec2(x, y) * 2.0 - 1.0;
 
-    vec3 ray_dir = normalize(vec3(st, 1.0 + 0.0 * sqrt(st.x * st.x + st.y * st.y)));
-    vec3 ray_pos = vec3(0.0, - .0, u_time * 1.0);
+    float time = u_time_factor * u_time + u_time_offset;
 
-    gl_FragColor = mainVR(gl_FragCoord.xy, ray_pos, - ray_dir);
+    vec3 ray_dir = normalize(vec3(st, u_nucleus_size));
+
+    // controls the viewpoint
+    vec3 ray_pos = vec3(0.0, - 0., time * 0.1);
+    // spins the viewpoint around the center
+    // vec3 ray_pos = vec3(0.0 + 0.6 * sin(u_time * 0.5), - .0 + 0.6 * cos(u_time * 0.5), u_time * 1.0);
+
+    gl_FragColor = mainVR(ray_pos, - ray_dir, time);
 }
