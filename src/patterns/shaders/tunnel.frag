@@ -1,3 +1,9 @@
+// Used with permission. Based on the work of:
+// Author: WAHa_06x36  (https://www.shadertoy.com/user/WAHa_06x36)
+// License: Creative Commons Attribution-NonCommercial-ShareAlike
+// License URL: http://creativecommons.org/licenses/by-nc-sa/3.0/
+// Source: https://www.shadertoy.com/view/4dfGDr
+
 #ifdef GL_ES
 precision mediump float;
 #endif
