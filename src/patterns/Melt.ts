@@ -11,6 +11,10 @@ export const Melt = () => {
       name: "Time Offset",
       value: 0,
     },
+    u_rotation_speed: {
+      name: "Rotation Speed",
+      value: 4,
+    },
   };
   return new Pattern<typeof params>("Melt", melt, params);
 };
