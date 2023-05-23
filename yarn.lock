@@ -2582,10 +2582,10 @@
   dependencies:
     eventemitter3 "^4.0.7"
 
-"@vercel/postgres@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@vercel/postgres/-/postgres-0.2.0.tgz#f36803f2be0102845f76be5d80d058c35bf49fea"
-  integrity sha512-haaysAz7Wi9xnTApaiM6nXS+GW+mRV3zgQJhrta8MXUNJkJoq0gO0RGPLkpz6xzB+hhTfUSFS1agtEgBE4ZKFA==
+"@vercel/postgres@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@vercel/postgres/-/postgres-0.3.0.tgz#f2395ce7a3f27ecf33a03b8daadd5583d7949064"
+  integrity sha512-cOC+x6qMnN54B4y0Fh0DV5LJQp2M7puIKbehQBMutY/8/zpzh+oKaQmnZb2QHn489MGOQKyRLJLgHa2P8M085Q==
   dependencies:
     "@neondatabase/serverless" "0.4.3"
     bufferutil "4.0.7"
