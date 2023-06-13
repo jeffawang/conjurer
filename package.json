@@ -44,7 +44,7 @@
     "wavesurfer.js": "^7.0.0-alpha.48"
   },
   "devDependencies": {
-    "@types/node": "^20.1.1",
+    "@types/node": "^20.3.0",
     "@types/react": "^18.0.32",
     "@types/three": "^0.150.1",
     "@typescript-eslint/parser": "^5.59.5",
