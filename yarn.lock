@@ -2106,12 +2106,12 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@neondatabase/serverless@0.4.3":
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@neondatabase/serverless/-/serverless-0.4.3.tgz#e664d351c9c5a372b0adc839368e99f1d08d3f05"
-  integrity sha512-U8tpuF5f0R5WRsciR7iaJ5S2h54DWa6Z6CEW+J4KgwyvRN3q3qDz0MibdfFXU0WqnRoi/9RSf/2XN4TfeaOCbQ==
+"@neondatabase/serverless@0.4.19":
+  version "0.4.19"
+  resolved "https://registry.yarnpkg.com/@neondatabase/serverless/-/serverless-0.4.19.tgz#8df963048838560f9dca84a7af3e5b2efa4160ad"
+  integrity sha512-atzpP9uBLrWPokXZdVy2iNPmmxVx51HXhrEObDb4KXmsyGEkGhCcb6cs51LA/oyXwjJUeB4AreOoVgMcPAIv5g==
   dependencies:
-    "@types/pg" "^8.6.6"
+    "@types/pg" "8.6.6"
 
 "@next/env@13.4.1":
   version "13.4.1"
@@ -2444,7 +2444,7 @@
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
-"@types/pg@^8.6.6":
+"@types/pg@8.6.6":
   version "8.6.6"
   resolved "https://registry.yarnpkg.com/@types/pg/-/pg-8.6.6.tgz#21cdf873a3e345a6e78f394677e3b3b1b543cb80"
   integrity sha512-O2xNmXebtwVekJDD+02udOncjVcMZQuTEQEMpKJ0ZRf5E7/9JJX3izhKUcUifBkyKpljyUM6BTgy2trmviKlpw==
@@ -2582,12 +2582,12 @@
   dependencies:
     eventemitter3 "^4.0.7"
 
-"@vercel/postgres@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@vercel/postgres/-/postgres-0.2.0.tgz#f36803f2be0102845f76be5d80d058c35bf49fea"
-  integrity sha512-haaysAz7Wi9xnTApaiM6nXS+GW+mRV3zgQJhrta8MXUNJkJoq0gO0RGPLkpz6xzB+hhTfUSFS1agtEgBE4ZKFA==
+"@vercel/postgres@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@vercel/postgres/-/postgres-0.4.0.tgz#e5683f3a29e49f23569937751cb0749f15915bb5"
+  integrity sha512-GemRRKvLi90BC511WQzt5tfVLPNOQ9eNbbbaPquSgasm5ogfWLtjJSbNUD4jYEbs9IxbNovKqr0H0CAjJzOAyw==
   dependencies:
-    "@neondatabase/serverless" "0.4.3"
+    "@neondatabase/serverless" "0.4.19"
     bufferutil "4.0.7"
     utf-8-validate "6.0.3"
     ws "8.13.0"
